@@ -1,0 +1,145 @@
+
+header {
+    color: #FAFAFA;
+    font-family: 'Inter', sans-serif;
+}
+
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 52px;
+    margin-top: 5px;
+    background: linear-gradient(99.03deg, #323232 19.8%, rgba(15, 15, 15, 0) 100%);
+    opacity: 1;
+    border-radius: 6px;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #323232;
+}
+
+.headerBlocks {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 13px;
+    margin-top: 5px;
+}
+
+/* Logo image */
+img.logo {
+    display: inline-block;
+    width: 21.7%;
+    height: auto;
+    margin-top: 15px;
+    margin-bottom: 7px;
+}
+
+/* Info container */
+.infoContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 70px;
+    margin-top: 13px;
+    margin-right: 30px;
+}
+
+/* Phone div */
+div.phone {
+    display: inline-block;
+    max-width: 200px;
+}
+
+img.phone {
+    max-width: 28px;
+    height: auto;
+}
+
+.textContainer {
+    display: inline-block;
+    font-size: 13px;
+    margin-left: 9.43px;
+}
+
+h4.phone {
+    color: #A9A9A9;
+    display: inline-block;
+}
+
+p.phone {
+    font-size: 15px;
+    margin-top: 3.6px;
+}
+
+/* Delivery div */
+div.delivery {
+    display: inline-block;
+    width: 200px;
+}
+
+img.delivery {
+    display: inline-block;
+    max-width: 30px;
+}
+
+h4.delivery {
+    color: #A9A9A9;
+    display: inline-block;
+    font-size: 13px;
+}
+
+p.delivery {
+    font-size: 15px;
+    margin-top: 3.6px;
+}
+
+/* Login-Cart container */
+div.loginCartContainer {
+    display: inline-block;
+    right: 0;
+}
+
+/* Login button */
+img.login {
+    display: inline-block;
+    max-width: 28px;
+    height: auto;
+    margin-right: 10px;
+}
+
+p.login {
+    display: inline-block;
+}
+
+/* Cart button */
+img.cart {
+    display: inline-block;
+    max-width: 25px;
+    height: auto;
+}
+
+p.cart {
+    display: inline-block;
+}
+
+/* Cart counter */
+div.cartCounter {
+    margin-right: 17px;
+    position: relative;
+}
+
+span.cartCounter {
+    position: absolute;
+    left: 17px;
+    top: -3px;
+    padding: 1px;
+    min-width: 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    z-index: 1;
+    background: #FF000A;
+    border-radius: 5px;
+}
