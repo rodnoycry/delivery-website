@@ -1,0 +1,31 @@
+
+h1.promo {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 28px;
+}
+
+div.promoContainer {
+    width: 1200px;
+}
+
+div.promo {
+    position: relative;
+    display: inline-block;
+    height: 230px;
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+img.promo {
+    height: 230px;
+    width: auto;
+}
+
+.selector {
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}

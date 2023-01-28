@@ -2,14 +2,16 @@
 header {
     color: #FAFAFA;
     font-family: 'Inter', sans-serif;
+    width: 1200px;
+    display: inline-block;
 }
 
-button {
+button.login, button.cart {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 150px;
-    height: 52px;
+    width: 140px;
+    height: 48px;
     margin-top: 5px;
     background: linear-gradient(99.03deg, #323232 19.8%, rgba(15, 15, 15, 0) 100%);
     opacity: 1;
@@ -17,7 +19,7 @@ button {
     transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-button:hover {
+button.login:hover, button.cart:hover {
     background-color: #323232;
 }
 
@@ -30,12 +32,17 @@ button:hover {
 }
 
 /* Logo image */
-img.logo {
+.logo {
     display: inline-block;
     width: 21.7%;
     height: auto;
     margin-top: 15px;
     margin-bottom: 7px;
+}
+
+img.logo {
+    width: 100%;
+    height: auto;
 }
 
 /* Info container */
@@ -60,7 +67,7 @@ img.phone {
 
 .textContainer {
     display: inline-block;
-    font-size: 13px;
+    font-size: 12px;
     margin-left: 9.43px;
 }
 
@@ -70,7 +77,7 @@ h4.phone {
 }
 
 p.phone {
-    font-size: 15px;
+    font-size: 14px;
     margin-top: 3.6px;
 }
 
@@ -88,11 +95,11 @@ img.delivery {
 h4.delivery {
     color: #A9A9A9;
     display: inline-block;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 p.delivery {
-    font-size: 15px;
+    font-size: 14px;
     margin-top: 3.6px;
 }
 
@@ -112,6 +119,7 @@ img.login {
 
 p.login {
     display: inline-block;
+    font-size: 14px;
 }
 
 /* Cart button */
@@ -123,6 +131,7 @@ img.cart {
 
 p.cart {
     display: inline-block;
+    font-size: 14px;
 }
 
 /* Cart counter */
@@ -138,7 +147,7 @@ span.cartCounter {
     padding: 1px;
     min-width: 18px;
     font-family: 'Inter', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     z-index: 1;
     background: #FF000A;
     border-radius: 5px;

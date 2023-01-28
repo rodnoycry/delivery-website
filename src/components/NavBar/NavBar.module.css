@@ -1,0 +1,21 @@
+nav {
+    width: 1200px;
+    display: flex;
+    justify-content: space-between;
+}
+
+button.link {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: background-color 0.1s ease-in-out;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+button.link:hover {
+    background-color: #fafafa;
+    border-radius: 5px;
+    color: black;
+}

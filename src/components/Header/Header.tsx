@@ -1,5 +1,6 @@
 import React from 'react'
 import type { FC } from 'react'
+import { Link } from 'react-router-dom'
 import styles from './Header.module.css'
 import LogoImg from './images/Logo.png'
 import PhoneImg from './images/Phone.png'
@@ -14,7 +15,9 @@ export const Header: FC = (props) => {
     return (
         <header>
             <div className={styles.headerBlocks}>
-                <img className={styles.logo} src={LogoImg} />
+                <Link className={styles.logo} to="/">
+                    <img className={styles.logo} src={LogoImg} />
+                </Link>
                 <div className={styles.infoContainer}>
                     <div className={styles.phone}>
                         <img className={styles.phone} src={PhoneImg} />

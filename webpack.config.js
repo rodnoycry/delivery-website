@@ -5,11 +5,13 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, './dist'),
         filename: 'bundle.js',
+        publicPath: '/',
     },
     devServer: {
         static: {
             directory: path.resolve(__dirname, './dist'),
         },
+        historyApiFallback: true,
     },
     module: {
         rules: [
@@ -32,6 +34,10 @@ module.exports = {
                         },
                     },
                 ],
+            },
+            {
+                test: /^(?!.*\.module\.css$).*\.css/i,
+                use: ['style-loader', 'css-loader'],
             },
             {
                 test: /\.svg$/,
@@ -61,6 +67,7 @@ module.exports = {
         alias: {
             '@': path.resolve(__dirname, 'src'),
             '@fonts': path.resolve(__dirname, 'src/fonts'),
+            '@images': path.resolve(__dirname, 'public/images'),
         },
         extensions: ['.tsx', '.ts', '.jsx', '.js'], // add .tsx, .ts
     },

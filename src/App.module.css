@@ -21,15 +21,13 @@
 
 html {
     background-color: #0F0F0F;
-    display: flex;
-    justify-content: center;
 }
 
 .main {
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 1200px;
-    /* width: 90%; */
     height: 100%;
-    background-color: #0F0F0F;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    color: #fff;
 }

@@ -25,7 +25,8 @@
       ],
       "paths": {
         "@/*": ["./src/*"],
-        "@fonts/*": ["./src/fonts/*"]
+        "@fonts/*": ["./src/fonts/*"],
+        "@images/*": ["./public/images/*"]
       },
     },
     "include": ["src"]
