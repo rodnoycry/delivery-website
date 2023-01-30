@@ -6,7 +6,11 @@ import styles from './App.module.css'
 import { Header } from './components/Header'
 import { HomeCarousel } from './components/Carousel'
 import { NavBar } from './components/NavBar'
+import { Search } from './components/Search'
 import { Home } from './screens/Home'
+import { Category } from './screens/Category'
+
+import { Footer } from './components/Footer'
 
 export const App: FC = () => {
     return (
@@ -14,10 +18,13 @@ export const App: FC = () => {
             <div className={styles.main}>
                 <Header />
                 <HomeCarousel />
-                <NavBar />
+                <NavBar style={{ marginTop: '10px' }} />
+                <div style={{ marginTop: '30px' }} className={styles.search}>
+                    <Search />
+                </div>
                 <Switch>
                     <Route exact path="/">
-                        <Home />
+                        <Home style={{ marginTop: '30px' }} />
                     </Route>
                     <Route exact path="/promo">
                         <span>1</span>
@@ -26,7 +33,7 @@ export const App: FC = () => {
                         <span>2</span>
                     </Route>
                     <Route exact path="/pizza">
-                        <span>3</span>
+                        <Category path="/pizza" />
                     </Route>
                     <Route exact path="/cold-rolls">
                         <span>4</span>
@@ -48,6 +55,7 @@ export const App: FC = () => {
                     </Route>
                 </Switch>
             </div>
+            <Footer />
         </Router>
     )
 }

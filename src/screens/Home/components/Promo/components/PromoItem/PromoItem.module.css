@@ -1,0 +1,51 @@
+
+
+div.promo {
+    position: relative;
+    display: inline-block;
+    height: 230px;
+    border-radius: 7px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+img.promo {
+    height: 230px;
+    width: auto;
+}
+
+.promoTip {
+    position: absolute;
+    top: 100%;
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.65) 0%, #000000 100%);
+    transition: top 0.4s ease-in-out;
+
+    display: flex;
+    align-items: flex-end;
+}
+
+.descriptionContainer {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+h1.descriptionContainer {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+p.descriptionContainer {
+    font-size: 14px;
+}
+
+.selector {
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}

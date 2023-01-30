@@ -1,0 +1,26 @@
+
+
+div.search {
+    display: flex;
+    justify-content: start;
+    width: 230px;
+    background: #000000;
+    border-radius: 23px;
+    padding: 10px;
+}
+
+img.search {
+    width: 20px;
+    height: auto;
+}
+
+input.search {
+    color: #fafafa;
+    font-family: 'Montserrat', sans-serif;
+    margin-left: 10px;
+    width: 85%;
+}
+
+input.search:focus {
+    outline: none;
+}

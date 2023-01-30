@@ -1,0 +1,40 @@
+div.categories {
+    width: 1200px;
+}
+
+ul.categories {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    list-style-type: none;
+    row-gap: 40px;
+    margin-top: 15px;
+}
+
+li.categories {
+    display: block;
+    overflow: hidden;
+    border-radius: 7px;
+    position: relative;
+    width: 280px;
+    height: 300px;
+    background-size: cover;
+    transition: transform 0.2s ease-in-out;
+}
+
+li.categories:hover {
+    transform: scale(1.05);
+}
+h1.categories {
+    position: absolute;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    bottom: 10%;
+    left: 8%;
+}
+
+img.categories {
+    width: 280px;
+    height: 300px;
+}

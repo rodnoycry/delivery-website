@@ -3,9 +3,13 @@ import type { FC } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './NavBar.module.css'
 
-export const NavBar: FC = () => {
+interface Props {
+    style?: object
+}
+
+export const NavBar: FC<Props> = ({ style }) => {
     return (
-        <nav>
+        <nav style={style}>
             <Link to="/promo">
                 <button className={styles.link}>АКЦИИ</button>
             </Link>

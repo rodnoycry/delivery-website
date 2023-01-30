@@ -1,14 +1,17 @@
 import React from 'react'
 import type { FC } from 'react'
 import { Promo } from './components/Promo'
+import { Categories } from './components/Categories'
 
-export const Home: FC = () => {
+interface Props {
+    style?: object
+}
+
+export const Home: FC<Props> = ({ style }) => {
     return (
-        <div>
-            <input>
-                <img />
-            </input>
+        <div style={style}>
             <Promo />
+            <Categories style={{ marginTop: '30px' }} />
         </div>
     )
 }
