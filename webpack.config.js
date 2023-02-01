@@ -68,6 +68,8 @@ module.exports = {
             '@': path.resolve(__dirname, 'src'),
             '@fonts': path.resolve(__dirname, 'src/fonts'),
             '@images': path.resolve(__dirname, 'public/images'),
+            '@interfaces': path.resolve(__dirname, 'src/interfaces'),
+            '@redux': path.resolve(__dirname, 'src/redux'),
         },
         extensions: ['.tsx', '.ts', '.jsx', '.js'], // add .tsx, .ts
     },

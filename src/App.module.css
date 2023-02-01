@@ -43,3 +43,7 @@ div.search {
     font-weight: bold;
     font-size: 28px;
 }
+
+ul {
+    list-style-type: none;
+}

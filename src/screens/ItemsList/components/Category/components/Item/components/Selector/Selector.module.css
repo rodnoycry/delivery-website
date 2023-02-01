@@ -1,0 +1,8 @@
+ul.selector {
+    background-color: white;
+    color: black;
+}
+
+li.selector {
+    cursor: pointer;
+}

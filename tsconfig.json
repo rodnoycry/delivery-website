@@ -26,7 +26,9 @@
       "paths": {
         "@/*": ["./src/*"],
         "@fonts/*": ["./src/fonts/*"],
-        "@images/*": ["./public/images/*"]
+        "@images/*": ["./public/images/*"],
+        "@interfaces/*": ["./src/interfaces/*"],
+        "@redux/*": ["./src/redux/*"],
       },
     },
     "include": ["src"]

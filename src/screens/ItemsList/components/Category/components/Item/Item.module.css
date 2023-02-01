@@ -1,0 +1,41 @@
+
+li.item {
+    margin-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    height: 450px;
+    width: 270px;
+    background-color: black;
+    border-radius: 28px;
+
+    box-shadow: none;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+li.item:hover {
+    box-shadow: 0px 0px 28px rgba(255, 255, 255, 0.25);
+}
+
+img.item {
+    width: 100%;
+    height: auto;
+    max-height: 215px;
+    border-radius: 20px;
+    margin-top: 15px;
+}
+
+h1.item {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    width: 100%;
+}
+
+p.item {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    width: 100%;
+    letter-spacing: -0.005em;
+    color: #A9A9A9;
+}

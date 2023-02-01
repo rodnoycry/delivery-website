@@ -12,8 +12,8 @@ export const itemsData = [
         name: 'Острая с курицей',
         description:
             'Курица,перец халапень, салат айсберг, помидор, перец болгарский спайс соус.',
-        hot: 0,
-        weight: false,
+        isNew: false,
+        spiciness: 0,
         price: [350, 500, 650],
     },
     {
@@ -22,8 +22,8 @@ export const itemsData = [
         image: Image1,
         name: 'Карбонара',
         description: 'Соус томатный, лук красный, бекон, яйцо куриное',
-        hot: 0,
-        weight: false,
+        isNew: true,
+        spiciness: 0,
         price: [350, 500, 650],
     },
     {
@@ -33,8 +33,8 @@ export const itemsData = [
         name: 'Деревенская',
         description:
             'Сыр моцарелла, пепперони, охотничьи колбаски, боварские сосиски, свинина, бекон, красный лук, спайс соус',
-        hot: 0,
-        weight: false,
+        isNew: false,
+        spiciness: 0,
         price: [400, 550, 700],
     },
     {
@@ -43,8 +43,8 @@ export const itemsData = [
         image: Image3,
         name: 'Салями',
         description: 'Соус томатный для пиццы, сыр моцарелла, колбаса салями',
-        hot: 0,
-        weight: false,
+        isNew: false,
+        spiciness: 0,
         price: [330, 480, 630],
     },
     {
@@ -54,8 +54,8 @@ export const itemsData = [
         name: 'Цезарь',
         description:
             'Курица, салат айсберг, сыр Моцарелла, помидоры черри, сыр Пармезан, соус цезарь, соус томатный для пиццы',
-        hot: 0,
-        weight: [390, 800, 1000],
+        isNew: false,
+        spiciness: 0,
         price: [350, 500, 650],
     },
 ]
