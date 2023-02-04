@@ -9,6 +9,21 @@ div.promo {
     cursor: pointer;
 }
 
+div.newLabel {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 33px;
+    background-color: #FF0008;
+    right: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    border-radius: 0 0 8px 8px;
+}
+
+
 img.promo {
     height: 230px;
     width: auto;

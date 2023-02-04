@@ -1,31 +1,18 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
+import { CartItem, cartSlice } from './slices/cartSlice'
+import { itemsStatesSlice, ItemState } from './slices/itemsStatesSlice'
 
-interface ItemState {
-    id: number
-    selected: number
+export interface RootState {
+    cartState: CartItem[]
+    itemsStates: Record<number, ItemState>
 }
 
-export interface State {
-    itemsStates: Record<string, ItemState>
-}
-
-const initialState: State = {
-    itemsStates: {},
-}
-
-const itemsStatesSlice = createSlice({
-    name: 'itemsStates',
-    initialState,
-    reducers: {
-        updateItemState: (state, action: PayloadAction<ItemState>) => {
-            state.itemsStates[action.payload.id] = action.payload
-        },
-    },
-})
-
+export const { addCartItem, removeCartItem } = cartSlice.actions
 export const { updateItemState } = itemsStatesSlice.actions
 
 export const store = configureStore({
-    reducer: itemsStatesSlice.reducer,
+    reducer: {
+        cartState: cartSlice.reducer,
+        itemsStates: itemsStatesSlice.reducer,
+    },
 })

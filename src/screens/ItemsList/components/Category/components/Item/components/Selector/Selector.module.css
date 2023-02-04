@@ -1,8 +1,30 @@
 ul.selector {
-    background-color: white;
     color: black;
+    display: flex;
+    justify-content: space-between;
 }
 
 li.selector {
+    display: inline-block;
+    justify-content: center;
     cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    box-shadow: none;
+    width: 75px;
+    height: 23px;
+    border-radius: 12px;
+}
+
+li.selector:hover {
+    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.25);
+}
+
+span.selector {
+    display: flex;
+    justify-content: center;
+    margin-top: 2px;
+
+    color: black;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
 }

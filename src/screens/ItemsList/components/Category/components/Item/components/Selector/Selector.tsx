@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import type { FC } from 'react'
+import { useDispatch } from 'react-redux'
 import { updateItemState } from '@/redux/store'
 import styles from './Selector.module.css'
 
 interface Props {
     type: string
     itemId: number
+    setItemSelected: (selected: number) => void
     selected?: number | false
+    style?: object
 }
 
 const selectorsData = {
@@ -40,12 +43,20 @@ const selectorsData = {
     ],
 }
 
-export const Selector: FC<Props> = ({ type, selected: selected_, itemId }) => {
-    const defaultSelected = selected_ ?? 1
+export const Selector: FC<Props> = ({
+    type,
+    selected: selected_,
+    itemId,
+    setItemSelected,
+    style,
+}) => {
+    const defaultSelected = selected_ !== false ? selected_ : 1
+    const dispatch = useDispatch()
     const [selected, setSelected] = useState(defaultSelected)
     const onSelectedChange = (itemId: number, selectorId: number): void => {
         setSelected(selectorId)
-        updateItemState({ id: itemId, selected: selectorId })
+        setItemSelected(selectorId)
+        dispatch(updateItemState({ id: itemId, selected: selectorId }))
     }
     if (type !== 'pizza' && type !== 'wok') {
         return null
@@ -59,6 +70,7 @@ export const Selector: FC<Props> = ({ type, selected: selected_, itemId }) => {
                         key={selectorId}
                         className={styles.selector}
                         style={{
+                            ...style,
                             backgroundColor:
                                 selected === selectorId ? 'white' : 'grey',
                         }}
@@ -66,7 +78,7 @@ export const Selector: FC<Props> = ({ type, selected: selected_, itemId }) => {
                             onSelectedChange(itemId, selectorId)
                         }}
                     >
-                        {title}
+                        <span className={styles.selector}>{title}</span>
                     </li>
                 )
             })}

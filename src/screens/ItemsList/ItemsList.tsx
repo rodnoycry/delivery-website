@@ -1,7 +1,7 @@
 import React from 'react'
 import type { FC } from 'react'
 import styles from './ItemsList.module.css'
-import { itemsData as pizzaData } from './mockData/pizza'
+import { itemsData as pizzaData } from '@mockData/items/pizza'
 import { Category } from './components/Category'
 
 interface Props {

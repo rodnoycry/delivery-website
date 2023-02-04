@@ -1,0 +1,31 @@
+button.button {
+    width: 140px;
+    height: 33px;
+    border-radius: 12px;
+    color: #fafafa;
+    background-color: #FF000A;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button.button:hover {
+    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.25);
+}
+
+button.button:active {
+    background-color: #B60007;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.73);
+}
+
+img.button {
+    width: 19px;
+    height: auto;
+    margin-right: 10px;
+}
+
+span.button {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+}

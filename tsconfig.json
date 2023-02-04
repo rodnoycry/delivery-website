@@ -29,6 +29,7 @@
         "@images/*": ["./public/images/*"],
         "@interfaces/*": ["./src/interfaces/*"],
         "@redux/*": ["./src/redux/*"],
+        "@mockData/*": ["./src/mockData/*"],
       },
     },
     "include": ["src"]

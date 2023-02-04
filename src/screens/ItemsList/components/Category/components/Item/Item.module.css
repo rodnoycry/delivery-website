@@ -1,5 +1,6 @@
-
 li.item {
+    position: relative;
+
     margin-top: 20px;
     padding-left: 15px;
     padding-right: 15px;
@@ -17,6 +18,20 @@ li.item:hover {
     box-shadow: 0px 0px 28px rgba(255, 255, 255, 0.25);
 }
 
+div.newLabel {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 33px;
+    background-color: #FF0008;
+    right: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    border-radius: 0 0 8px 8px;
+}
+
 img.item {
     width: 100%;
     height: auto;
@@ -30,6 +45,7 @@ h1.item {
     font-size: 24px;
     font-weight: bold;
     width: 100%;
+    margin-top: 13px;
 }
 
 p.item {
@@ -38,4 +54,21 @@ p.item {
     width: 100%;
     letter-spacing: -0.005em;
     color: #A9A9A9;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+div.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+span.item {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    letter-spacing: 0.05em;
 }

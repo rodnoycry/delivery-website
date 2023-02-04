@@ -3,7 +3,13 @@
     "editor.formatOnSave": true,
     "eslint.alwaysShowStatus": true,
     "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+        "source.fixAll.eslint": true
     },
-    "jest.jestCommandLine": "npm run jest --"
+    "jest.jestCommandLine": "npm run jest --",
+    "[jsonc]": {
+        "editor.defaultFormatter": "HookyQR.beautify"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "HookyQR.beautify"
+    }
 }

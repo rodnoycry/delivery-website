@@ -21,6 +21,13 @@ export const App: FC = () => {
             <Router>
                 <div className={styles.main}>
                     <Header />
+                    <hr
+                        style={{
+                            width: '1200px',
+                            border: '1px solid #313131',
+                            marginTop: '90px',
+                        }}
+                    />
                     <HomeCarousel />
                     <NavBar style={{ marginTop: '10px' }} />
                     <div

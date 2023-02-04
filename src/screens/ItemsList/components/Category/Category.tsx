@@ -2,7 +2,7 @@ import React from 'react'
 import type { FC } from 'react'
 import styles from './Category.module.css'
 import { useSelector } from 'react-redux'
-import { State as ReduxState } from '@/redux/store'
+import { RootState as StoreState } from '@/redux/store'
 import { Item } from './components/Item'
 
 interface ItemData {
@@ -23,10 +23,9 @@ interface Props {
 }
 
 export const Category: FC<Props> = ({ title, itemsData, style }) => {
-    const itemsStates = useSelector((state: ReduxState) => state.itemsStates)
-    console.log(itemsStates)
+    const itemsStates = useSelector((state: StoreState) => state.itemsStates)
     return (
-        <div className={styles.category}>
+        <div className={styles.category} style={style}>
             <h1 className={styles.category}>{title}</h1>
             <ul className={styles.category}>
                 {itemsData.map((itemData) => {
@@ -34,7 +33,6 @@ export const Category: FC<Props> = ({ title, itemsData, style }) => {
                         itemData.id in itemsStates
                             ? itemsStates[itemData.id].selected
                             : false
-                    console.log(`>Category >selected = ${selected.toString()}`)
                     return (
                         <>
                             <Item

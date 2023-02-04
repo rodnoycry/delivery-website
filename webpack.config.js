@@ -70,6 +70,7 @@ module.exports = {
             '@images': path.resolve(__dirname, 'public/images'),
             '@interfaces': path.resolve(__dirname, 'src/interfaces'),
             '@redux': path.resolve(__dirname, 'src/redux'),
+            '@mockData': path.resolve(__dirname, 'src/mockData'),
         },
         extensions: ['.tsx', '.ts', '.jsx', '.js'], // add .tsx, .ts
     },

@@ -40,6 +40,7 @@ export const PromoItem: FC<Props> = ({
                     setIsHovered(false)
                 }}
             >
+                {isNew ? <div className={styles.newLabel}>New</div> : null}
                 <img
                     className={`${styles.promo as string} ${
                         styles.selector as string
@@ -50,7 +51,6 @@ export const PromoItem: FC<Props> = ({
                     className={styles.promoTip}
                     style={{
                         top: isHovered ? '0' : '100%',
-                        // top: '0',
                     }}
                 >
                     <div className={styles.descriptionContainer}>

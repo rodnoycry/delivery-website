@@ -1,17 +1,18 @@
-import Image0 from './images/pizza/pizza-0.jpg'
-import Image1 from './images/pizza/pizza-1.jpg'
-import Image2 from './images/pizza/pizza-2.jpg'
-import Image3 from './images/pizza/pizza-3.jpg'
-import Image4 from './images/pizza/pizza-4.jpg'
+import { ItemData } from '../interfaces'
+import Image0 from '@mockData/items/pizza/images/pizza-0.jpg'
+import Image1 from '@mockData/items/pizza/images/pizza-1.jpg'
+import Image2 from '@mockData/items/pizza/images/pizza-2.jpg'
+import Image3 from '@mockData/items/pizza/images/pizza-3.jpg'
+import Image4 from '@mockData/items/pizza/images/pizza-4.jpg'
 
-export const itemsData = [
+export const itemsData: ItemData[] = [
     {
         id: 0,
         type: 'pizza',
         image: Image0,
         name: 'Острая с курицей',
         description:
-            'Курица,перец халапень, салат айсберг, помидор, перец болгарский спайс соус.',
+            'Курица, перец халапень, салат айсберг, помидор, перец болгарский спайс соус.',
         isNew: false,
         spiciness: 0,
         price: [350, 500, 650],

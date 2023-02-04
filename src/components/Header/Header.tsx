@@ -1,17 +1,14 @@
 import React from 'react'
 import type { FC } from 'react'
 import { Link } from 'react-router-dom'
+import { CartButton } from './components/CartButton'
 import styles from './Header.module.css'
 import LogoImg from './images/Logo.png'
 import PhoneImg from './images/Phone.png'
 import DeliveryImg from './images/Delivery.png'
 import LoginImg from './images/Login.png'
-import CartImg from './images/Cart.png'
 
-export const Header: FC = (props) => {
-    const itemsQty = 14
-    const sum = 200
-
+export const Header: FC = () => {
     return (
         <header>
             <div className={styles.headerBlocks}>
@@ -44,18 +41,8 @@ export const Header: FC = (props) => {
                     <img className={styles.login} src={LoginImg} />
                     <p className={styles.login}>{`Войти`}</p>
                 </button>
-                <button className={styles.cart}>
-                    <div className={styles.cartCounter}>
-                        <img className={styles.cart} src={CartImg} />
-                        <span className={styles.cartCounter}>{itemsQty}</span>
-                    </div>
-                    <p className={styles.cart}>
-                        <span>{sum}</span>
-                        {` руб.`}
-                    </p>
-                </button>
+                <CartButton />
             </div>
-            <hr style={{ border: '1px solid #313131' }} />
         </header>
     )
 }

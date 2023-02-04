@@ -10,6 +10,10 @@ import Image0 from '@images/carousel/00.png'
 import Image1 from '@images/carousel/01.jpg'
 import Image2 from '@images/carousel/02.jpg'
 
+interface Props {
+    style?: object
+}
+
 const indicators = (): JSX.Element => <div className="indicator" />
 const properties = {
     prevArrow: (
@@ -26,10 +30,10 @@ const properties = {
     ),
 }
 
-export const HomeCarousel: FC = () => {
+export const HomeCarousel: FC<Props> = ({ style }) => {
     const images = [Image0, Image1, Image2]
     return (
-        <div className={styles.carouselContainer}>
+        <div className={styles.carouselContainer} style={style}>
             <Slide
                 indicators={indicators}
                 canSwipe={false}
