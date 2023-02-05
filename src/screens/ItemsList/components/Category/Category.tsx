@@ -3,18 +3,8 @@ import type { FC } from 'react'
 import styles from './Category.module.css'
 import { useSelector } from 'react-redux'
 import { RootState as StoreState } from '@/redux/store'
+import { ItemData } from '@/mockData/items/interfaces'
 import { Item } from './components/Item'
-
-interface ItemData {
-    id: number
-    type: string
-    image: string
-    name: string
-    description: string
-    isNew: boolean
-    spiciness: number
-    price: number | number[]
-}
 
 interface Props {
     title: string

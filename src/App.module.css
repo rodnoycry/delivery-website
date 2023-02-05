@@ -32,12 +32,6 @@ html {
     color: #fff;
 }
 
-div.search {
-    width: 1200px;
-    display: flex;
-    justify-content: start;
-}
-
 :global h1.category {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;

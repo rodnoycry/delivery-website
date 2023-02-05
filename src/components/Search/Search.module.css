@@ -1,4 +1,8 @@
-
+div.searchContainer {
+    width: 1200px;
+    display: flex;
+    justify-content: start;
+}
 
 div.search {
     display: flex;
@@ -12,6 +16,7 @@ div.search {
 img.search {
     width: 20px;
     height: auto;
+    cursor: pointer;
 }
 
 input.search {

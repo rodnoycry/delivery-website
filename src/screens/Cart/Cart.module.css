@@ -1,0 +1,22 @@
+div.cart {
+    width: 1200px;
+}
+
+div.firstLine {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+h1.label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+h3.linkToHome {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    text-decoration-line: underline;
+    padding-top: 5px;
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
+import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState as StoreState } from '@/redux/store'
 import CartImg from './images/Cart.png'
@@ -19,20 +20,21 @@ export const CartButton: FC = () => {
     }, [cart])
 
     const updateSumAndQty = (): void => {
-        console.log(cart)
         setItemsQty(cart?.length)
         setSum(cart ? getSum(cart) : 0)
     }
     return (
-        <button className={styles.cart} onClick={updateSumAndQty}>
-            <div className={styles.cartCounter}>
-                <img className={styles.cart} src={CartImg} />
-                <span className={styles.cartCounter}>{itemsQty}</span>
-            </div>
-            <p className={styles.cart}>
-                <span>{sum}</span>
-                {` руб.`}
-            </p>
-        </button>
+        <Link to="/cart">
+            <button className={styles.cart} onClick={updateSumAndQty}>
+                <div className={styles.cartCounter}>
+                    <img className={styles.cart} src={CartImg} />
+                    <span className={styles.cartCounter}>{itemsQty}</span>
+                </div>
+                <p className={styles.cart}>
+                    <span>{sum}</span>
+                    {` руб.`}
+                </p>
+            </button>
+        </Link>
     )
 }

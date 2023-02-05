@@ -8,23 +8,11 @@ import {
 } from '@/redux/store'
 import { getPrice, getQty } from './functions'
 import styles from './Item.module.css'
+import { ItemData } from '@/mockData/items/interfaces'
 import { Selector } from './components/Selector'
 import { Button } from './components/Button'
 import { Counter } from './components/Counter'
 import { CartItem } from '@/redux/slices/cartSlice'
-
-interface ItemData {
-    id: number
-    type: string
-    image: string
-    name: string
-    description: string
-    isNew: boolean
-    spiciness: number
-    price: number | number[]
-
-    selected: number | false
-}
 
 interface Props extends ItemData {}
 
@@ -36,19 +24,20 @@ export const Item: FC<Props> = ({
     description,
     isNew,
     spiciness,
+    qty: innerQty,
     price,
     selected: selected_,
 }) => {
-    selected_ = selected_ !== false ? selected_ : 1
+    selected_ = selected_ !== false && selected_ !== undefined ? selected_ : 1
     const [selected, setSelected] = useState(selected_)
     const defaultCart: CartItem[] = []
     const cart =
         useSelector((state: StoreState) => state.cartState) || defaultCart
     const [qty, setQty] = useState(getQty(cart, id, selected))
+    const dispatch = useDispatch()
     useEffect(() => {
         setQty(getQty(cart, id, selected))
-    }, [selected])
-    const dispatch = useDispatch()
+    }, [selected, cart])
 
     // Methods for buttons to add or remove item
     const addItem = (): void => {
@@ -89,6 +78,9 @@ export const Item: FC<Props> = ({
                 setItemSelected={setSelected}
                 style={{ marginTop: '7px' }}
             />
+            <span className={styles.itemQty}>
+                {innerQty ? `${innerQty} шт.` : `\u00a0`}
+            </span>
             <div className={styles.item}>
                 <span className={styles.item}>
                     {getPrice(type, price, selected)}₽

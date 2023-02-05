@@ -30,6 +30,7 @@ div.newLabel {
     font-family: 'Roboto', sans-serif;
     font-weight: bold;
     border-radius: 0 0 8px 8px;
+    cursor: default;
 }
 
 img.item {
@@ -46,6 +47,7 @@ h1.item {
     font-weight: bold;
     width: 100%;
     margin-top: 13px;
+    cursor: default;
 }
 
 p.item {
@@ -56,13 +58,19 @@ p.item {
     color: #A9A9A9;
     margin-top: 5px;
     overflow: hidden;
+    cursor: default;
+}
+
+span.itemQty {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    height: 20px;
 }
 
 div.item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 15px;
 }
 
 span.item {
@@ -71,4 +79,5 @@ span.item {
     font-weight: bold;
     font-size: 24px;
     letter-spacing: 0.05em;
+    cursor: default;
 }

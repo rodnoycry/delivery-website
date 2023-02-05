@@ -1,42 +1,37 @@
 import React from 'react'
 import type { FC } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import styles from './NavBar.module.css'
+import { linksObject } from './links'
 
 interface Props {
     style?: object
 }
 
 export const NavBar: FC<Props> = ({ style }) => {
+    const location = useLocation()
+    const currentPath = location.pathname
     return (
         <nav style={style}>
-            <Link to="/promo">
-                <button className={styles.link}>АКЦИИ</button>
-            </Link>
-            <Link to="/sets">
-                <button className={styles.link}>СЕТЫ</button>
-            </Link>
-            <Link to="/pizza">
-                <button className={styles.link}>ПИЦЦА</button>
-            </Link>
-            <Link to="/cold-rolls">
-                <button className={styles.link}>ХОЛОДНЫЕ РОЛЛЫ</button>
-            </Link>
-            <Link to="/hot-rolls">
-                <button className={styles.link}>ГОРЯЧИЕ РОЛЛЫ</button>
-            </Link>
-            <Link to="/wok">
-                <button className={styles.link}>WOK</button>
-            </Link>
-            <Link to="/meals">
-                <button className={styles.link}>ГОРЯЧЕЕ</button>
-            </Link>
-            <Link to="/burgers">
-                <button className={styles.link}>БУРГЕРЫ</button>
-            </Link>
-            <Link to="/extra">
-                <button className={styles.link}>НАПИТКИ/ДОПЫ</button>
-            </Link>
+            {Object.entries(linksObject).map(([link, label]): JSX.Element => {
+                return (
+                    <Link to={link} key={link}>
+                        <button
+                            className={styles.link}
+                            style={
+                                currentPath === link
+                                    ? {
+                                          backgroundColor: '#FAFAFA',
+                                          color: '#000',
+                                      }
+                                    : {}
+                            }
+                        >
+                            {label}
+                        </button>
+                    </Link>
+                )
+            })}
         </nav>
     )
 }

@@ -9,5 +9,5 @@ ul.category {
     display: flex;
     flex-wrap: wrap;
     row-gap: 20px;
-    justify-content: space-between;
+    column-gap: 40px;
 }

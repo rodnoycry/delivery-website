@@ -5,6 +5,8 @@ export interface ItemData {
     name: string
     description: string
     isNew: boolean
-    spiciness: number
+    spiciness?: number
+    qty?: number
     price: number[] | number
+    selected?: number | false
 }

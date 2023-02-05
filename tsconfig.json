@@ -1,36 +1,36 @@
 {
-    "compilerOptions": {
-      "target": "ESNext",
-      "module": "umd",
-      "lib": [
-        "ESNext",
-        "dom"
-      ],
-      "jsx": "react",
-      "noEmit": true,    
-      "sourceMap": true,
-      /* Strict Type-Checking Options */
-      "strict": true,
-      "noImplicitAny": true,
-      "strictNullChecks": true,
-     
-      /* Module Resolution Options */
-      "moduleResolution": "node",
-      "forceConsistentCasingInFileNames": true,
-      "esModuleInterop": true,
-      "plugins": [
-        {
-          "name": "typescript-plugin-css-modules"
-        }
-      ],
-      "paths": {
-        "@/*": ["./src/*"],
-        "@fonts/*": ["./src/fonts/*"],
-        "@images/*": ["./public/images/*"],
-        "@interfaces/*": ["./src/interfaces/*"],
-        "@redux/*": ["./src/redux/*"],
-        "@mockData/*": ["./src/mockData/*"],
-      },
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "umd",
+    "lib": [
+      "ESNext",
+      "dom"
+    ],
+    "jsx": "react",
+    "noEmit": true,
+    "sourceMap": true,
+    /* Strict Type-Checking Options */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+
+    /* Module Resolution Options */
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "plugins": [{
+      "name": "typescript-plugin-css-modules"
+    }],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@fonts/*": ["./src/fonts/*"],
+      "@images/*": ["./public/images/*"],
+      "@interfaces/*": ["./src/interfaces/*"],
+      "@redux/*": ["./src/redux/*"],
+      "@mockData/*": ["./src/mockData/*"],
+      "@shared/*": ["./src/components/shared/*"],
+      "@config/*": ["./src/config/*"],
     },
-    "include": ["src"]
-  }
+  },
+  "include": ["src"]
+}

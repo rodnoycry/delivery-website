@@ -2,45 +2,15 @@ import React, { useState } from 'react'
 import type { FC } from 'react'
 import { useDispatch } from 'react-redux'
 import { updateItemState } from '@/redux/store'
+import { selectorsData } from '@/config'
 import styles from './Selector.module.css'
 
-interface Props {
+export interface Props {
     type: string
     itemId: number
     setItemSelected: (selected: number) => void
     selected?: number | false
     style?: object
-}
-
-const selectorsData = {
-    pizza: [
-        {
-            id: 0,
-            title: '25 см',
-        },
-        {
-            id: 1,
-            title: '33 см',
-        },
-        {
-            id: 2,
-            title: '40 см',
-        },
-    ],
-    wok: [
-        {
-            id: 0,
-            title: '25 см',
-        },
-        {
-            id: 1,
-            title: '33 см',
-        },
-        {
-            id: 2,
-            title: '40 см',
-        },
-    ],
 }
 
 export const Selector: FC<Props> = ({

@@ -71,6 +71,8 @@ module.exports = {
             '@interfaces': path.resolve(__dirname, 'src/interfaces'),
             '@redux': path.resolve(__dirname, 'src/redux'),
             '@mockData': path.resolve(__dirname, 'src/mockData'),
+            '@shared': path.resolve(__dirname, 'src/components/shared'),
+            '@config': path.resolve(__dirname, 'src/config'),
         },
         extensions: ['.tsx', '.ts', '.jsx', '.js'], // add .tsx, .ts
     },

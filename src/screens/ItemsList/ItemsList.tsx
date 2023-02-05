@@ -1,7 +1,7 @@
 import React from 'react'
 import type { FC } from 'react'
 import styles from './ItemsList.module.css'
-import { itemsData as pizzaData } from '@mockData/items/pizza'
+import { itemsPathsRenderData } from '@/config'
 import { Category } from './components/Category'
 
 interface Props {
@@ -9,18 +9,12 @@ interface Props {
     style?: object
 }
 
-const pathData = {
-    '/pizza': {
-        title: 'Пицца',
-        data: pizzaData,
-    },
-}
-
 export const ItemsList: FC<Props> = ({ path, style }) => {
     let categoriesData
     const isSearch = path.startsWith('/search')
     if (!isSearch) {
-        const { title, data } = pathData[path as keyof typeof pathData]
+        const { title, data } =
+            itemsPathsRenderData[path as keyof typeof itemsPathsRenderData]
         categoriesData = [{ [title]: data }]
     } else {
         categoriesData = [{}]

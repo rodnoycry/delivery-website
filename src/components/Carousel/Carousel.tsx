@@ -1,5 +1,6 @@
 import React from 'react'
 import type { FC } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Slide } from 'react-slideshow-image'
 import 'react-slideshow-image/dist/styles.css'
 import styles from './Carousel.module.css'
@@ -11,6 +12,7 @@ import Image1 from '@images/carousel/01.jpg'
 import Image2 from '@images/carousel/02.jpg'
 
 interface Props {
+    appearancePaths: string[]
     style?: object
 }
 
@@ -30,10 +32,19 @@ const properties = {
     ),
 }
 
-export const HomeCarousel: FC<Props> = ({ style }) => {
+export const HomeCarousel: FC<Props> = ({ appearancePaths, style }) => {
+    const location = useLocation()
+    const currentPath = location.pathname
+    const appearanceStyle =
+        appearancePaths.includes(currentPath) || currentPath === '/'
+            ? {}
+            : { display: 'none' }
     const images = [Image0, Image1, Image2]
     return (
-        <div className={styles.carouselContainer} style={style}>
+        <div
+            className={styles.carouselContainer}
+            style={{ ...style, ...appearanceStyle }}
+        >
             <Slide
                 indicators={indicators}
                 canSwipe={false}
