@@ -6,19 +6,20 @@ import { TableItem } from './components/TableItem'
 
 interface Props {
     cartItemsData: CartItemData[]
-    tableSize: [string, string, string, string]
 }
 
-export const CartTable: FC<Props> = ({ cartItemsData, tableSize }) => {
+export const CartTable: FC<Props> = ({ cartItemsData }) => {
     return (
         <div className={styles.cartTable}>
             <div className={styles.tableHeader}>
-                <h4 style={{ marginLeft: tableSize[0] }}>Название</h4>
-                <h4 style={{ marginLeft: tableSize[1] }}>Цена</h4>
-                <h4 style={{ marginLeft: tableSize[2] }}>Количество</h4>
-                <h4 style={{ marginLeft: tableSize[3] }}>Сумма</h4>
+                <h4 style={{ marginLeft: '10%' }}>Название</h4>
+                <div style={{ marginRight: '20%' }} className={styles.headers2}>
+                    <h4 style={{ marginRight: 65 }}>Цена</h4>
+                    <h4 style={{ marginRight: 65 }}>Количество</h4>
+                    <h4>Сумма</h4>
+                </div>
             </div>
-            <ul>
+            <ul className={styles.items}>
                 {cartItemsData.map((itemData) => {
                     return (
                         <TableItem

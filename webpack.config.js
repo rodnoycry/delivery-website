@@ -73,6 +73,7 @@ module.exports = {
             '@mockData': path.resolve(__dirname, 'src/mockData'),
             '@shared': path.resolve(__dirname, 'src/components/shared'),
             '@config': path.resolve(__dirname, 'src/config'),
+            '@functions': path.resolve(__dirname, 'src/functions'),
         },
         extensions: ['.tsx', '.ts', '.jsx', '.js'], // add .tsx, .ts
     },

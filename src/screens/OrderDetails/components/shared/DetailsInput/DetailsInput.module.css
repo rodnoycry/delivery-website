@@ -1,0 +1,30 @@
+/* Inputs styling */
+div.input {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+}
+
+input.input {
+    width: 450px;
+    height: 50px;
+    background: #000000;
+    border: 2px solid #3D3D3D;
+    border-radius: 9px;
+
+    color: #fafafa;
+    font-size: 22px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+h1.input {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+h4.input {
+    font-size: 16px;
+    margin-top: 5px;
+    color: #767676
+}

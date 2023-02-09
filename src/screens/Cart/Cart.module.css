@@ -1,5 +1,6 @@
 div.cart {
     width: 1200px;
+    margin-bottom: 200px;
 }
 
 div.firstLine {
@@ -19,4 +20,41 @@ h3.linkToHome {
     font-size: 18px;
     text-decoration-line: underline;
     padding-top: 5px;
+}
+
+/* Submit button */
+div.button {
+    margin-top: 40px;
+    display: flex;
+    justify-content: end;
+}
+
+button.button {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+
+    width: 525px;
+    height: 60px;
+
+    background: #FF000A;
+    border-radius: 12px;
+}
+
+button.button:disabled {
+    cursor: default;
+    background-color: #af2b2f;
+    opacity: 0.5;
+}
+
+h4.error {
+    display: flex;
+    width: 525px;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    margin-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #FF000A
 }

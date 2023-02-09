@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { RootState as StoreState } from '@/redux/store'
 import CartImg from './images/Cart.png'
 import styles from './CartButton.module.css'
-import { getSum } from './functions'
+import { getSum } from '@/functions'
 
 export const CartButton: FC = () => {
     const [itemsQty, setItemsQty] = useState(0)

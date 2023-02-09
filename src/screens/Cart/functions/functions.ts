@@ -2,6 +2,10 @@ import { CartItemData } from '../interfaces'
 import { ItemData } from '@/redux/slices/itemsDataSlice'
 import { CartItem } from '@/redux/slices/cartSlice'
 
+import { zoneDeliveryInfo } from '@/config'
+import { Order } from '@/redux/slices/orderSlice'
+import { getSum } from '@/functions'
+
 export const getCartItemsData = (
     itemsData: ItemData[],
     cart: CartItem[]
@@ -32,4 +36,24 @@ export const getCartItemsData = (
         }
     })
     return cartItemsData
+}
+
+export const getSumWithDelivery = (
+    zone: Order['zone'],
+    cart: CartItem[]
+): number | false => {
+    const pureSum = getSum(cart)
+    let sum = pureSum
+    const minSum = zoneDeliveryInfo[zone].minSum
+    const deliveryPrice = zoneDeliveryInfo[zone].deliveryPrice
+    const freeDeliverySum = zoneDeliveryInfo[zone].freeDelivery
+
+    if (pureSum < minSum) {
+        return false
+    }
+
+    if (pureSum < freeDeliverySum) {
+        sum += deliveryPrice
+    }
+    return sum
 }

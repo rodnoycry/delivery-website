@@ -24,6 +24,27 @@ export const topItemsAppearancePaths = [
     '/extra',
 ]
 
+export const zoneDeliveryInfo = {
+    Талдом: {
+        minSum: 500,
+        deliveryPrice: 100,
+        freeDelivery: 500,
+        approximateTime: '45',
+    },
+    'Северный/Юркино': {
+        minSum: 700,
+        deliveryPrice: 150,
+        freeDelivery: 1000,
+        approximateTime: '45-60',
+    },
+    'До 15 км': {
+        minSum: 1000,
+        deliveryPrice: 200,
+        freeDelivery: 1500,
+        approximateTime: '60-75',
+    },
+}
+
 export const selectorsData = {
     pizza: [
         {

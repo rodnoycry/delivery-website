@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import { CartItemData } from '../../../../interfaces'
 import styles from './TableItem.module.css'
 import { useDispatch } from 'react-redux'
-import { addCartItem, removeCartItem } from '@/redux/store'
+import { addCartItem, removeCartItem, deleteCartItem } from '@/redux/store'
 import { getSecondaryLabel, getPrice } from './functions/functions'
 import { Counter } from '@/components/shared/Counter'
 import XImage from './images/X.png'
@@ -29,21 +29,39 @@ export const TableItem: FC<CartItemData> = ({
     }
     return (
         <li className={styles.item}>
-            <div className={styles.imageContainer}>
-                <img className={styles.item} src={image} />
+            <div className={styles.leftElements}>
+                <div
+                    className={styles.imageContainer}
+                    style={{ width: 1200 * 0.1 }}
+                >
+                    <div className={styles.image}>
+                        <img className={styles.item} src={image} />
+                    </div>
+                </div>
+                <div className={styles.textContainer}>
+                    <h1 className={styles.name}>{name}</h1>
+                    <h4 className={styles.secondaryLabel}>
+                        {getSecondaryLabel(type, selected, qty)}
+                    </h4>
+                </div>
             </div>
-            <div className={styles.textContainer}>
-                <h1>{name}</h1>
-                <h4>{getSecondaryLabel(type, selected, qty)}</h4>
-            </div>
+            <h3 className={styles.price}>{price} ₽</h3>
             <Counter
                 qty={qtyInCart}
                 addItem={addItem}
                 removeItem={removeItem}
+                style={{
+                    position: 'absolute',
+                    right: '24.5%',
+                    transform: 'translateX(-50%)',
+                }}
             />
-            <h3>{price}₽</h3>
-            <h2>{price * qtyInCart}₽</h2>
-            <img src={XImage} />
+            <h2 className={styles.sum}>{price * qtyInCart} ₽</h2>
+            <img
+                className={styles.x}
+                src={XImage}
+                onClick={() => dispatch(deleteCartItem({ id, selected }))}
+            />
         </li>
     )
 }

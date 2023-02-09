@@ -5,7 +5,10 @@ import { useDispatch } from 'react-redux'
 import { useCookies } from 'react-cookie'
 
 import './reset.module.css'
-import { setCart as setReduxCart } from '@redux/store'
+import {
+    setCart as setReduxCart,
+    updateOrder as updateReduxOrder,
+} from '@redux/store'
 import styles from './App.module.css'
 import { topItemsAppearancePaths } from './config'
 
@@ -16,17 +19,22 @@ import { Search } from './components/Search'
 import { Home } from './screens/Home'
 import { ItemsList } from './screens/ItemsList'
 
-import { Footer } from './components/Footer'
 import { Cart } from './screens/Cart'
+import { OrderDetails } from './screens/OrderDetails'
+
+import { Footer } from './components/Footer'
 
 export const App: FC = () => {
-    const [cookies, setCart] = useCookies(['cart'])
+    const [cookies, setCart] = useCookies(['cart', 'order'])
     const dispatch = useDispatch()
     useEffect(() => {
         if (cookies.cart !== undefined) {
             dispatch(setReduxCart(cookies.cart))
         }
-    }, [])
+        if (cookies.order !== undefined) {
+            dispatch(updateReduxOrder(cookies.order))
+        }
+    }, [cookies])
     return (
         <Router>
             <div className={styles.main}>
@@ -75,6 +83,10 @@ export const App: FC = () => {
 
                     <Route exact path="/cart">
                         <Cart />
+                    </Route>
+
+                    <Route exact path="/order-details">
+                        <OrderDetails />
                     </Route>
                 </Switch>
             </div>

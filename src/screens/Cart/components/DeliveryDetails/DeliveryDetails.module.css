@@ -1,0 +1,47 @@
+div.details {
+    margin-top: 40px;
+}
+
+/* Info about zone delivery */
+div.zone {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1.zone {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+h4.zone {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: opacity 0.2s ease-in-out;
+}
+
+div.zoneInfo {
+    width: 15%;
+    text-align: center;
+    align-items: center;
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 50px;
+    border-radius: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+h2.zoneInfo {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+h3.zoneInfo {
+    font-size: 16px;
+    font-weight: 400;
+    color: #c0c0c0;
+    margin-top: 5px;
+    line-height: 146.34%;
+}

@@ -1,0 +1,11 @@
+.selector {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+div.dropdown {
+    width: 400px;
+    cursor: pointer;
+}

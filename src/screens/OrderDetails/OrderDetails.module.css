@@ -1,0 +1,56 @@
+div.orderDetails {
+    width: 1200px;
+    font-family: 'Montserrat', sans-serif;
+    margin-top: 30px;
+}
+
+/* Header */
+div.head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-top: 5px;
+}
+
+h1.head {
+    font-size: 28px;
+    font-weight: 800;
+}
+
+h4.head {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+h3.head {
+    font-size: 18px;
+    text-decoration: underline;
+}
+
+div.inputsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 30px;
+    margin-top: 30px;
+}
+
+button.submitButton {
+    font-size: 20px;
+    font-weight: bold;
+
+    width: 385px;
+    height: 60px;
+
+    background: #FF000A;
+    border-radius: 12px;
+
+    padding-bottom: 8px;
+    margin-top: 36px;
+}
+
+button.submitButton:disabled {
+    cursor: default;
+    background-color: #af2b2f;
+    opacity: 0.5;
+}

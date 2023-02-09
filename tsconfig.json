@@ -30,6 +30,7 @@
       "@mockData/*": ["./src/mockData/*"],
       "@shared/*": ["./src/components/shared/*"],
       "@config/*": ["./src/config/*"],
+      "@functions/*": ["./src/functions/*"],
     },
   },
   "include": ["src"]
