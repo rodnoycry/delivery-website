@@ -5,6 +5,7 @@ import { RootState as StoreState, updateOrder } from '@/redux/store'
 import { Order, InputState } from '@/redux/slices/orderSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { checkErrors } from './functions'
+import { getSumWithDelivery } from '@/functions'
 import styles from './OrderDetails.module.css'
 
 import { PhoneInput } from './components/1.PhoneInput/PhoneInput'
@@ -18,6 +19,10 @@ import { IntercomInput } from './components/8.IntercomInput/IntercomInput'
 
 import { PersonQtySelect } from './components/9.PersonQtySelect/PersonQtySelect'
 import { TimeSelect } from './components/10.TimeSelect/TimeSelect'
+import { DaySelect } from './components/11.DaySelect/DaySelect'
+import { TimeInput } from './components/12.TimeInput/TimeInput'
+import { PaymentSelect } from './components/13.PaymentSelect/PaymentSelect'
+import { CommentInput } from './components/14.CommentInput/CommentInput'
 
 interface Props {
     style?: CSSProperties
@@ -32,10 +37,17 @@ export const OrderDetails: FC<Props> = ({ style }) => {
         'NameInput',
     ])
     const [hasError, setHasError] = useState<boolean>(false)
+    const [sum, setSum] = useState<number>(0)
     // Store Input States - states of inputs that retrieved from the Redux Store
     const storeInputStates = useSelector(
         (state: StoreState) => state.orderState
     )
+    const cart = useSelector((state: StoreState) => state.cartState)
+    useEffect(() => {
+        if (cart !== undefined && storeInputStates !== undefined) {
+            setSum(getSumWithDelivery(storeInputStates.zone, cart) || 0)
+        }
+    }, [cart, storeInputStates])
     const dispatch = useDispatch()
     // When Redux input states has changed - we update our local input states
     useEffect(() => {
@@ -156,19 +168,81 @@ export const OrderDetails: FC<Props> = ({ style }) => {
                             : 'Время самовывоза'
                     }
                 />
+                <DaySelect
+                    inputState={inputStates?.DaySelect}
+                    setInputState={setInputState}
+                    isVisible={
+                        inputStates?.TimeSelect?.selected?.label ===
+                        'Ко времени'
+                    }
+                />
+                <TimeInput
+                    inputState={inputStates?.TimeInput}
+                    setInputState={setInputState}
+                    isVisible={
+                        inputStates?.TimeSelect?.selected?.label ===
+                        'Ко времени'
+                    }
+                />
+                <PaymentSelect
+                    inputState={inputStates?.PaymentSelect}
+                    setInputState={setInputState}
+                    isVisible={
+                        inputStates?.DeliveryTypeSelect?.selected?.label ===
+                        'На указанный адрес'
+                    }
+                />
+                <CommentInput
+                    inputState={inputStates?.CommentInput}
+                    setInputState={setInputState}
+                />
             </div>
-            <Link
-                to="/order-details"
-                onClick={() => {
-                    setHasError(checkErrors(inputStates, requiredInputs))
-                }}
-            >
-                <button className={styles.submitButton} disabled={hasError}>
-                    <p className={styles.submitButton}>
-                        Оформить заказ {`\u00a0`}✅
-                    </p>
-                </button>
-            </Link>
+            <div className={styles.upperInfoContainer}>
+                <div className={styles.upperInfo}>
+                    <h1 className={styles.upperInfo}>
+                        Сумма заказа: {sum} руб
+                    </h1>
+                    <h4 className={styles.upperInfo}>
+                        Итоговая сумма в чеке может измениться. Веб-сайт может
+                        не учитывать детали доставки, бонусные карты
+                    </h4>
+                </div>
+            </div>
+            <div className={styles.buttons}>
+                <Link to="/cart">
+                    <button className={styles.backButton}>
+                        <p className={styles.backButton}>
+                            ⬅️ {`\u00a0`}Вернуться назад
+                        </p>
+                    </button>
+                </Link>
+                <Link
+                    to="/order-details"
+                    onClick={() => {
+                        setHasError(checkErrors(inputStates, requiredInputs))
+                    }}
+                >
+                    <button className={styles.submitButton} disabled={hasError}>
+                        <p className={styles.submitButton}>
+                            Оформить заказ {`\u00a0`}✅
+                        </p>
+                    </button>
+                </Link>
+            </div>
+            <div className={styles.upperInfoContainer}>
+                <div className={styles.upperInfo}>
+                    <h4 className={styles.upperInfo}>
+                        Нажимая на кнопку, Вы соглашаетесь с{' '}
+                        <span style={{ textDecoration: 'underline' }}>
+                            Офертой, Пользовательским соглашением
+                        </span>{' '}
+                        и{' '}
+                        <span style={{ textDecoration: 'underline' }}>
+                            Политикой обработки персональных данных
+                        </span>
+                    </h4>
+                </div>
+            </div>
         </div>
     )
 }

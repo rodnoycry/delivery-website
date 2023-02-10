@@ -1,6 +1,6 @@
 import React from 'react'
 import type { FC } from 'react'
-import { CartItemData } from '../../../../interfaces'
+import { CartItemData } from '@/interfaces'
 import styles from './TableItem.module.css'
 import { useDispatch } from 'react-redux'
 import { addCartItem, removeCartItem, deleteCartItem } from '@/redux/store'

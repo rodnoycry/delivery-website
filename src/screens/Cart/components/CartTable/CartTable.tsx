@@ -1,7 +1,7 @@
 import React from 'react'
 import type { FC } from 'react'
 import styles from './CartTable.module.css'
-import { CartItemData } from '../../interfaces'
+import { CartItemData } from '@/interfaces'
 import { TableItem } from './components/TableItem'
 
 interface Props {

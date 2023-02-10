@@ -63,6 +63,9 @@ const defaultInputStates = createDefaultInputStates([
 const defaultSelectorStates = createDefaultSelectStates({
     DeliveryTypeSelect: 'На указанный адрес',
     PersonQtySelect: '1 человек',
+    TimeSelect: 'По готовности',
+    DaySelect: '10 февраля',
+    PaymentSelect: 'Банковской картой курьеру',
 })
 
 const ordersInitialState: Order | Record<string, any> = {

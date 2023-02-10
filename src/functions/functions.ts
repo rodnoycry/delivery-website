@@ -1,6 +1,9 @@
 import { CartItem } from '@/redux/slices/cartSlice'
 import { itemsData } from '@/mockData/items'
 
+import { zoneDeliveryInfo } from '@/config'
+import { Order } from '@/redux/slices/orderSlice'
+
 export const getSum = (cart: CartItem[]): number => {
     let sum = 0
     cart.map(({ id, selected }) => {
@@ -19,5 +22,25 @@ export const getSum = (cart: CartItem[]): number => {
         })
         return false
     })
+    return sum
+}
+
+export const getSumWithDelivery = (
+    zone: Order['zone'],
+    cart: CartItem[]
+): number | false => {
+    const pureSum = getSum(cart)
+    let sum = pureSum
+    const minSum = zoneDeliveryInfo[zone].minSum
+    const deliveryPrice = zoneDeliveryInfo[zone].deliveryPrice
+    const freeDeliverySum = zoneDeliveryInfo[zone].freeDelivery
+
+    if (pureSum < minSum) {
+        return false
+    }
+
+    if (pureSum < freeDeliverySum) {
+        sum += deliveryPrice
+    }
     return sum
 }
