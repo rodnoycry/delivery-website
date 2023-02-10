@@ -22,16 +22,16 @@
       "name": "typescript-plugin-css-modules"
     }],
     "paths": {
-      "@/*": ["./src/*"],
-      "@fonts/*": ["./src/fonts/*"],
-      "@images/*": ["./public/images/*"],
-      "@interfaces/*": ["./src/interfaces/*"],
-      "@redux/*": ["./src/redux/*"],
-      "@mockData/*": ["./src/mockData/*"],
-      "@shared/*": ["./src/components/shared/*"],
-      "@config/*": ["./src/config/*"],
-      "@functions/*": ["./src/functions/*"],
+      "@/*": ["./clinet/src/*"],
+      "@fonts/*": ["./clinet/src/fonts/*"],
+      "@images/*": ["./clinet/public/images/*"],
+      "@interfaces/*": ["./clinet/src/interfaces/*"],
+      "@redux/*": ["./clinet/src/redux/*"],
+      "@mockData/*": ["./clinet/src/mockData/*"],
+      "@shared/*": ["./clinet/src/components/shared/*"],
+      "@config/*": ["./clinet/src/config/*"],
+      "@functions/*": ["./clinet/src/functions/*"],
     },
   },
-  "include": ["src"]
+  "include": ["client/src", "server"]
 }

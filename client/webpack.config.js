@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-    entry: './src/main.tsx',
+    entry: '/client/src/main.tsx',
     output: {
         path: path.resolve(__dirname, './dist'),
         filename: 'bundle.js',
@@ -75,6 +75,6 @@ module.exports = {
             '@config': path.resolve(__dirname, 'src/config'),
             '@functions': path.resolve(__dirname, 'src/functions'),
         },
-        extensions: ['.tsx', '.ts', '.jsx', '.js'], // add .tsx, .ts
+        extensions: ['.tsx', '.ts', '.jsx', '.js'],
     },
 }
