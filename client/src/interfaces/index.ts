@@ -1,4 +1,4 @@
-import { ItemData } from '@/redux/slices/itemsDataSlice'
+import { ItemData } from '../redux/slices/itemsDataSlice'
 
 export interface CartItemData extends ItemData {
     selected: number | boolean

@@ -3,10 +3,15 @@ import type { FC } from 'react'
 import { Link } from 'react-router-dom'
 import { RootState as StoreState, updateOrder } from '@/redux/store'
 import { Order, InputState } from '@/redux/slices/orderSlice'
+import { resetCart, addAdminOrder } from '../../redux/store'
 import { useSelector, useDispatch } from 'react-redux'
 import { checkErrors } from './functions'
 import { getSumWithDelivery } from '@/functions'
+// DEMO
+import { AdminOrder } from '../../redux/slices/adminOrdersSlice'
+
 import styles from './OrderDetails.module.css'
+import SuccessImg from './images/success.png'
 
 import { PhoneInput } from './components/1.PhoneInput/PhoneInput'
 import { NameInput } from './components/2.NameInput/NameInput'
@@ -37,6 +42,7 @@ export const OrderDetails: FC<Props> = ({ style }) => {
         'NameInput',
     ])
     const [hasError, setHasError] = useState<boolean>(false)
+    const [isSuccess, setIsSuccess] = useState<boolean>(false)
     const [sum, setSum] = useState<number>(0)
     // Store Input States - states of inputs that retrieved from the Redux Store
     const storeInputStates = useSelector(
@@ -84,6 +90,32 @@ export const OrderDetails: FC<Props> = ({ style }) => {
         const newInputStates = { ...inputStates }
         newInputStates[input] = { ...newInputStates[input], ...newState }
         setInputStates(newInputStates)
+    }
+    // On submit button
+    const onSubmit = (): void => {
+        const currentDate = new Date()
+        const hours = currentDate.getHours()
+        const minutes = currentDate.getMinutes()
+
+        const time = `${hours < 10 ? `0${hours}` : hours}:${
+            minutes < 10 ? `0${minutes}` : minutes
+        }`
+        const orderInfo: AdminOrder = {
+            time,
+            cart,
+            sum,
+            phone: storeInputStates?.PhoneInput?.value,
+            name: storeInputStates?.NameInput?.value,
+            deliveryType: storeInputStates?.DeliveryTypeSelect?.selected?.value,
+            street: storeInputStates?.StreetInput?.value,
+            house: storeInputStates?.HouseInput?.value,
+            personQty: storeInputStates?.PersonQtySelect?.selected?.value,
+            deliveryTime: storeInputStates?.TimeSelect?.selected?.value,
+            paymentMethod: storeInputStates?.PaymentSelect?.selected?.value,
+            comment: storeInputStates?.CommentInput?.value,
+        }
+        dispatch(addAdminOrder(orderInfo))
+        dispatch(resetCart())
     }
     return (
         <div className={styles.orderDetails} style={style}>
@@ -216,18 +248,25 @@ export const OrderDetails: FC<Props> = ({ style }) => {
                         </p>
                     </button>
                 </Link>
-                <Link
-                    to="/order-details"
+                <button
                     onClick={() => {
-                        setHasError(checkErrors(inputStates, requiredInputs))
+                        const hasError = checkErrors(
+                            inputStates,
+                            requiredInputs
+                        )
+                        setHasError(hasError)
+                        if (!hasError) {
+                            setIsSuccess(true)
+                            onSubmit()
+                        }
                     }}
+                    className={styles.submitButton}
+                    disabled={hasError}
                 >
-                    <button className={styles.submitButton} disabled={hasError}>
-                        <p className={styles.submitButton}>
-                            Оформить заказ {`\u00a0`}✅
-                        </p>
-                    </button>
-                </Link>
+                    <p className={styles.submitButton}>
+                        Оформить заказ {`\u00a0`}✅
+                    </p>
+                </button>
             </div>
             <div className={styles.upperInfoContainer}>
                 <div className={styles.upperInfo}>
@@ -241,6 +280,33 @@ export const OrderDetails: FC<Props> = ({ style }) => {
                             Политикой обработки персональных данных
                         </span>
                     </h4>
+                </div>
+            </div>
+            <div
+                className={styles.successScreen}
+                style={{
+                    opacity: isSuccess ? 1 : 0,
+                    display: isSuccess ? '' : 'none',
+                }}
+            >
+                <div className={styles.successWindow}>
+                    <img className={styles.successWindow} src={SuccessImg} />
+                    <h1 className={styles.successWindow}>Заказ принят!</h1>
+                    <h3 className={styles.successWindow}>
+                        Ожидайте, скоро мы свяжемся с вами
+                    </h3>
+                    <Link
+                        to="/"
+                        onClick={() => {
+                            setIsSuccess(false)
+                        }}
+                    >
+                        <button className={styles.submitButton}>
+                            <p className={styles.submitButton}>
+                                Вернуться на главную
+                            </p>
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>

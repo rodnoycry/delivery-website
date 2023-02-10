@@ -8,7 +8,8 @@ import './reset.module.css'
 import {
     setCart as setReduxCart,
     updateOrder as updateReduxOrder,
-} from '@redux/store'
+    setAdminOrders as setReduxAdminOrders,
+} from './redux/store'
 import styles from './App.module.css'
 import { topItemsAppearancePaths } from './config'
 
@@ -23,9 +24,10 @@ import { Cart } from './screens/Cart'
 import { OrderDetails } from './screens/OrderDetails'
 
 import { Footer } from './components/Footer'
+import { Admin } from './screens/Admin/Admin'
 
 export const App: FC = () => {
-    const [cookies, setCart] = useCookies(['cart', 'order'])
+    const [cookies, setCart] = useCookies(['cart', 'order', 'adminOrders'])
     const dispatch = useDispatch()
     useEffect(() => {
         if (cookies.cart !== undefined) {
@@ -33,6 +35,9 @@ export const App: FC = () => {
         }
         if (cookies.order !== undefined) {
             dispatch(updateReduxOrder(cookies.order))
+        }
+        if (cookies.adminOrders !== undefined) {
+            dispatch(setReduxAdminOrders(cookies.adminOrders))
         }
     }, [cookies])
     return (
@@ -53,6 +58,11 @@ export const App: FC = () => {
                     <Route exact path="/">
                         <Home style={{ marginTop: '30px' }} />
                     </Route>
+
+                    <Route exact path="/admin">
+                        <Admin />
+                    </Route>
+
                     <Route exact path="/promo">
                         <span>1</span>
                     </Route>

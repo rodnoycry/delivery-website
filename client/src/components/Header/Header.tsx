@@ -1,6 +1,6 @@
 import React from 'react'
 import type { FC } from 'react'
-import { Link } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 import { CartButton } from './components/CartButton'
 import styles from './Header.module.css'
 import LogoImg from './images/Logo.png'
@@ -9,8 +9,11 @@ import DeliveryImg from './images/Delivery.png'
 import LoginImg from './images/Login.png'
 
 export const Header: FC = () => {
+    const location = useLocation()
+    const currentPath = location.pathname
+    const appearanceStyle = currentPath === '/admin' ? { display: 'none' } : {}
     return (
-        <header>
+        <header style={appearanceStyle}>
             <div className={styles.headerBlocks}>
                 <Link className={styles.logo} to="/">
                     <img className={styles.logo} src={LogoImg} />
@@ -37,7 +40,7 @@ export const Header: FC = () => {
                         </div>
                     </div>
                 </div>
-                <button className={styles.login}>
+                <button className={styles.login} style={{ display: 'none' }}>
                     <img className={styles.login} src={LoginImg} />
                     <p className={styles.login}>{`Войти`}</p>
                 </button>

@@ -1,0 +1,67 @@
+div.order {
+    width: 510px;
+
+    background: #000000;
+    border: 1px solid #A9A9A9;
+    border-radius: 26px;
+
+    font-family: 'Montserrat', sans-serif;
+
+    padding-top: 20px;
+    padding-left: 55px;
+    padding-right: 55px;
+    padding-bottom: 36px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1.order {
+    font-weight: bold;
+    font-size: 28px;
+}
+
+h3.order {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+div.items {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+}
+
+/* Sum */
+h1.sum {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 36px;
+}
+
+/* Details */
+div.details {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 18px;
+    width: 400px;
+}
+
+/* Button */
+button.button {
+    width: 385px;
+    height: 60px;
+
+    background: #FF000A;
+    border-radius: 12px;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    margin-top: 50px;
+}

@@ -98,3 +98,49 @@ button.submitButton:disabled {
     background-color: #af2b2f;
     opacity: 0.5;
 }
+
+/* Success screen */
+div.successScreen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 15, 15, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: opacity 0.3s ease-in-out;
+}
+
+div.successWindow {
+    width: 755px;
+    height: 525px;
+
+    font-family: 'Montserrat', sans-serif;
+
+    background: #000000;
+    border: 1px solid #FFFFFF;
+    border-radius: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 15px;
+}
+
+img.successWindow {
+    width: 120px;
+    height: auto;
+}
+
+h1.successWindow {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+h3.successWindow {
+    font-size: 28px;
+}

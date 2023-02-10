@@ -11,8 +11,9 @@ interface Props {
 export const NavBar: FC<Props> = ({ style }) => {
     const location = useLocation()
     const currentPath = location.pathname
+    const appearanceStyle = currentPath === '/admin' ? { display: 'none' } : {}
     return (
-        <nav style={style}>
+        <nav style={{ ...style, ...appearanceStyle }}>
             {Object.entries(linksObject).map(([link, label]): JSX.Element => {
                 return (
                     <Link to={link} key={link}>
