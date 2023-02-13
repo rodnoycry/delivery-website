@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "target": "ESNext",
     "module": "umd",
     "lib": [
@@ -22,16 +23,19 @@
       "name": "typescript-plugin-css-modules"
     }],
     "paths": {
-      "@/*": ["./clinet/src/*"],
-      "@fonts/*": ["./clinet/src/fonts/*"],
-      "@images/*": ["./clinet/public/images/*"],
-      "@interfaces/*": ["./clinet/src/interfaces/*"],
-      "@redux/*": ["./clinet/src/redux/*"],
-      "@mockData/*": ["./clinet/src/mockData/*"],
-      "@shared/*": ["./clinet/src/components/shared/*"],
-      "@config/*": ["./clinet/src/config/*"],
-      "@functions/*": ["./clinet/src/functions/*"],
+      "@/*": ["./client/src/*"],
+      "@fonts/*": ["./client/src/fonts/*"],
+      "@images/*": ["./client/public/images/*"],
+      "@interfaces/*": ["./client/src/interfaces/*"],
+      "@redux/*": ["./client/src/redux/*"],
+      "@mockData/*": ["./client/src/mockData/*"],
+      "@shared/*": ["./client/src/components/shared/*"],
+      "@config/*": ["./client/src/config/*"],
+      "@functions/*": ["./client/src/functions/*"],
     },
   },
-  "include": ["client/src", "server"]
+  "include": [
+    "client/src/**/*",
+    "server/**/*"
+  ]
 }

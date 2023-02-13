@@ -2,32 +2,35 @@ import React, { useState, CSSProperties, useEffect } from 'react'
 import type { FC } from 'react'
 import { Link } from 'react-router-dom'
 import { RootState as StoreState, updateOrder } from '@/redux/store'
-import { Order, InputState } from '@/redux/slices/orderSlice'
-import { resetCart, addAdminOrder } from '../../redux/store'
+import { Order, InputState } from '@redux/slices/orderSlice'
+import { resetCart, addAdminOrder } from '@redux/store'
 import { useSelector, useDispatch } from 'react-redux'
 import { checkErrors } from './functions'
 import { getSumWithDelivery } from '@/functions'
 // DEMO
-import { AdminOrder } from '../../redux/slices/adminOrdersSlice'
+import { AdminOrder } from '@redux/slices/adminOrdersSlice'
 
 import styles from './OrderDetails.module.css'
-import SuccessImg from './images/success.png'
 
-import { PhoneInput } from './components/1.PhoneInput/PhoneInput'
-import { NameInput } from './components/2.NameInput/NameInput'
-import { DeliveryTypeSelect } from './components/3.DeliveryTypeSelect/DeliveryTypeSelect'
-import { StreetInput } from './components/4.StreetInput/StreetInput'
-import { HouseInput } from './components/5.HouseInput/HouseInput'
-import { ApartmentInput } from './components/6.ApartmentInput/ApartmentInput'
-import { EntranceInput } from './components/7.EntranceInput/EntranceInput'
-import { IntercomInput } from './components/8.IntercomInput/IntercomInput'
+import { PhoneInput } from './Inputs&Selects/1.PhoneInput'
+import { NameInput } from './Inputs&Selects/2.NameInput'
+import { DeliveryTypeSelect } from './Inputs&Selects/3.DeliveryTypeSelect'
+import { StreetInput } from './Inputs&Selects/5.StreetInput'
+import { LocalityInput } from './Inputs&Selects/4.LocalityInput'
+import { HouseInput } from './Inputs&Selects/6.HouseInput'
+import { ApartmentInput } from './Inputs&Selects/7.ApartmentInput'
+import { EntranceInput } from './Inputs&Selects/8.EntranceInput'
+import { IntercomInput } from './Inputs&Selects/9.IntercomInput'
 
-import { PersonQtySelect } from './components/9.PersonQtySelect/PersonQtySelect'
-import { TimeSelect } from './components/10.TimeSelect/TimeSelect'
-import { DaySelect } from './components/11.DaySelect/DaySelect'
-import { TimeInput } from './components/12.TimeInput/TimeInput'
-import { PaymentSelect } from './components/13.PaymentSelect/PaymentSelect'
-import { CommentInput } from './components/14.CommentInput/CommentInput'
+import { PersonQtySelect } from './Inputs&Selects/10.PersonQtySelect'
+import { TimeSelect } from './Inputs&Selects/11.TimeSelect'
+import { DaySelect } from './Inputs&Selects/12.DaySelect'
+import { TimeInput } from './Inputs&Selects/13.TimeInput'
+import { PaymentSelect } from './Inputs&Selects/14.PaymentSelect'
+import { CommentInput } from './Inputs&Selects/15.CommentInput'
+
+import { Confirmation } from './components/Confirmation'
+import { SuccessScreen } from './components/SuccessScreen'
 
 interface Props {
     style?: CSSProperties
@@ -40,27 +43,35 @@ export const OrderDetails: FC<Props> = ({ style }) => {
     const [requiredInputs, setRequiredInputs] = useState<string[]>([
         'PhoneInput',
         'NameInput',
+        'LocalityInput',
     ])
     const [hasError, setHasError] = useState<boolean>(false)
-    const [isSuccess, setIsSuccess] = useState<boolean>(false)
     const [sum, setSum] = useState<number>(0)
+    const [isSuccess, setIsSuccess] = useState<boolean>(false)
+    const dispatch = useDispatch()
     // Store Input States - states of inputs that retrieved from the Redux Store
     const storeInputStates = useSelector(
         (state: StoreState) => state.orderState
     )
     const cart = useSelector((state: StoreState) => state.cartState)
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     useEffect(() => {
         if (cart !== undefined && storeInputStates !== undefined) {
             setSum(getSumWithDelivery(storeInputStates.zone, cart) || 0)
         }
     }, [cart, storeInputStates])
-    const dispatch = useDispatch()
+
     // When Redux input states has changed - we update our local input states
     useEffect(() => {
         if (storeInputStates !== undefined) {
             setInputStates(storeInputStates)
         }
     }, [storeInputStates])
+
     // When our local input states changed via child components - we update Redux input states
     // and delete/add some inputs from 'requiredInputs' array if specific selects changed
     useEffect(() => {
@@ -71,14 +82,23 @@ export const OrderDetails: FC<Props> = ({ style }) => {
                 inputStates?.DeliveryTypeSelect?.selected?.label ===
                 'На указанный адрес'
             ) {
-                setRequiredInputs([
+                const newRequiredInputs = [
                     ...requiredInputs,
                     'StreetInput',
                     'HouseInput',
-                ])
+                ]
+                if (inputStates.zone !== 'Талдом') {
+                    newRequiredInputs.push('LocalityInput')
+                }
+                setRequiredInputs(newRequiredInputs)
             } else {
                 const newRequiredInputs = requiredInputs.filter(
-                    (input) => !['StreetInput', 'HouseInput'].includes(input)
+                    (input) =>
+                        ![
+                            'LocalityInput',
+                            'StreetInput',
+                            'HouseInput',
+                        ].includes(input)
                 )
                 setRequiredInputs(newRequiredInputs)
             }
@@ -89,6 +109,16 @@ export const OrderDetails: FC<Props> = ({ style }) => {
     const setInputState = (input: keyof Order, newState: InputState): void => {
         const newInputStates = { ...inputStates }
         newInputStates[input] = { ...newInputStates[input], ...newState }
+        setInputStates(newInputStates)
+    }
+    // If change in antoher input/select states needed, there is this function
+    const setInputStateWithAffect = (
+        newStatePart: Record<keyof Order, InputState>
+    ): void => {
+        const newInputStates = { ...inputStates }
+        Object.entries(newStatePart).forEach(([key, value]) => {
+            newInputStates[key] = { ...newInputStates[key], ...value }
+        })
         setInputStates(newInputStates)
     }
     // On submit button
@@ -139,7 +169,17 @@ export const OrderDetails: FC<Props> = ({ style }) => {
                 />
                 <DeliveryTypeSelect
                     inputState={inputStates?.DeliveryTypeSelect}
+                    setInputStateWithAffect={setInputStateWithAffect}
                     setInputState={setInputState}
+                />
+                <LocalityInput
+                    inputState={inputStates?.StreetInput}
+                    setInputState={setInputState}
+                    isVisible={
+                        inputStates?.DeliveryTypeSelect?.selected?.label ===
+                            'На указанный адрес' &&
+                        inputStates.zone !== 'Талдом'
+                    }
                 />
                 <StreetInput
                     inputState={inputStates?.StreetInput}
@@ -196,8 +236,8 @@ export const OrderDetails: FC<Props> = ({ style }) => {
                     label={
                         inputStates?.DeliveryTypeSelect?.selected?.label ===
                         'На указанный адрес'
-                            ? 'Время доставки'
-                            : 'Время самовывоза'
+                            ? 'Время доставки *'
+                            : 'Время самовывоза *'
                     }
                 />
                 <DaySelect
@@ -229,86 +269,17 @@ export const OrderDetails: FC<Props> = ({ style }) => {
                     setInputState={setInputState}
                 />
             </div>
-            <div className={styles.upperInfoContainer}>
-                <div className={styles.upperInfo}>
-                    <h1 className={styles.upperInfo}>
-                        Сумма заказа: {sum} руб
-                    </h1>
-                    <h4 className={styles.upperInfo}>
-                        Итоговая сумма в чеке может измениться. Веб-сайт может
-                        не учитывать детали доставки, бонусные карты
-                    </h4>
-                </div>
-            </div>
-            <div className={styles.buttons}>
-                <Link to="/cart">
-                    <button className={styles.backButton}>
-                        <p className={styles.backButton}>
-                            ⬅️ {`\u00a0`}Вернуться назад
-                        </p>
-                    </button>
-                </Link>
-                <button
-                    onClick={() => {
-                        const hasError = checkErrors(
-                            inputStates,
-                            requiredInputs
-                        )
-                        setHasError(hasError)
-                        if (!hasError) {
-                            setIsSuccess(true)
-                            onSubmit()
-                        }
-                    }}
-                    className={styles.submitButton}
-                    disabled={hasError}
-                >
-                    <p className={styles.submitButton}>
-                        Оформить заказ {`\u00a0`}✅
-                    </p>
-                </button>
-            </div>
-            <div className={styles.upperInfoContainer}>
-                <div className={styles.upperInfo}>
-                    <h4 className={styles.upperInfo}>
-                        Нажимая на кнопку, Вы соглашаетесь с{' '}
-                        <span style={{ textDecoration: 'underline' }}>
-                            Офертой, Пользовательским соглашением
-                        </span>{' '}
-                        и{' '}
-                        <span style={{ textDecoration: 'underline' }}>
-                            Политикой обработки персональных данных
-                        </span>
-                    </h4>
-                </div>
-            </div>
-            <div
-                className={styles.successScreen}
-                style={{
-                    opacity: isSuccess ? 1 : 0,
-                    display: isSuccess ? '' : 'none',
-                }}
-            >
-                <div className={styles.successWindow}>
-                    <img className={styles.successWindow} src={SuccessImg} />
-                    <h1 className={styles.successWindow}>Заказ принят!</h1>
-                    <h3 className={styles.successWindow}>
-                        Ожидайте, скоро мы свяжемся с вами
-                    </h3>
-                    <Link
-                        to="/"
-                        onClick={() => {
-                            setIsSuccess(false)
-                        }}
-                    >
-                        <button className={styles.submitButton}>
-                            <p className={styles.submitButton}>
-                                Вернуться на главную
-                            </p>
-                        </button>
-                    </Link>
-                </div>
-            </div>
+            <Confirmation
+                sum={sum}
+                inputStates={inputStates}
+                requiredInputs={requiredInputs}
+                hasError={hasError}
+                setHasError={setHasError}
+                setIsSuccess={setIsSuccess}
+                onSubmit={onSubmit}
+            />
+
+            <SuccessScreen isSuccess={isSuccess} setIsSuccess={setIsSuccess} />
         </div>
     )
 }

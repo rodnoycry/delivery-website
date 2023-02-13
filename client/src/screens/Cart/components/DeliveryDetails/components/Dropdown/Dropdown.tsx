@@ -2,13 +2,13 @@ import React, { useState, useEffect, CSSProperties } from 'react'
 import type { FC } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateOrder, RootState as StoreState } from '@/redux/store'
-import { Zone } from '@/redux/slices/orderSlice'
+import { Order, Zone } from '@/redux/slices/orderSlice'
 import Select from 'react-select'
 import type { StylesConfig } from 'react-select'
 import styles from './Dropdown.module.css'
 
 interface Props {
-    setZone: (zone: Zone) => void
+    setZone: (zone: Order['zone']) => void
     style?: CSSProperties
 }
 
@@ -42,7 +42,7 @@ export const Dropdown: FC<Props> = ({ setZone, style }) => {
     const order = useSelector((state: StoreState) => state.orderState)
 
     useEffect(() => {
-        setZone(selectedOptionData.value as unknown as Zone)
+        setZone(selectedOptionData.value as Order['zone'])
         if (order.zone !== undefined && !isFirstRender) {
             dispatch(
                 updateOrder({

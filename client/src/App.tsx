@@ -26,8 +26,12 @@ import { OrderDetails } from './screens/OrderDetails'
 import { Footer } from './components/Footer'
 import { Admin } from './screens/Admin/Admin'
 
+import { Offer } from './screens/legal/Offer'
+import { Terms } from './screens/legal/Terms'
+import { DataPolicy } from './screens/legal/DataPolicy'
+
 export const App: FC = () => {
-    const [cookies, setCart] = useCookies(['cart', 'order', 'adminOrders'])
+    const [cookies] = useCookies(['cart', 'order', 'adminOrders'])
     const dispatch = useDispatch()
     useEffect(() => {
         if (cookies.cart !== undefined) {
@@ -97,6 +101,17 @@ export const App: FC = () => {
 
                     <Route exact path="/order-details">
                         <OrderDetails />
+                    </Route>
+
+                    {/* Legal links */}
+                    <Route exact path="/offer">
+                        <Offer />
+                    </Route>
+                    <Route exact path="/terms">
+                        <Terms />
+                    </Route>
+                    <Route exact path="/policy">
+                        <DataPolicy />
                     </Route>
                 </Switch>
             </div>

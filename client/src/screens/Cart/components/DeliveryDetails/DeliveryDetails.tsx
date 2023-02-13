@@ -1,4 +1,4 @@
-import React, { useState, CSSProperties } from 'react'
+import React, { CSSProperties } from 'react'
 import type { FC } from 'react'
 import { Order } from '@/redux/slices/orderSlice'
 import styles from './DeliveryDetails.module.css'
@@ -6,14 +6,18 @@ import { Dropdown } from './components/Dropdown'
 import { zoneDeliveryInfo as zoneInfo } from '@/config'
 
 interface Props {
+    zone: Order['zone']
+    setZone: (zone: Order['zone']) => void
     isError: boolean
     style?: CSSProperties
 }
 
-export const DeliveryDetails: FC<Props> = ({ isError, style }) => {
-    const [zone, setZone] = useState<Order['zone'] | Record<string, any>>(
-        'Талдом'
-    )
+export const DeliveryDetails: FC<Props> = ({
+    zone,
+    setZone,
+    isError,
+    style,
+}) => {
     return (
         <div className={styles.details} style={style}>
             <div className={styles.zone}>
@@ -21,9 +25,8 @@ export const DeliveryDetails: FC<Props> = ({ isError, style }) => {
                     <h1 className={styles.zone}>Зона доставки</h1>
                     <Dropdown setZone={setZone} style={{ marginTop: 20 }} />
                     <h4 className={styles.zone}>
-                        От{' '}
-                        {zoneInfo[zone as keyof typeof zoneInfo].freeDelivery}{' '}
-                        рублей доставка бесплатно!
+                        От {zoneInfo[zone].freeDelivery} рублей доставка
+                        бесплатно!
                     </h4>
                 </div>
                 <div
@@ -31,7 +34,7 @@ export const DeliveryDetails: FC<Props> = ({ isError, style }) => {
                     style={{ border: isError ? '2px solid #ff000a' : '0px' }}
                 >
                     <h2 className={styles.zoneInfo}>
-                        {zoneInfo[zone as keyof typeof zoneInfo].minSum} ₽
+                        {zoneInfo[zone].minSum} ₽
                     </h2>
                     <h3 className={styles.zoneInfo}>
                         Минимальный
@@ -40,8 +43,7 @@ export const DeliveryDetails: FC<Props> = ({ isError, style }) => {
                 </div>
                 <div className={styles.zoneInfo}>
                     <h2 className={styles.zoneInfo}>
-                        {zoneInfo[zone as keyof typeof zoneInfo].deliveryPrice}{' '}
-                        ₽
+                        {zoneInfo[zone].deliveryPrice} ₽
                     </h2>
                     <h3 className={styles.zoneInfo}>
                         Стоимость
@@ -50,7 +52,7 @@ export const DeliveryDetails: FC<Props> = ({ isError, style }) => {
                 </div>
                 <div className={styles.zoneInfo}>
                     <h2 className={styles.zoneInfo}>
-                        {zoneInfo[zone as keyof typeof zoneInfo].freeDelivery} ₽
+                        {zoneInfo[zone].freeDelivery} ₽
                     </h2>
                     <h3 className={styles.zoneInfo}>
                         Бесплатная
@@ -59,11 +61,7 @@ export const DeliveryDetails: FC<Props> = ({ isError, style }) => {
                 </div>
                 <div className={styles.zoneInfo}>
                     <h2 className={styles.zoneInfo}>
-                        {
-                            zoneInfo[zone as keyof typeof zoneInfo]
-                                .approximateTime
-                        }
-                        минут
+                        {zoneInfo[zone].approximateTime} минут
                     </h2>
                     <h3 className={styles.zoneInfo}>
                         Среднее время

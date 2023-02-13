@@ -1,0 +1,18 @@
+div.legal {
+    max-width: 1200px;
+    width: 90%;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    line-height: 160%;
+}
+
+h1.legal {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+p.legal {
+    margin-top: 15px;
+}

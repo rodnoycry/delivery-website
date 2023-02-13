@@ -1,13 +1,13 @@
 // ONLY FOR DEMONSTRATION PURPOSES
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { ItemData } from './itemsDataSlice'
+import { CartItem } from './cartSlice'
 
 // ONLY FOR DEMONSTRATION PURPOSES
 export interface AdminOrder {
     time: string
     sum: number
-    cart: ItemData[] | undefined
+    cart: CartItem[] | undefined
     phone: string | undefined
     name: string | undefined
     deliveryType: string | undefined

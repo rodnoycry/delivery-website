@@ -23,6 +23,10 @@ module.exports = {
                 },
             },
             {
+                test: /\.txt$/,
+                use: 'raw-loader',
+            },
+            {
                 test: /\.module.css$/i,
                 use: [
                     'style-loader',

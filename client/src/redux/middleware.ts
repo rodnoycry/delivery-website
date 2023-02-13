@@ -10,7 +10,6 @@ export const syncCookieMiddleware: Middleware =
         const cartState = storeState.cartState
         const orderState = storeState.orderState
         const adminOrdersState = storeState.adminOrdersState
-        console.log(action)
 
         if (action.type.startsWith('cartState/')) {
             cookies.set('cart', cartState)

@@ -25,7 +25,13 @@ export const CartButton: FC = () => {
     }
     return (
         <Link to="/cart">
-            <button className={styles.cart} onClick={updateSumAndQty}>
+            <button
+                className={styles.cart}
+                onClick={() => {
+                    window.scrollTo(0, 0)
+                    updateSumAndQty()
+                }}
+            >
                 <div className={styles.cartCounter}>
                     <img className={styles.cart} src={CartImg} />
                     <span className={styles.cartCounter}>{itemsQty}</span>

@@ -1,0 +1,77 @@
+/* Info above buttons */
+div.upperInfoContainer {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    margin-top: 55px;
+}
+
+div.upperInfo {
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+    justify-content: end;
+    text-align: end;
+}
+
+h1.upperInfo {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+h4.upperInfo {
+    font-size: 16px;
+}
+
+/* Buttons */
+div.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 36px;
+}
+
+button.backButton {
+    font-size: 20px;
+    font-weight: bold;
+
+    width: 385px;
+    height: 60px;
+
+    background: #424242;
+    border-radius: 12px;
+
+    padding-bottom: 8px;
+}
+
+button.submitButton {
+    font-size: 20px;
+    font-weight: bold;
+
+    width: 385px;
+    height: 60px;
+
+    background: #FF000A;
+    border-radius: 12px;
+
+    padding-bottom: 8px;
+}
+
+button.submitButton:disabled {
+    cursor: default;
+    background-color: #af2b2f;
+    opacity: 0.5;
+}
+
+/* Lower info container */
+div.lowerInfoContainer {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    margin-top: 5px;
+}
+
+/* Error message */
+
+h4.errorMessage {
+    color: #FF000A;
+}
