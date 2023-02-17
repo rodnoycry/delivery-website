@@ -93,19 +93,31 @@ export const Confirmation: FC<Props> = ({
                     <h4 className={styles.errorMessage}>{errorMessage}</h4>
                     <h4 className={styles.upperInfo} style={{ marginTop: 10 }}>
                         Нажимая на кнопку, Вы соглашаетесь с{' '}
-                        <Link to="/offer">
+                        <Link
+                            to="/offer"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <span style={{ textDecoration: 'underline' }}>
                                 Офертой
                             </span>
                         </Link>
                         {', '}
-                        <Link to="/terms">
+                        <Link
+                            to="/terms"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <span style={{ textDecoration: 'underline' }}>
                                 Пользовательским соглашением
                             </span>
                         </Link>{' '}
                         и{' '}
-                        <Link to="/policy">
+                        <Link
+                            to="/policy"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <span style={{ textDecoration: 'underline' }}>
                                 Политикой обработки персональных данных
                             </span>

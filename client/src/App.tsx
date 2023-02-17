@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import type { FC } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { useCookies } from 'react-cookie'
 
 import './reset.module.css'
 import {
@@ -24,26 +23,35 @@ import { Cart } from './screens/Cart'
 import { OrderDetails } from './screens/OrderDetails'
 
 import { Footer } from './components/Footer'
-import { Admin } from './screens/Admin/Admin'
 
+import { Admin } from './screens/adminPages/Admin'
+import { Test } from './screens/Test'
+
+// Legal pages
 import { Offer } from './screens/legal/Offer'
 import { Terms } from './screens/legal/Terms'
 import { DataPolicy } from './screens/legal/DataPolicy'
 
 export const App: FC = () => {
-    const [cookies] = useCookies(['cart', 'order', 'adminOrders'])
+    const localStorageStore = {
+        cart: window.localStorage.getItem('cart'),
+        order: window.localStorage.getItem('order'),
+        adminOrders: window.localStorage.getItem('adminOrders'),
+    }
     const dispatch = useDispatch()
     useEffect(() => {
-        if (cookies.cart !== undefined) {
-            dispatch(setReduxCart(cookies.cart))
+        if (localStorageStore.cart) {
+            dispatch(setReduxCart(JSON.parse(localStorageStore.cart)))
         }
-        if (cookies.order !== undefined) {
-            dispatch(updateReduxOrder(cookies.order))
+        if (localStorageStore.order) {
+            dispatch(updateReduxOrder(JSON.parse(localStorageStore.order)))
         }
-        if (cookies.adminOrders !== undefined) {
-            dispatch(setReduxAdminOrders(cookies.adminOrders))
+        if (localStorageStore.adminOrders) {
+            dispatch(
+                setReduxAdminOrders(JSON.parse(localStorageStore.adminOrders))
+            )
         }
-    }, [cookies])
+    }, [localStorageStore])
     return (
         <Router>
             <div className={styles.main}>
@@ -63,8 +71,14 @@ export const App: FC = () => {
                         <Home style={{ marginTop: '30px' }} />
                     </Route>
 
+                    {/* DEMO */}
                     <Route exact path="/admin">
                         <Admin />
+                    </Route>
+
+                    {/* TEST */}
+                    <Route exact path="/test">
+                        <Test />
                     </Route>
 
                     <Route exact path="/promo">

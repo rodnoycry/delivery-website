@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { useSelector } from 'react-redux'
-import { AdminOrder } from '../../redux/slices/adminOrdersSlice'
-import { RootState as StoreState } from '../../redux/store'
-import styles from './Admin.module.css'
+import { AdminOrder } from '@/redux/slices/adminOrdersSlice'
+import { RootState as StoreState } from '@/redux/store'
+import styles from './Order.module.css'
 import LogoImg from './images/Logo.png'
 import TogglerImg from './images/Toggler.png'
 import { Order } from './components/Order'
 
-export const Admin: FC = () => {
+export const Orders: FC = () => {
     const [orders, setOrders] = useState<AdminOrder[]>([])
     const itemsData = useSelector((state: StoreState) => state.itemDataState)
     const reduxOrders = useSelector(

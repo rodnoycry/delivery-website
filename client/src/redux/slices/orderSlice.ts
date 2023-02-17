@@ -54,6 +54,7 @@ const createDefaultSelectStates = (
 const defaultInputStates = createDefaultInputStates([
     'PhoneInput',
     'NameInput',
+    'LocalityInput',
     'StreetInput',
     'HouseInput',
     'ApartmentInput',

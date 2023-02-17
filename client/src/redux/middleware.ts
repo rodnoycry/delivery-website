@@ -1,7 +1,4 @@
 import { Middleware } from 'redux'
-import { Cookies } from 'react-cookie'
-
-const cookies = new Cookies()
 
 export const syncCookieMiddleware: Middleware =
     (store) => (next) => (action) => {
@@ -12,11 +9,14 @@ export const syncCookieMiddleware: Middleware =
         const adminOrdersState = storeState.adminOrdersState
 
         if (action.type.startsWith('cartState/')) {
-            cookies.set('cart', cartState)
+            window.localStorage.setItem('cart', JSON.stringify(cartState))
         } else if (action.type.startsWith('orderState/')) {
-            cookies.set('order', orderState)
+            window.localStorage.setItem('order', JSON.stringify(orderState))
         } else if (action.type.startsWith('adminOrdersState/')) {
-            cookies.set('adminOrders', adminOrdersState)
+            window.localStorage.setItem(
+                'adminOrders',
+                JSON.stringify(adminOrdersState)
+            )
         }
 
         return result

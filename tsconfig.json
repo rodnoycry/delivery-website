@@ -2,12 +2,13 @@
   "compilerOptions": {
     "baseUrl": "./",
     "target": "ESNext",
-    "module": "umd",
+    "module": "CommonJS",
     "lib": [
       "ESNext",
       "dom"
     ],
     "jsx": "react",
+    "resolveJsonModule": true,
     "noEmit": true,
     "sourceMap": true,
     /* Strict Type-Checking Options */
