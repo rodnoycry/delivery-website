@@ -1,0 +1,74 @@
+div.adminContainer {
+    height: calc(100vh - 90px - 150px);
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+}
+
+div.admin {
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 23px;
+}
+
+div.modeToggle {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+button.toggle {
+    font-weight: bold;
+
+    width: 210px;
+    height: 50px;
+
+    background-color: #222222;
+    border-radius: 12px;
+
+    transition: background-color 0.2s ease-in-out;
+}
+
+button.toggle:hover {
+    background-color: #333333;
+}
+
+button.main {
+    font-weight: bold;
+
+    width: 100%;
+    height: 50px;
+
+    background-color: #FF000A;
+    border-radius: 12px;
+}
+
+button.google {
+    font-weight: bold;
+
+    width: 100%;
+    height: 50px;
+
+    background-color: #3D1EFF;
+    border-radius: 12px;
+}
+
+input.admin {
+    width: 100%;
+    height: 50px;
+    background: #000000;
+    border: 2px solid #3D3D3D;
+    border-radius: 9px;
+
+    color: #fafafa;
+    font-size: 22px;
+    padding-left: 10px;
+    padding-right: 10px;
+}

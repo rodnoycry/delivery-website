@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import { DetailedOrder } from '@/interfaces'
 
 interface TestData {
@@ -6,7 +6,8 @@ interface TestData {
     email: string
 }
 
-const domain = 'http://localhost:3000'
+// const domain = 'http://localhost:3000'
+const domain = ''
 
 export const sendDataToServer = (data: TestData): TestData | any => {
     axios
@@ -43,7 +44,7 @@ export const getIsAdminFromServer = async (data: {
     idToken: string
 }): Promise<boolean> => {
     try {
-        const response = await axios.post(`${domain}/api/admin`, data)
+        const response = await axios.post(`${domain}/api/admin/check`, data)
         return response.data.isAdmin
     } catch (error: any) {
         console.log(error.message)

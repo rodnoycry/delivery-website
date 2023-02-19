@@ -1,8 +1,8 @@
 import React from 'react'
 import type { FC } from 'react'
-import { CartItemData } from '../../../../../../interfaces'
+import { CartItemData } from '@/interfaces'
 import styles from './Item.module.css'
-import { selectorsData } from '../../../../../../config'
+import { selectorsData } from '@/config'
 
 interface Props {
     style?: object

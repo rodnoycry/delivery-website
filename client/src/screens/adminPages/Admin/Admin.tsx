@@ -1,38 +1,40 @@
 import React, { useState, useEffect } from 'react'
-import { initializeApp } from 'firebase/app'
-import {
-    GoogleAuthProvider,
-    getAuth,
-    signInWithPopup,
-    signOut as firebaseSignOut,
-    User,
-    onAuthStateChanged,
-} from 'firebase/auth'
-import { auth } from '@/firebase'
 import type { FC } from 'react'
+import { onAuthStateChanged, User } from 'firebase/auth'
+import { useHistory } from 'react-router-dom'
+import { auth } from '@/firebase'
 import { getIsAdminFromServer } from '@/services/apiService'
+import { signInEmail, signUpEmail, signInGoogle, signOut } from './functions'
+import styles from './Admin.module.css'
 
-const firebaseConfig = {
-    apiKey: 'AIzaSyCLaFLTH8CXbz6ZMPF39rx7NH_dViDo_EE',
-    authDomain: 'san-sei.firebaseapp.com',
-    projectId: 'san-sei',
-    storageBucket: 'san-sei.appspot.com',
-    messagingSenderId: '545611652850',
-    appId: '1:545611652850:web:4e4852a9f3e8a2e8fd7a6b',
-    measurementId: 'G-2DYJF0YY9F',
-}
-
-initializeApp(firebaseConfig)
+type Mode = 'Sign Up' | 'Sign In'
 
 export const Admin: FC = () => {
+    const [mode, setMode] = useState<Mode>('Sign In')
+
     const [user, setUser] = useState<User | null>(null)
-    const [isAdmin, setIsAdmin] = useState<boolean>(false)
+    const [isAdmin, setIsAdmin] = useState<boolean>()
+    const [isIntruder, setIsIntruder] = useState<boolean>(false)
+
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [errorMessage, setErrorMessage] = useState<string>('\u00a0')
+
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const [passwordConfirm, setPasswordConfirm] = useState<string>('')
+
+    const history = useHistory()
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user)
+                getIsAdmin(user)
+                    .then(setIsAdmin)
+                    .catch((error) => {
+                        setIsAdmin(isAdmin)
+                        console.log(error)
+                    })
             } else {
                 setUser(null)
             }
@@ -40,42 +42,27 @@ export const Admin: FC = () => {
                 unsubscribe()
             }
         })
+        if (isIntruder) {
+            // history.push('/') // CHANGE ON PROD
+            console.log()
+        }
     }, [])
 
-    const signIn = async (): Promise<void> => {
-        const provider = new GoogleAuthProvider()
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential =
-                    GoogleAuthProvider.credentialFromResult(result)
-                const token = credential?.accessToken
-                // The signed-in user info.
-                const user = result.user
-                setUser(user)
-                return user
-                // IdP data available using getAdditionalUserInfo(result)
-                // ...
-            })
-            .then((user) => {
-                getIsAdmin(user)
-            })
-            .catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code
-                const errorMessage = error.message
-                // The email of the user's account used.
-                const email = error.customData.email
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error)
-                console.log(errorMessage)
-            })
-    }
+    useEffect(() => {
+        if (user) {
+            if (isAdmin) {
+                history.push('/admin/panel')
+            } else {
+                setIsIntruder(true)
+                history.push('/')
+            }
+        }
+    }, [isAdmin])
 
-    const handleSignIn = (): void => {
+    const handleSignInGoogle = (): void => {
         setIsLoading(true)
-        signIn()
-            .then(() => {
+        signInGoogle(setUser, setErrorMessage)
+            .then((user) => {
                 setIsLoading(true)
             })
             .catch((error) => {
@@ -84,23 +71,40 @@ export const Admin: FC = () => {
             })
     }
 
-    const signOut = async (): Promise<void> => {
-        const auth = getAuth()
-        firebaseSignOut(auth)
-            .then(function () {
-                // Sign-out successful.
-                setUser(null)
+    const handleSignInEmail = (): void => {
+        setIsLoading(true)
+        signInEmail(email, password, setUser, setErrorMessage)
+            .then((user) => {
+                setIsLoading(true)
             })
             .catch((error) => {
+                setIsLoading(false)
                 console.error(error)
             })
+    }
+
+    const handleSignUpEmail = (): void => {
+        setIsLoading(true)
+        if (password === passwordConfirm) {
+            signUpEmail(email, password, setUser, setErrorMessage)
+                .then((user) => {
+                    setIsLoading(true)
+                })
+                .catch((error) => {
+                    setIsLoading(false)
+                    console.error(error)
+                })
+        } else {
+            setErrorMessage('Пароли не совпадают')
+        }
     }
 
     const handleSignOut = (): void => {
         setIsLoading(true)
-        signOut()
+        signOut(setUser, setErrorMessage)
             .then(() => {
                 setIsLoading(false)
+                setIsAdmin(false)
             })
             .catch((error) => {
                 console.error(error)
@@ -108,35 +112,115 @@ export const Admin: FC = () => {
             })
     }
 
-    const getIsAdmin = (user: User): void => {
-        if (user) {
-            user.getIdToken()
-                .then(
-                    async (token) =>
-                        await getIsAdminFromServer({ idToken: token })
-                )
-                .then((isAdmin) => {
-                    setIsAdmin(isAdmin)
-                })
-                .catch((error) => {
-                    console.log(error.message)
-                })
-
-            console.log(`isAdmin = `, isAdmin)
+    const getIsAdmin = async (user: User): Promise<boolean> => {
+        if (!user) {
+            return false
         }
+        const isAdmin_ = await user
+            .getIdToken()
+            .then(
+                async (token) => await getIsAdminFromServer({ idToken: token })
+            )
+            .then((isAdmin) => {
+                setIsAdmin(isAdmin)
+                console.log(`isAdmin = `, isAdmin)
+                return isAdmin
+            })
+            .catch((error) => {
+                console.log(error.message)
+                return false
+            })
+        return isAdmin_
     }
     return (
-        <div>
-            <h1>Authorization Page</h1>
-            <h1>Is Admin: {isAdmin.toString()}</h1>
-            {user ? (
-                <>
-                    <p>Welcome, {user.email}!</p>
-                    <button onClick={handleSignOut}>Sign Out</button>
-                </>
-            ) : (
-                <button onClick={handleSignIn}>Sign in with Google</button>
-            )}
+        <div className={styles.adminContainer}>
+            <div className={styles.admin}>
+                <div className={styles.modeToggle}>
+                    <button
+                        className={styles.toggle}
+                        onClick={() => {
+                            setMode('Sign In')
+                        }}
+                        style={{
+                            border:
+                                mode === 'Sign In' ? '1px solid #FFFFFF' : '',
+                        }}
+                    >{`Авторизация`}</button>
+                    <button
+                        className={styles.toggle}
+                        onClick={() => {
+                            setMode('Sign Up')
+                        }}
+                        style={{
+                            border:
+                                mode === 'Sign Up' ? '1px solid #FFFFFF' : '',
+                        }}
+                    >{`Регистрация`}</button>
+                </div>
+                <input
+                    className={styles.admin}
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(event) => {
+                        setEmail(event.target.value)
+                    }}
+                />
+                <input
+                    className={styles.admin}
+                    name="password"
+                    type="password"
+                    placeholder="Пароль"
+                    value={password}
+                    onChange={(event) => {
+                        setPassword(event.target.value)
+                    }}
+                />
+                {mode === 'Sign Up' ? (
+                    <>
+                        <input
+                            className={styles.admin}
+                            name="passwordConfirm"
+                            type="password"
+                            placeholder="Повторите пароль"
+                            value={passwordConfirm}
+                            onChange={(event) => {
+                                setPasswordConfirm(event.target.value)
+                            }}
+                        />
+                        <button
+                            className={styles.main}
+                            onClick={handleSignUpEmail}
+                        >
+                            Зарегистрироваться
+                        </button>
+                        <h4>{errorMessage}</h4>
+                    </>
+                ) : null}
+                {mode === 'Sign In' ? (
+                    <>
+                        <button
+                            className={styles.main}
+                            onClick={handleSignInEmail}
+                        >
+                            Войти
+                        </button>
+                        <h4>{errorMessage}</h4>
+                        <button
+                            className={styles.google}
+                            onClick={handleSignInGoogle}
+                        >
+                            Войти с помощью аккаунта Google
+                        </button>
+                        <button className={styles.main} onClick={handleSignOut}>
+                            Выйти
+                        </button>
+                    </>
+                ) : null}
+                <h1>Is Admin: {isAdmin?.toString()}</h1>
+                <h1>Current User: {user?.email}</h1>
+            </div>
         </div>
     )
 }

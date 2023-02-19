@@ -1,9 +1,9 @@
-import express, { Response } from 'express'
+import express, { Request, Response } from 'express'
 import cors from 'cors'
 import { body } from 'express-validator'
 import path from 'path'
 import { handleTestRequest } from './api'
-import { checkAdmin, AuthenticatedRequest } from './utils'
+import { checkAdmin } from './utils'
 
 const app = express()
 const port = 3000
@@ -30,14 +30,9 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/dist/index.html'))
 })
 
-app.post(
-    'api/admin',
-    checkAdmin as unknown as express.RequestHandler,
-    (req: AuthenticatedRequest, res: Response): void => {
-        // res.send(`Hello Admin ${req.user.email ? req.user.email : ''}!`)
-        res.send({ isAdmin: true })
-    }
-)
+app.post('/api/admin/check', checkAdmin, (req: Request, res: Response) => {
+    return res.send({ isAdmin: true })
+})
 
 // Start the server
 app.listen(port, () => {

@@ -11,9 +11,8 @@ import LoginImg from './images/Login.png'
 export const Header: FC = () => {
     const location = useLocation()
     const currentPath = location.pathname
-    const appearanceStyle = currentPath === '/admin' ? { display: 'none' } : {}
-    return (
-        <header style={appearanceStyle}>
+    return !currentPath.startsWith('/admin') ? (
+        <header>
             <div className={styles.headerBlocks}>
                 <Link className={styles.logo} to="/">
                     <img className={styles.logo} src={LogoImg} />
@@ -47,5 +46,5 @@ export const Header: FC = () => {
                 <CartButton />
             </div>
         </header>
-    )
+    ) : null
 }

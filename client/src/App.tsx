@@ -25,6 +25,7 @@ import { OrderDetails } from './screens/OrderDetails'
 import { Footer } from './components/Footer'
 
 import { Admin } from './screens/adminPages/Admin'
+import { Panel as AdminPanel } from './screens/adminPages/Panel/Panel'
 import { Test } from './screens/Test'
 
 // Legal pages
@@ -71,11 +72,6 @@ export const App: FC = () => {
                         <Home style={{ marginTop: '30px' }} />
                     </Route>
 
-                    {/* DEMO */}
-                    <Route exact path="/admin">
-                        <Admin />
-                    </Route>
-
                     {/* TEST */}
                     <Route exact path="/test">
                         <Test />
@@ -115,6 +111,14 @@ export const App: FC = () => {
 
                     <Route exact path="/order-details">
                         <OrderDetails />
+                    </Route>
+
+                    {/* Admin */}
+                    <Route exact path="/admin">
+                        <Admin />
+                    </Route>
+                    <Route path="/admin/panel">
+                        <AdminPanel />
                     </Route>
 
                     {/* Legal links */}

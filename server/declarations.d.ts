@@ -1,9 +1,9 @@
-import * as admin from 'firebase-admin'
+// export {}
 
-declare global {
-    namespace Express {
-        interface Request {
-            user: admin.auth.DecodedIdToken
-        }
-    }
-}
+// declare global {
+//     namespace Express {
+//         interface Request {
+//             idToken?: string
+//         }
+//     }
+// }

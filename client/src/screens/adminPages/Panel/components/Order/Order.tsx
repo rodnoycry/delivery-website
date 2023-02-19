@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { useSelector } from 'react-redux'
-import { RootState as StoreState } from '../../../../redux/store'
-import { CartItemData } from '../../../../interfaces'
-import { AdminOrder } from '../../../../redux/slices/adminOrdersSlice'
-import { getCartItemsData } from '../../../../functions'
+import { RootState as StoreState } from '@/redux/store'
+import { CartItemData } from '@/interfaces'
+import { AdminOrder } from '@/redux/slices/adminOrdersSlice'
+import { getCartItemsData } from '@/functions'
 import styles from './Order.module.css'
 import { Item } from './components/Item'
 import { Detail } from './components/Detail'
@@ -36,7 +36,7 @@ export const Order: FC<AdminOrder> = ({
         'Номер телефона:': phone,
         'Имя:': name,
         'Тип доставки:': deliveryType,
-        'Адрес:': `${street}, ${house}`,
+        'Адрес:': `${street ?? ''}, ${house ?? ''}`,
         'Количество персон:': personQty,
         'Время доставки:': deliveryTime,
         'Оплата:': paymentMethod,
@@ -56,7 +56,7 @@ export const Order: FC<AdminOrder> = ({
             <h1 className={styles.sum}>Сумма заказа {sum} ₽</h1>
             <div className={styles.details}>
                 {Object.entries(detailsObj).map(([key, value]) => {
-                    return <Detail key={key} key_={key} value={value || ''} />
+                    return <Detail key={key} key_={key} value={value ?? ''} />
                 })}
             </div>
             <button className={styles.button}>Заказ завершён</button>
