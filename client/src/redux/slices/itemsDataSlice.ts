@@ -1,17 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { getItemData } from './functions'
-
-export interface ItemData {
-    id: number
-    type: string
-    image: string
-    name: string
-    description: string
-    isNew: boolean
-    spiciness?: number
-    qty?: number
-    price: number[] | number
-}
+import { ItemData } from '@/interfaces'
 
 const itemDataInitialState: ItemData[] = getItemData()
 

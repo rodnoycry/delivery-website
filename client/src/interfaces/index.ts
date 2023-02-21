@@ -1,5 +1,16 @@
-import { ItemData } from '../redux/slices/itemsDataSlice'
 import { CartItem } from '@/redux/slices/cartSlice'
+
+export interface ItemData {
+    id: number
+    type: string
+    image: string
+    name: string
+    description: string
+    isNew: boolean
+    spiciness?: number
+    qty?: number
+    price: number[] | number
+}
 
 export interface CartItemData extends ItemData {
     selected: number | boolean

@@ -3,6 +3,7 @@ import cors from 'cors'
 import { body } from 'express-validator'
 import path from 'path'
 import { handleTestRequest } from './api'
+import { handleAddItem, handleItemsRequest } from './api/items'
 import { checkAdmin } from './utils'
 
 const app = express()
@@ -33,6 +34,10 @@ app.get('*', (req, res) => {
 app.post('/api/admin/check', checkAdmin, (req: Request, res: Response) => {
     return res.send({ isAdmin: true })
 })
+
+// Items handling
+app.post('/api/items/get', handleItemsRequest)
+app.post('/api/items/add', checkAdmin, handleAddItem)
 
 // Start the server
 app.listen(port, () => {

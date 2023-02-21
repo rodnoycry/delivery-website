@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -17,7 +17,7 @@ import { HomeCarousel } from './components/Carousel'
 import { NavBar } from './components/NavBar'
 import { Search } from './components/Search'
 import { Home } from './screens/Home'
-import { ItemsList } from './screens/ItemsList'
+import { UserItemsList } from './screens/UserItemsList'
 
 import { Cart } from './screens/Cart'
 import { OrderDetails } from './screens/OrderDetails'
@@ -34,23 +34,22 @@ import { Terms } from './screens/legal/Terms'
 import { DataPolicy } from './screens/legal/DataPolicy'
 
 export const App: FC = () => {
+    const [search, setSearch] = useState<string>('')
+    const [isCartStoreLoaded, setIsCartStoreLoaded] = useState<boolean>(false)
+    const [isOrderStoreLoaded, setIsOrderStoreLoaded] = useState<boolean>(false)
     const localStorageStore = {
         cart: window.localStorage.getItem('cart'),
         order: window.localStorage.getItem('order'),
-        adminOrders: window.localStorage.getItem('adminOrders'),
     }
     const dispatch = useDispatch()
     useEffect(() => {
-        if (localStorageStore.cart) {
+        if (localStorageStore.cart && !isCartStoreLoaded) {
             dispatch(setReduxCart(JSON.parse(localStorageStore.cart)))
+            setIsCartStoreLoaded(true)
         }
-        if (localStorageStore.order) {
+        if (localStorageStore.order && !isOrderStoreLoaded) {
             dispatch(updateReduxOrder(JSON.parse(localStorageStore.order)))
-        }
-        if (localStorageStore.adminOrders) {
-            dispatch(
-                setReduxAdminOrders(JSON.parse(localStorageStore.adminOrders))
-            )
+            setIsOrderStoreLoaded(true)
         }
     }, [localStorageStore])
     return (
@@ -66,10 +65,17 @@ export const App: FC = () => {
                 />
                 <HomeCarousel appearancePaths={topItemsAppearancePaths} />
                 <NavBar style={{ marginTop: '10px' }} />
-                <Search appearancePaths={topItemsAppearancePaths} />
+                <Search
+                    search={search}
+                    setSearch={setSearch}
+                    appearancePaths={topItemsAppearancePaths}
+                />
                 <Switch>
                     <Route exact path="/">
-                        <Home style={{ marginTop: '30px' }} />
+                        <Home
+                            style={{ marginTop: '30px' }}
+                            search={search.trim()}
+                        />
                     </Route>
 
                     {/* TEST */}
@@ -81,10 +87,10 @@ export const App: FC = () => {
                         <span>1</span>
                     </Route>
                     <Route exact path="/sets">
-                        <ItemsList path="/sets" />
+                        <UserItemsList search={search.trim()} />
                     </Route>
                     <Route exact path="/pizza">
-                        <ItemsList path="/pizza" />
+                        <UserItemsList search={search.trim()} />
                     </Route>
                     <Route exact path="/cold-rolls">
                         <span>4</span>

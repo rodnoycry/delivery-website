@@ -1,5 +1,4 @@
-import { CartItemData } from '@/interfaces'
-import { ItemData } from '@/redux/slices/itemsDataSlice'
+import { CartItemData, ItemData } from '@/interfaces'
 import { CartItem } from '@/redux/slices/cartSlice'
 
 import { zoneDeliveryInfo } from '@/config'

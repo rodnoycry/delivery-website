@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { getAuth } from 'firebase-admin/auth'
-import { app } from '../firebase'
+import { auth } from '../firebase'
 import { adminEmails } from '../config'
 
 export const checkAdmin = (
@@ -12,8 +11,7 @@ export const checkAdmin = (
     if (!idToken) {
         return res.status(401).send({ message: 'Unauthorized' })
     }
-    getAuth(app)
-        .verifyIdToken(idToken)
+    auth.verifyIdToken(idToken)
         .then((decodedToken) => {
             if (!decodedToken.email) {
                 throw new Error()

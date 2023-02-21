@@ -1,16 +1,22 @@
 import React from 'react'
 import type { FC } from 'react'
+import { useLocation } from 'react-router-dom'
 import styles from './ItemsList.module.css'
 import { itemsPathsRenderData } from '@/config'
 import { Category } from './components/Category'
 
+type ItemsListMode = 'user' | 'admin'
+
 interface Props {
-    path: string
+    mode: ItemsListMode
+    search: string
     style?: object
 }
 
-export const ItemsList: FC<Props> = ({ path, style }) => {
+export const ItemsList: FC<Props> = ({ mode, search, style }) => {
     let categoriesData
+    const location = useLocation()
+    const path = location.pathname
     const isSearch = path.startsWith('/search')
     if (!isSearch) {
         const { title, data } =

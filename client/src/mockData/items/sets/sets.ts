@@ -1,4 +1,4 @@
-import { ItemData } from '../interfaces'
+import { ItemData } from '@/interfaces'
 import Image0 from '@mockData/items/sets/images/set-0.jpg'
 import Image1 from '@mockData/items/sets/images/set-1.jpg'
 import Image2 from '@mockData/items/sets/images/set-2.jpg'

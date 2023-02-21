@@ -8,15 +8,13 @@ import {
 } from '@/redux/store'
 import { getPrice, getQty } from './functions'
 import styles from './Item.module.css'
-import { ItemData } from '@/mockData/items/interfaces'
+import { CartItemData } from '@/interfaces'
 import { Selector } from './components/Selector'
 import { Button } from './components/Button'
 import { Counter } from './components/Counter'
 import { CartItem } from '@/redux/slices/cartSlice'
 
-interface Props extends ItemData {}
-
-export const Item: FC<Props> = ({
+export const Item: FC<CartItemData> = ({
     id,
     type,
     image,
@@ -33,10 +31,10 @@ export const Item: FC<Props> = ({
     const defaultCart: CartItem[] = []
     const cart =
         useSelector((state: StoreState) => state.cartState) || defaultCart
-    const [qty, setQty] = useState(getQty(cart, id, selected))
+    const [qty, setQty] = useState(getQty(cart, id, selected as number))
     const dispatch = useDispatch()
     useEffect(() => {
-        setQty(getQty(cart, id, selected))
+        setQty(getQty(cart, id, selected as number))
     }, [selected, cart])
 
     // Methods for buttons to add or remove item
@@ -73,7 +71,7 @@ export const Item: FC<Props> = ({
             </p>
             <Selector
                 type={type}
-                selected={selected}
+                selected={selected as number}
                 itemId={id}
                 setItemSelected={setSelected}
                 style={{ marginTop: '7px' }}
@@ -83,7 +81,7 @@ export const Item: FC<Props> = ({
             </span>
             <div className={styles.item}>
                 <span className={styles.item}>
-                    {getPrice(type, price, selected)}₽
+                    {getPrice(type, price, selected as number)}₽
                 </span>
                 {getButton(qty)}
             </div>

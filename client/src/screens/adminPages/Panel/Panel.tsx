@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { onAuthStateChanged, User } from 'firebase/auth'
 import { useHistory } from 'react-router-dom'
 import { auth } from '@/firebase'
-import { getIsAdminFromServer } from '@/services/apiService'
+import { getIsAdminFromServer, createSampleUser } from '@/services/apiService'
 import { AdminOrder } from '@/redux/slices/adminOrdersSlice'
 import { RootState as StoreState } from '@/redux/store'
 import styles from './Panel.module.css'
@@ -99,6 +99,16 @@ export const Panel: FC = () => {
                 console.error(error)
             })
     }
+
+    const handleAddUser = (): void => {
+        createSampleUser()
+            .then(() => {
+                console.log('success?')
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+    }
     return (
         <div className={styles.admin}>
             <div className={styles.header}>
@@ -123,6 +133,7 @@ export const Panel: FC = () => {
                 </div>
             </div>
             <button onClick={handleSignOut}>Sign Out</button>
+            <button onClick={handleAddUser}>Add sample user</button>
             <div className={styles.orders} style={{ marginTop: 20 }}>
                 {orders.map((order) => {
                     return <Order key={order.time} {...order} />
