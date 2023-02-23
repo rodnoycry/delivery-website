@@ -16,7 +16,7 @@ import { Header } from './components/Header'
 import { HomeCarousel } from './components/Carousel'
 import { NavBar } from './components/NavBar'
 import { Search } from './components/Search'
-import { Home } from './screens/Home'
+import { UserHome } from './screens/UserHome'
 import { UserItemsList } from './screens/UserItemsList'
 
 import { Cart } from './screens/Cart'
@@ -26,6 +26,8 @@ import { Footer } from './components/Footer'
 
 import { Admin } from './screens/adminPages/Admin'
 import { Panel as AdminPanel } from './screens/adminPages/Panel/Panel'
+import { AdminHome } from './screens/adminPages/AdminHome'
+import { AdminItemsList } from './screens/adminPages/AdminItemsList'
 import { Test } from './screens/Test'
 
 // Legal pages
@@ -72,7 +74,7 @@ export const App: FC = () => {
                 />
                 <Switch>
                     <Route exact path="/">
-                        <Home
+                        <UserHome
                             style={{ marginTop: '30px' }}
                             search={search.trim()}
                         />
@@ -125,6 +127,11 @@ export const App: FC = () => {
                     </Route>
                     <Route path="/admin/panel">
                         <AdminPanel />
+                    </Route>
+
+                    <Route path="/admin/editing">
+                        <AdminHome />
+                        {/* <AdminItemsList /> */}
                     </Route>
 
                     {/* Legal links */}

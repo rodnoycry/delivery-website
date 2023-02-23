@@ -8,5 +8,5 @@ interface Props {
 }
 
 export const UserItemsList: FC<Props> = ({ search, style }) => {
-    return <ItemsList mode={'user'} search={search} style={style} />
+    return <ItemsList isAdmin={false} search={search} style={style} />
 }

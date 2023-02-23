@@ -1,10 +1,6 @@
-
-
 div.promo {
     position: relative;
     display: inline-block;
-    height: 230px;
-    border-radius: 7px;
     overflow: hidden;
     cursor: pointer;
 }
@@ -63,4 +59,30 @@ p.descriptionContainer {
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+}
+
+/* Admin editing icon styling */
+button.adminEdit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    left: 25px;
+    top: 20px;
+
+    width: 60px;
+    height: 60px;
+    background-color: #353535;
+    border-radius: 9px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+button.adminEdit:hover {
+    background-color: #555555;
+}
+
+img.adminEdit {
+    width: 37px;
+    height: auto;
 }

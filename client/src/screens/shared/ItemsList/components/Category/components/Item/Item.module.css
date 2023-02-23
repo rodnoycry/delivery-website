@@ -1,14 +1,10 @@
 li.item {
     position: relative;
 
-    margin-top: 20px;
     padding-left: 15px;
     padding-right: 15px;
 
-    height: 450px;
-    width: 270px;
     background-color: black;
-    border-radius: 28px;
 
     box-shadow: none;
     transition: box-shadow 0.3s ease-in-out;
@@ -80,4 +76,30 @@ span.item {
     font-size: 24px;
     letter-spacing: 0.05em;
     cursor: default;
+}
+
+/* Admin edit icon */
+button.adminEdit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    left: 25px;
+    top: 20px;
+
+    width: 60px;
+    height: 60px;
+    background-color: #353535;
+    border-radius: 9px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+button.adminEdit:hover {
+    background-color: #555555;
+}
+
+img.adminEdit {
+    width: 37px;
+    height: auto;
 }

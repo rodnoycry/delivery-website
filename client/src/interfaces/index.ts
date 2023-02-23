@@ -1,5 +1,15 @@
 import { CartItem } from '@/redux/slices/cartSlice'
 
+// Promo related
+export interface PromoData {
+    id: number
+    name: string
+    description: string
+    image: string
+    isNew: boolean
+}
+
+// Items related
 export interface ItemData {
     id: number
     type: string
@@ -17,6 +27,7 @@ export interface CartItemData extends ItemData {
     qtyInCart: number
 }
 
+// Orders related
 export interface DetailedOrder {
     // Main data
     time: string

@@ -1,19 +1,19 @@
-import React from 'react'
+import React, { createContext } from 'react'
 import type { FC } from 'react'
 import { useLocation } from 'react-router-dom'
 import styles from './ItemsList.module.css'
 import { itemsPathsRenderData } from '@/config'
 import { Category } from './components/Category'
 
-type ItemsListMode = 'user' | 'admin'
-
 interface Props {
-    mode: ItemsListMode
+    isAdmin: boolean
     search: string
     style?: object
 }
 
-export const ItemsList: FC<Props> = ({ mode, search, style }) => {
+export const IsAdminContext = createContext<boolean>(false)
+
+export const ItemsList: FC<Props> = ({ isAdmin, search, style }) => {
     let categoriesData
     const location = useLocation()
     const path = location.pathname
@@ -26,14 +26,20 @@ export const ItemsList: FC<Props> = ({ mode, search, style }) => {
         categoriesData = [{}]
     }
     return (
-        <main className={styles.itemsList}>
-            {categoriesData.map((categoryData) => {
-                const title = Object.keys(categoryData)[0]
-                const itemsData = categoryData[title]
-                return (
-                    <Category key={title} title={title} itemsData={itemsData} />
-                )
-            })}
-        </main>
+        <IsAdminContext.Provider value={isAdmin}>
+            <main className={styles.itemsList}>
+                {categoriesData.map((categoryData) => {
+                    const title = Object.keys(categoryData)[0]
+                    const itemsData = categoryData[title]
+                    return (
+                        <Category
+                            key={title}
+                            title={title}
+                            itemsData={itemsData}
+                        />
+                    )
+                })}
+            </main>
+        </IsAdminContext.Provider>
     )
 }

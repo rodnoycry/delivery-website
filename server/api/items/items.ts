@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 // import { FieldValue } from 'firebase-admin/firestore'
-import { db } from 'server/firebase'
+import { db } from '../../firebase'
 import { ItemData } from '@/interfaces'
 
 // Add item to db

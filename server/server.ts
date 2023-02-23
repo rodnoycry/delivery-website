@@ -37,6 +37,7 @@ app.post('/api/admin/check', checkAdmin, (req: Request, res: Response) => {
 
 // Items handling
 app.post('/api/items/get', handleItemsRequest)
+
 app.post('/api/items/add', checkAdmin, handleAddItem)
 
 // Start the server

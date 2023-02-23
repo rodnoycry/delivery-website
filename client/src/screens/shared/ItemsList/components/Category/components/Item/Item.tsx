@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext, CSSProperties } from 'react'
 import type { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -8,13 +8,21 @@ import {
 } from '@/redux/store'
 import { getPrice, getQty } from './functions'
 import styles from './Item.module.css'
-import { CartItemData } from '@/interfaces'
+import { ItemData, CartItemData } from '@/interfaces'
+import { IsAdminContext } from '@/screens/shared/ItemsList/ItemsList'
 import { Selector } from './components/Selector'
 import { Button } from './components/Button'
 import { Counter } from './components/Counter'
 import { CartItem } from '@/redux/slices/cartSlice'
+import EditImage from './images/Edit.png'
 
-export const Item: FC<CartItemData> = ({
+interface Props extends CartItemData {
+    setIsEditingItem?: (isEditingItem: boolean) => void
+    setCurrentItemData?: (itemData: ItemData) => void
+    style?: CSSProperties
+}
+
+export const Item: FC<Props> = ({
     id,
     type,
     image,
@@ -25,9 +33,13 @@ export const Item: FC<CartItemData> = ({
     qty: innerQty,
     price,
     selected: selected_,
+    setIsEditingItem,
+    setCurrentItemData,
+    style,
 }) => {
     selected_ = selected_ !== false && selected_ !== undefined ? selected_ : 1
     const [selected, setSelected] = useState(selected_)
+    const isAdmin = useContext(IsAdminContext)
     const defaultCart: CartItem[] = []
     const cart =
         useSelector((state: StoreState) => state.cartState) || defaultCart
@@ -55,9 +67,31 @@ export const Item: FC<CartItemData> = ({
             <Button addItem={addItem} />
         )
     }
+
+    const handleEditItem = (): void => {
+        if (setIsEditingItem && setCurrentItemData) {
+            setIsEditingItem(true)
+            setCurrentItemData({
+                id,
+                type,
+                image,
+                name,
+                description,
+                isNew,
+                spiciness,
+                qty,
+                price,
+            })
+        }
+    }
     return (
-        <li className={styles.item} key={id}>
+        <li className={styles.item} style={style} key={id}>
             {isNew ? <div className={styles.newLabel}>New</div> : null}
+            {isAdmin ? (
+                <button className={styles.adminEdit} onClick={handleEditItem}>
+                    <img className={styles.adminEdit} src={EditImage} />
+                </button>
+            ) : null}
             <img className={styles.item} src={image} />
             <h1 className={styles.item}>{name}</h1>
             <p
