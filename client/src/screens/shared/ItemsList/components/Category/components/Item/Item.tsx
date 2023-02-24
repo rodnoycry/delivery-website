@@ -79,7 +79,7 @@ export const Item: FC<Props> = ({
                 description,
                 isNew,
                 spiciness,
-                qty,
+                qty: innerQty,
                 price,
             })
         }

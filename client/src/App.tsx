@@ -10,7 +10,7 @@ import {
     setAdminOrders as setReduxAdminOrders,
 } from './redux/store'
 import styles from './App.module.css'
-import { topItemsAppearancePaths } from './config'
+import { topItemsAppearancePaths, categoriesPaths } from './config'
 
 import { Header } from './components/Header'
 import { HomeCarousel } from './components/Carousel'
@@ -125,14 +125,25 @@ export const App: FC = () => {
                     <Route exact path="/admin">
                         <Admin />
                     </Route>
-                    <Route path="/admin/panel">
+                    <Route exact path="/admin/panel">
                         <AdminPanel />
                     </Route>
 
-                    <Route path="/admin/editing">
+                    <Route exact path="/admin/editing">
                         <AdminHome />
-                        {/* <AdminItemsList /> */}
                     </Route>
+
+                    {categoriesPaths.map((path) => {
+                        return (
+                            <Route
+                                exact
+                                path={`/admin/editing${path}`}
+                                key={path}
+                            >
+                                <AdminItemsList />
+                            </Route>
+                        )
+                    })}
 
                     {/* Legal links */}
                     <Route exact path="/offer">

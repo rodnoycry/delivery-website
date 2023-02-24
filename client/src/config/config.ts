@@ -24,6 +24,20 @@ export const topItemsAppearancePaths = [
     '/extra',
 ]
 
+export const categoriesPaths = [...topItemsAppearancePaths]
+
+export const categoryNamesDecode = {
+    promo: 'Акции',
+    sets: 'Сеты',
+    pizza: 'Пицца',
+    'cold-rolls': 'Холодные роллы',
+    'hot-rolls': 'Горячие роллы',
+    wok: 'WOK и Лапша',
+    meals: 'Горячее',
+    burgers: 'Бургеры',
+    extra: 'Дополнительно',
+}
+
 export const zoneDeliveryInfo = {
     Талдом: {
         minSum: 500,

@@ -11,10 +11,24 @@ import LoginImg from './images/Login.png'
 export const Header: FC = () => {
     const location = useLocation()
     const currentPath = location.pathname
-    return !currentPath.startsWith('/admin') ? (
+    const isAdmin = currentPath.startsWith('/admin/editing')
+    let shouldShow = true
+
+    if (currentPath.startsWith('/admin')) {
+        if (isAdmin) {
+            shouldShow = true
+        } else {
+            shouldShow = false
+        }
+    }
+
+    return shouldShow ? (
         <header>
             <div className={styles.headerBlocks}>
-                <Link className={styles.logo} to="/">
+                <Link
+                    className={styles.logo}
+                    to={isAdmin ? '/admin/editing' : '/'}
+                >
                     <img className={styles.logo} src={LogoImg} />
                 </Link>
                 <div className={styles.infoContainer}>

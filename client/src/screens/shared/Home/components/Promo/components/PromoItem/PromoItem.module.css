@@ -68,14 +68,16 @@ button.adminEdit {
     align-items: center;
 
     position: absolute;
-    left: 25px;
-    top: 20px;
+    left: 10px;
+    top: 10px;
 
     width: 60px;
     height: 60px;
     background-color: #353535;
     border-radius: 9px;
     transition: background-color 0.2s ease-in-out;
+
+    z-index: 10;
 }
 
 button.adminEdit:hover {

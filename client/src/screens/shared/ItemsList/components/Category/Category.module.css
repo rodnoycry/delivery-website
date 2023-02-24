@@ -22,6 +22,8 @@ li.addItem {
 
     background-color: #353535;
     transition: background-color 0.2s ease-in-out;
+
+    cursor: pointer;
 }
 
 li.addItem:hover {

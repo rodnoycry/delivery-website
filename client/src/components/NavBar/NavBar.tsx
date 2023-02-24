@@ -11,11 +11,24 @@ interface Props {
 export const NavBar: FC<Props> = ({ style }) => {
     const location = useLocation()
     const currentPath = location.pathname
-    return !currentPath.startsWith('/admin') ? (
+    const isAdmin = currentPath.startsWith('/admin/editing')
+    let shouldShow = true
+
+    if (currentPath.startsWith('/admin')) {
+        if (isAdmin) {
+            shouldShow = true
+        } else {
+            shouldShow = false
+        }
+    }
+
+    const linkPrefix = isAdmin ? '/admin/editing' : ''
+
+    return shouldShow ? (
         <nav style={style}>
             {Object.entries(linksObject).map(([link, label]): JSX.Element => {
                 return (
-                    <Link to={link} key={link}>
+                    <Link to={`${linkPrefix}${link}`} key={link}>
                         <button
                             className={styles.link}
                             style={

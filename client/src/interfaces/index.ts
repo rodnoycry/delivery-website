@@ -15,7 +15,7 @@ export interface ItemData {
     type: string
     image: string
     name: string
-    description: string
+    description?: string
     isNew: boolean
     spiciness?: number
     qty?: number

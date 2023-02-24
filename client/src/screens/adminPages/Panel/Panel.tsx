@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { useSelector } from 'react-redux'
 import { onAuthStateChanged, User } from 'firebase/auth'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { auth } from '@/firebase'
 import { getIsAdminFromServer, createSampleUser } from '@/services/apiService'
 import { AdminOrder } from '@/redux/slices/adminOrdersSlice'
@@ -113,14 +113,26 @@ export const Panel: FC = () => {
         <div className={styles.admin}>
             <div className={styles.header}>
                 <img className={styles.header} src={LogoImg} />
-                <button className={styles.header}>
-                    <img className={styles.edit} src={EditImg} />
-                    <h1>Редактировать сайт</h1>
-                </button>
-                <button className={styles.header}>
-                    <img className={styles.edit} src={BonusImg} />
-                    <h1>Бонусные программы</h1>
-                </button>
+                <Link
+                    to="/admin/editing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <button className={styles.header}>
+                        <img className={styles.edit} src={EditImg} />
+                        <h1>Редактировать сайт</h1>
+                    </button>
+                </Link>
+                <Link
+                    to="/admin/panel"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <button className={styles.header}>
+                        <img className={styles.edit} src={BonusImg} />
+                        <h1>Бонусные программы</h1>
+                    </button>
+                </Link>
                 <div className={styles.notifications}>
                     <h1>Уведомления:</h1>
                     <img

@@ -8,6 +8,7 @@
 
 /* Carousel item */
 div.item {
+    position: relative;
     width: 1300px;
     height: 430px;
     padding-left: 50px;
@@ -53,4 +54,43 @@ img.item {
 
 :global(.indicator.active) {
     opacity: 0.8;
+}
+
+/* Admin editing */
+
+div.admin {
+    position: absolute;
+    right: 38px;
+    top: 6px;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+button.admin {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #555555;
+    opacity: 0.8;
+    border-radius: 9px;
+
+    transition: opacity 0.2s ease-in-out;
+}
+
+button.admin:hover {
+    opacity: 1;
+}
+
+img.adminEdit {
+    width: 37px;
+    height: auto;
+}
+
+img.adminAdd {
+    width: 30px;
+    height: auto;
 }

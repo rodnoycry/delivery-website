@@ -2,7 +2,7 @@ import React, { createContext } from 'react'
 import type { FC } from 'react'
 import { useLocation } from 'react-router-dom'
 import styles from './ItemsList.module.css'
-import { itemsPathsRenderData } from '@/config'
+import { itemsPathsRenderData, categoryNamesDecode } from '@/config'
 import { Category } from './components/Category'
 
 interface Props {
@@ -17,10 +17,14 @@ export const ItemsList: FC<Props> = ({ isAdmin, search, style }) => {
     let categoriesData
     const location = useLocation()
     const path = location.pathname
+    const category = path.split('/').pop()
+    const categoryPath = `/${category as string}`
     const isSearch = path.startsWith('/search')
     if (!isSearch) {
         const { title, data } =
-            itemsPathsRenderData[path as keyof typeof itemsPathsRenderData]
+            itemsPathsRenderData[
+                categoryPath as keyof typeof itemsPathsRenderData
+            ]
         categoriesData = [{ [title]: data }]
     } else {
         categoriesData = [{}]
@@ -34,7 +38,7 @@ export const ItemsList: FC<Props> = ({ isAdmin, search, style }) => {
                     return (
                         <Category
                             key={title}
-                            title={title}
+                            type={category as string}
                             itemsData={itemsData}
                         />
                     )

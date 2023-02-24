@@ -5,28 +5,43 @@ import { ItemData } from '@/interfaces'
 
 // Add item to db
 export const handleAddItem = (req: Request, res: Response): void => {
-    addItem(req.body)
+    const filename = req.file?.filename
+    console.log(req.file?.filename)
+    // Construct the URL of the uploaded file
+    const imageUrl = `/images/items/${filename ?? ''}`
+    const itemData = JSON.parse(req.body.itemData)
+    itemData.image = imageUrl
+    addItem(itemData)
         .then(() => {
-            return res.status(201)
+            return res.status(201).send()
         })
         .catch((error) => {
             console.error(error)
-            return res.status(500).json({ error })
+            return res.status(500).json({ error }).send()
         })
 }
 
 const addItem = async (itemData: ItemData): Promise<void> => {
     const counterDocRef = db.collection('counters').doc('items')
     // const increment = FieldValue.increment(1)
-    const id = await db.runTransaction(async (t) => {
-        const itemsCounterDoc: any = await t.get(counterDocRef)
-        const id = (itemsCounterDoc.counter as number) + 1
-        t.update(counterDocRef, { counter: id })
-        return id
-    })
+    try {
+        const id = await db.runTransaction(async (t) => {
+            const itemsCounterDoc: any = await t.get(counterDocRef)
+            const counter = itemsCounterDoc.data().counter
+            const id = (counter as number) + 1
+            t.update(counterDocRef, { counter: id })
+            return id
+        })
 
-    const docRef = db.collection('items').doc(id.toString())
-    await docRef.set(itemData)
+        const docRef = db
+            .collection('items')
+            .doc(id.toString().padStart(6, '0'))
+        await docRef.set(itemData)
+        return
+    } catch (error) {
+        console.error(error)
+        throw new Error()
+    }
 }
 
 // Return all items

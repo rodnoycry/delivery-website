@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Slide } from 'react-slideshow-image'
@@ -6,6 +6,9 @@ import 'react-slideshow-image/dist/styles.css'
 import styles from './Carousel.module.css'
 import ArrowPrev from './images/ArrowLeft.png'
 import ArrowNext from './images/ArrowRight.png'
+
+import EditImg from './images/Edit.png'
+import AddImg from './images/Add.png'
 
 import Image0 from '@images/carousel/00.png'
 import Image1 from '@images/carousel/01.jpg'
@@ -33,10 +36,27 @@ const properties = {
 }
 
 export const HomeCarousel: FC<Props> = ({ appearancePaths, style }) => {
+    const [isAdding, setIsAdding] = useState<boolean>(false)
+    const [isEditing, setIsEditing] = useState<boolean>(false)
+    const [currentPromoData, setCurrentPromoData] = useState<string>('')
+
+    useEffect(() => {
+        if (!isAdding) {
+            setCurrentPromoData('')
+        }
+    }, [isAdding])
+
+    useEffect(() => {
+        if (!isEditing) {
+            setCurrentPromoData('')
+        }
+    }, [isEditing])
+
     const location = useLocation()
     const currentPath = location.pathname
+    const isAdmin = currentPath.startsWith('/admin/editing')
     const appearanceStyle =
-        appearancePaths.includes(currentPath) || currentPath === '/'
+        appearancePaths.includes(currentPath) || currentPath === '/' || isAdmin
             ? {}
             : { display: 'none' }
     const images = [Image0, Image1, Image2]
@@ -62,6 +82,32 @@ export const HomeCarousel: FC<Props> = ({ appearancePaths, style }) => {
                             id={`slide-${index}`}
                         >
                             <div className={styles.item}>
+                                {isAdmin ? (
+                                    <div className={styles.admin}>
+                                        <button
+                                            className={styles.admin}
+                                            onClick={() => {
+                                                setIsEditing(true)
+                                            }}
+                                        >
+                                            <img
+                                                className={styles.adminEdit}
+                                                src={EditImg}
+                                            />
+                                        </button>
+                                        <button
+                                            className={styles.admin}
+                                            onClick={() => {
+                                                setIsAdding(true)
+                                            }}
+                                        >
+                                            <img
+                                                className={styles.adminAdd}
+                                                src={AddImg}
+                                            />
+                                        </button>
+                                    </div>
+                                ) : null}
                                 <img className={styles.item} src={image} />
                             </div>
                         </div>

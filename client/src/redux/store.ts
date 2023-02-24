@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { CartItem, cartSlice } from './slices/cartSlice'
-import { ItemData, itemDataSlice } from './slices/itemsDataSlice'
+import { itemDataSlice } from './slices/itemsDataSlice'
+import { ItemData } from '@/interfaces'
 import { itemsStatesSlice, ItemState } from './slices/itemsStatesSlice'
 import { orderSlice, Order } from './slices/orderSlice'
 import { AdminOrder, adminOrdersSlice } from './slices/adminOrdersSlice' // DEMO
