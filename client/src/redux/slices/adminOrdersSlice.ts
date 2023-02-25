@@ -4,7 +4,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { CartItem } from './cartSlice'
 
 // ONLY FOR DEMONSTRATION PURPOSES
-export interface AdminOrder {
+export interface CompleteOrder {
     time: string
     sum: number
     cart: CartItem[] | undefined
@@ -16,23 +16,24 @@ export interface AdminOrder {
     personQty: string | undefined
     deliveryTime: string | undefined
     paymentMethod: string | undefined
+    hasChange: string | undefined
     comment: string | undefined
 }
 
 // ONLY FOR DEMONSTRATION PURPOSES
-const adminOrdersInitialState: AdminOrder[] = []
+const adminOrdersInitialState: CompleteOrder[] = []
 
 // ONLY FOR DEMONSTRATION PURPOSES
 export const adminOrdersSlice = createSlice({
     name: 'adminOrdersState',
     initialState: adminOrdersInitialState,
     reducers: {
-        setAdminOrders: (state, action: PayloadAction<AdminOrder[]>) => {
+        setAdminOrders: (state, action: PayloadAction<CompleteOrder[]>) => {
             action.payload.forEach((adminOrder) => {
                 state.push(adminOrder)
             })
         },
-        addAdminOrder: (state, action: PayloadAction<AdminOrder>) => {
+        addAdminOrder: (state, action: PayloadAction<CompleteOrder>) => {
             state.push(action.payload)
         },
     },

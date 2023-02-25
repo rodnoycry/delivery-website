@@ -67,6 +67,7 @@ const defaultSelectorStates = createDefaultSelectStates({
     TimeSelect: 'По готовности',
     DaySelect: '10 февраля',
     PaymentSelect: 'Банковской картой курьеру',
+    ChangeSelect: 'Со сдачей',
 })
 
 const ordersInitialState: Order | Record<string, any> = {

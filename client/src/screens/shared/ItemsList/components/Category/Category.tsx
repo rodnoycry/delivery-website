@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext, CSSProperties } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import type { FC } from 'react'
 import styles from './Category.module.css'
 import { useSelector } from 'react-redux'
 import { RootState as StoreState } from '@/redux/store'
 import { ItemData } from '@/interfaces'
 import { categoryNamesDecode } from '@/config'
-import { IsAdminContext } from '../../ItemsList'
+import { IsAdminContext, itemSizeStyle } from '../../ItemsList'
 import AddImage from './images/Add.png'
 import { Item } from './components/Item'
 import { UpdateItemWindow } from './components/UpdateItemWindow'
@@ -13,11 +13,12 @@ import { UpdateItemWindow } from './components/UpdateItemWindow'
 interface Props {
     type: string
     itemsData: ItemData[]
+    reloadData: () => void
     style?: object
 }
 
 const blankItemData: ItemData = {
-    id: 0,
+    id: '0',
     type: '',
     image: '',
     name: '',
@@ -28,7 +29,7 @@ const blankItemData: ItemData = {
     price: 0,
 }
 
-export const Category: FC<Props> = ({ type, itemsData, style }) => {
+export const Category: FC<Props> = ({ type, itemsData, reloadData, style }) => {
     const [isAddingItem, setIsAddingItem] = useState<boolean>(false)
     const [isEditingItem, setIsEditingItem] = useState<boolean>(false)
     if (['pizza', 'wok'].includes(type)) {
@@ -39,7 +40,7 @@ export const Category: FC<Props> = ({ type, itemsData, style }) => {
 
     useEffect(() => {
         if (!isEditingItem) {
-            setCurrentItemData(blankItemData)
+            setCurrentItemData({ ...blankItemData, isNew: true })
         }
     }, [isEditingItem])
 
@@ -51,11 +52,6 @@ export const Category: FC<Props> = ({ type, itemsData, style }) => {
 
     const isAdmin = useContext(IsAdminContext)
     const itemsStates = useSelector((state: StoreState) => state.itemsStates)
-    const itemSizeStyle: CSSProperties = {
-        height: 450,
-        width: 270,
-        borderRadius: 28,
-    }
     const title = categoryNamesDecode[type as keyof typeof categoryNamesDecode]
     let handleAddItem = (): void => {}
     if (isAdmin) {
@@ -109,6 +105,7 @@ export const Category: FC<Props> = ({ type, itemsData, style }) => {
                     setIsAddingItem={setIsAddingItem}
                     isEditingItem={isEditingItem}
                     setIsEditingItem={setIsEditingItem}
+                    reloadData={reloadData}
                 />
             ) : null}
         </>

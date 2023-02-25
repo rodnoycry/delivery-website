@@ -11,7 +11,7 @@ export interface PromoData {
 
 // Items related
 export interface ItemData {
-    id: number
+    id: string
     type: string
     image: string
     name: string
@@ -20,6 +20,10 @@ export interface ItemData {
     spiciness?: number
     qty?: number
     price: number[] | number
+}
+
+export interface ServerItemData extends ItemData {
+    isActive: boolean
 }
 
 export interface CartItemData extends ItemData {

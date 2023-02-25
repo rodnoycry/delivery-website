@@ -4,16 +4,16 @@ import { itemDataSlice } from './slices/itemsDataSlice'
 import { ItemData } from '@/interfaces'
 import { itemsStatesSlice, ItemState } from './slices/itemsStatesSlice'
 import { orderSlice, Order } from './slices/orderSlice'
-import { AdminOrder, adminOrdersSlice } from './slices/adminOrdersSlice' // DEMO
+import { CompleteOrder, adminOrdersSlice } from './slices/adminOrdersSlice' // DEMO
 import { syncCookieMiddleware } from './middleware'
 
 export interface RootState {
     cartState: CartItem[]
     itemDataState: ItemData[]
-    itemsStates: Record<number, ItemState>
+    itemsStates: Record<string, ItemState>
     orderState: Order
     // DEMO ONLY
-    adminOrdersState: AdminOrder[]
+    adminOrdersState: CompleteOrder[]
 }
 
 export const {

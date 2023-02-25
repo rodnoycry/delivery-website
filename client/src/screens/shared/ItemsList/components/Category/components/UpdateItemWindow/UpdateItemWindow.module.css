@@ -23,9 +23,9 @@ div.background {
     cursor: pointer;
 }
 
-form.window {
+div.window {
     width: 780px;
-    padding: 45px 83px;
+    padding: 30px 83px;
 
     background: #0F0F0F;
     border: 1px solid #727272;
@@ -136,6 +136,11 @@ button.back:hover {
 
 button.submit:hover {
     background-color: #777777;
+}
+
+button.submit:disabled {
+    opacity: 0.3;
+    cursor: default;
 }
 
 /* loading image */

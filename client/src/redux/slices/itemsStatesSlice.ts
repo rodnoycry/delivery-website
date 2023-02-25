@@ -2,11 +2,11 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface ItemState {
-    id: number
+    id: string
     selected: number
 }
 
-const itemsStatesInitialState: Record<number, ItemState> = {}
+const itemsStatesInitialState: Record<string, ItemState> = {}
 
 export const itemsStatesSlice = createSlice({
     name: 'itemsStates',

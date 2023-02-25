@@ -1,10 +1,20 @@
 import { CartItem } from '@/redux/slices/cartSlice'
-import { itemsData } from '@/mockData/items'
+import { ItemData } from '@/interfaces'
 
 import { zoneDeliveryInfo } from '@/config'
 import { Order } from '@/redux/slices/orderSlice'
+import { getItems } from '@/services/apiService/items'
 
-export const getSum = (cart: CartItem[]): number => {
+export const getItemsData = async (
+    cart: CartItem[],
+    setItemsData: (itemsData: ItemData[]) => void
+): Promise<void> => {
+    const ids = cart.map((cartItemData) => cartItemData.id)
+    const itemsData = await getItems(undefined, undefined, ids)
+    setItemsData(itemsData)
+}
+
+export const getSum = (cart: CartItem[], itemsData: ItemData[]): number => {
     let sum = 0
     cart.map(({ id, selected }) => {
         const filteredItemsData = itemsData.filter(
@@ -27,9 +37,10 @@ export const getSum = (cart: CartItem[]): number => {
 
 export const getSumWithDelivery = (
     zone: Order['zone'],
+    itemsData: ItemData[],
     cart: CartItem[]
 ): number | false => {
-    const pureSum = getSum(cart)
+    const pureSum = getSum(cart, itemsData)
     let sum = pureSum
     const minSum = zoneDeliveryInfo[zone].minSum
     const deliveryPrice = zoneDeliveryInfo[zone].deliveryPrice

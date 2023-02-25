@@ -3,12 +3,10 @@ import type { FC } from 'react'
 import { Link } from 'react-router-dom'
 import { RootState as StoreState, updateOrder } from '@/redux/store'
 import { Order, InputState } from '@redux/slices/orderSlice'
-import { resetCart, addAdminOrder } from '@redux/store'
 import { useSelector, useDispatch } from 'react-redux'
 import { checkErrors } from './functions'
-import { getSumWithDelivery } from '@/functions'
-// DEMO
-import { AdminOrder } from '@redux/slices/adminOrdersSlice'
+import { getItemsData, getSumWithDelivery } from '@/functions'
+import { ItemData } from '@/interfaces'
 
 import styles from './OrderDetails.module.css'
 
@@ -27,7 +25,8 @@ import { TimeSelect } from './Inputs&Selects/11.TimeSelect'
 import { DaySelect } from './Inputs&Selects/12.DaySelect'
 import { TimeInput } from './Inputs&Selects/13.TimeInput'
 import { PaymentSelect } from './Inputs&Selects/14.PaymentSelect'
-import { CommentInput } from './Inputs&Selects/15.CommentInput'
+import { ChangeSelect } from './Inputs&Selects/15.ChangeSelect'
+import { CommentInput } from './Inputs&Selects/16.CommentInput'
 
 import { Confirmation } from './components/Confirmation'
 import { SuccessScreen } from './components/SuccessScreen'
@@ -48,6 +47,7 @@ export const OrderDetails: FC<Props> = ({ style }) => {
     const [hasError, setHasError] = useState<boolean>(false)
     const [sum, setSum] = useState<number>(0)
     const [isSuccess, setIsSuccess] = useState<boolean>(false)
+    const [itemsData, setItemsData] = useState<ItemData[]>([])
     const dispatch = useDispatch()
     // Store Input States - states of inputs that retrieved from the Redux Store
     const storeInputStates = useSelector(
@@ -60,10 +60,19 @@ export const OrderDetails: FC<Props> = ({ style }) => {
     }, [])
 
     useEffect(() => {
-        if (cart !== undefined && storeInputStates !== undefined) {
-            setSum(getSumWithDelivery(storeInputStates.zone, cart) || 0)
+        if (cart) {
+            getItemsData(cart, setItemsData).catch(console.error)
         }
-    }, [cart, storeInputStates])
+    }, [cart])
+
+    useEffect(() => {
+        console.log(itemsData)
+        if (itemsData && cart !== undefined && storeInputStates !== undefined) {
+            setSum(
+                getSumWithDelivery(storeInputStates.zone, itemsData, cart) || 0
+            )
+        }
+    }, [itemsData, storeInputStates])
 
     // When Redux input states has changed - we update our local input states
     useEffect(() => {
@@ -120,32 +129,6 @@ export const OrderDetails: FC<Props> = ({ style }) => {
             newInputStates[key] = { ...newInputStates[key], ...value }
         })
         setInputStates(newInputStates)
-    }
-    // On submit button
-    const onSubmit = (): void => {
-        const currentDate = new Date()
-        const hours = currentDate.getHours()
-        const minutes = currentDate.getMinutes()
-
-        const time = `${hours < 10 ? `0${hours}` : hours}:${
-            minutes < 10 ? `0${minutes}` : minutes
-        }`
-        const orderInfo: AdminOrder = {
-            time,
-            cart,
-            sum,
-            phone: storeInputStates?.PhoneInput?.value,
-            name: storeInputStates?.NameInput?.value,
-            deliveryType: storeInputStates?.DeliveryTypeSelect?.selected?.value,
-            street: storeInputStates?.StreetInput?.value,
-            house: storeInputStates?.HouseInput?.value,
-            personQty: storeInputStates?.PersonQtySelect?.selected?.value,
-            deliveryTime: storeInputStates?.TimeSelect?.selected?.value,
-            paymentMethod: storeInputStates?.PaymentSelect?.selected?.value,
-            comment: storeInputStates?.CommentInput?.value,
-        }
-        dispatch(addAdminOrder(orderInfo))
-        dispatch(resetCart())
     }
     return (
         <div className={styles.orderDetails} style={style}>
@@ -264,6 +247,14 @@ export const OrderDetails: FC<Props> = ({ style }) => {
                         'На указанный адрес'
                     }
                 />
+                <ChangeSelect
+                    inputState={inputStates?.ChangeSelect}
+                    setInputState={setInputState}
+                    isVisible={
+                        inputStates?.PaymentSelect?.selected?.label ===
+                        'Наличными'
+                    }
+                />
                 <CommentInput
                     inputState={inputStates?.CommentInput}
                     setInputState={setInputState}
@@ -276,7 +267,8 @@ export const OrderDetails: FC<Props> = ({ style }) => {
                 hasError={hasError}
                 setHasError={setHasError}
                 setIsSuccess={setIsSuccess}
-                onSubmit={onSubmit}
+                cart={cart}
+                storeInputStates={storeInputStates}
             />
 
             <SuccessScreen isSuccess={isSuccess} setIsSuccess={setIsSuccess} />

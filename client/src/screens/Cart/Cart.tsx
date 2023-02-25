@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState as StoreState } from '@/redux/store'
 import { getCartItemsData } from './functions'
-import { getSumWithDelivery } from '@/functions'
-import { CartItemData } from '@/interfaces'
+import { getItemsData, getSumWithDelivery } from '@/functions'
+import { ItemData, CartItemData } from '@/interfaces'
 import { zoneDeliveryInfo as zoneInfo } from '@/config'
 import styles from './Cart.module.css'
 import { CartTable } from './components/CartTable'
@@ -16,15 +16,25 @@ import { EmptyCartMessage } from './components/EmptyCartMessage'
 export const Cart: FC = () => {
     const [sum, setSum] = useState(0)
     const [cartItemsData, setCartItemsData] = useState<CartItemData[]>([])
+    const [itemsData, setItemsData] = useState<ItemData[]>([])
     const [isError, setIsError] = useState<boolean>(false)
     const [zone, setZone] = useState<Order['zone']>('Талдом')
     const cart = useSelector((state: StoreState) => state.cartState)
     const order = useSelector((state: StoreState) => state.orderState)
-    const itemsData = useSelector((state: StoreState) => state.itemDataState)
 
     useEffect(() => {
-        if (cart && order.zone !== undefined) {
-            const sumWithDelivery = getSumWithDelivery(order.zone, cart)
+        if (cart) {
+            getItemsData(cart, setItemsData).catch(console.error)
+        }
+    }, [cart])
+
+    useEffect(() => {
+        if (cart && itemsData && order.zone !== undefined) {
+            const sumWithDelivery = getSumWithDelivery(
+                order.zone,
+                itemsData,
+                cart
+            )
             if (sumWithDelivery) {
                 setSum(sumWithDelivery)
                 setIsError(false)
@@ -33,7 +43,7 @@ export const Cart: FC = () => {
                 setIsError(true)
             }
         }
-    }, [cart, order])
+    }, [itemsData, order])
 
     useEffect(() => {
         if (cart !== undefined && itemsData !== undefined) {

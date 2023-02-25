@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import axios from 'axios'
 import { onAuthStateChanged, User } from 'firebase/auth'
 import { auth } from '@/firebase'
-import { ItemData } from '@/interfaces'
+import { ItemData, ServerItemData } from '@/interfaces'
 import { categoryNamesDecode, selectorsData } from '@/config'
 import styles from './UpdateItemWindow.module.css'
 import LoadImg from '@images/Load.png'
@@ -16,6 +16,7 @@ interface Props {
     setIsAddingItem: (isAddingItem: boolean) => void
     isEditingItem: boolean
     setIsEditingItem: (isAddingItem: boolean) => void
+    reloadData: () => void
 }
 
 export const UpdateItemWindow: FC<Props> = ({
@@ -26,11 +27,14 @@ export const UpdateItemWindow: FC<Props> = ({
     setIsAddingItem,
     isEditingItem,
     setIsEditingItem,
+    reloadData,
 }) => {
     const [user, setUser] = useState<User | null>(null)
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isError, setIsError] = useState<boolean>(false)
+    const [accessDelete, setAccessDelete] = useState<boolean>(false)
+    const [isDeleting, setIsDeleting] = useState<boolean>(false)
 
     const [initName] = useState<string>(itemData.name)
     const [image, setImage] = useState<File | null>(null)
@@ -75,12 +79,29 @@ export const UpdateItemWindow: FC<Props> = ({
 
     const sendToServer = async (): Promise<number> => {
         const address = isAddingItem ? '/api/items/add' : '/api/items/edit'
+        const serverItemData: ServerItemData = {
+            ...itemData,
+            isNew,
+            type,
+            isActive: true,
+        }
+        if (!hasDescription) {
+            serverItemData.description = undefined
+        }
+        if (!hasQty) {
+            serverItemData.qty = undefined
+        }
+        if (isDeleting) {
+            serverItemData.isActive = false
+        }
+        if (!['sets', 'cold-rolls', 'hot-rolls'].includes(type)) {
+            serverItemData.qty = undefined
+        }
         const formData = new FormData()
         const token = await user?.getIdToken()
-        console.log(token)
         formData.set('idToken', token as string)
         formData.append('image', image as Blob)
-        formData.append('itemData', JSON.stringify(itemData))
+        formData.append('itemData', JSON.stringify(serverItemData))
         try {
             const response = await axios.post(address, formData, {
                 headers: {
@@ -88,12 +109,7 @@ export const UpdateItemWindow: FC<Props> = ({
                     Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
                 },
             })
-            // const response = await axios({
-            //     method: 'post',
-            //     url: address,
-            //     data: formData,
-            //     headers: { 'Content-Type': 'multipart/form-data' },
-            // })
+            reloadData()
             return response.status
         } catch (error) {
             console.error(error)
@@ -101,8 +117,7 @@ export const UpdateItemWindow: FC<Props> = ({
         }
     }
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-        event.preventDefault()
+    const handleSubmit = (): void => {
         setIsLoading(true)
         sendToServer()
             .then(() => {
@@ -138,11 +153,7 @@ export const UpdateItemWindow: FC<Props> = ({
                     setIsEditingItem(false)
                 }}
             />
-            <form
-                className={styles.window}
-                onSubmit={handleSubmit}
-                encType="multipart/form-data"
-            >
+            <div className={styles.window}>
                 {/* Label */}
                 <h1 className={styles.window}>{label}</h1>
                 {/* Image input */}
@@ -242,7 +253,7 @@ export const UpdateItemWindow: FC<Props> = ({
                 {type === 'wok' ? (
                     <div className={styles.line}>
                         <div className={styles.labelWithCheckbox}>
-                            <h2 className={styles.window}>{`WOK: `}</h2>
+                            <h2 className={styles.window}>{`Выбор соуса: `}</h2>
                             <input
                                 type="checkbox"
                                 style={{ transform: 'scale(1.5)' }}
@@ -357,7 +368,7 @@ export const UpdateItemWindow: FC<Props> = ({
                     >
                         Отмена
                     </button>
-                    <button className={styles.submit} type="submit">
+                    <button className={styles.submit} onClick={handleSubmit}>
                         {isLoading ? (
                             <img className={styles.loadImage} src={LoadImg} />
                         ) : (
@@ -370,7 +381,46 @@ export const UpdateItemWindow: FC<Props> = ({
                         ? `Произошла ошибка. Пожалуйста, проверьте все поля и попробуйте снова`
                         : ``}
                 </p>
-            </form>
+                {/* Delete item */}
+                {isEditingItem ? (
+                    <div className={styles.line}>
+                        <h3 className={styles.window}>
+                            {`Для удаление введите слово "удалить"`}
+                        </h3>
+                        <input
+                            type="text"
+                            disabled={!hasQty}
+                            className={styles.text}
+                            value={itemData.qty}
+                            placeholder=""
+                            onChange={(event) => {
+                                const value = event.target.value
+                                const access =
+                                    value.trim().toLowerCase() === 'удалить'
+                                setAccessDelete(access)
+                            }}
+                        />
+                        <button
+                            className={styles.submit}
+                            style={{ backgroundColor: '#FF000A' }}
+                            disabled={!accessDelete}
+                            onClick={() => {
+                                setIsDeleting(true)
+                                handleSubmit()
+                            }}
+                        >
+                            {isLoading ? (
+                                <img
+                                    className={styles.loadImage}
+                                    src={LoadImg}
+                                />
+                            ) : (
+                                `Удалить`
+                            )}
+                        </button>
+                    </div>
+                ) : null}
+            </div>
         </div>
     )
 }

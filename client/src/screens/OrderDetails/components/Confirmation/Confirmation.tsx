@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { Link } from 'react-router-dom'
-import { Order } from '@/redux/slices/orderSlice'
+import { useDispatch } from 'react-redux'
 import { zoneDeliveryInfo } from '@/config'
+import { resetCart, addAdminOrder } from '@redux/store'
+import { Order } from '@/redux/slices/orderSlice'
+import { CompleteOrder } from '@/redux/slices/adminOrdersSlice'
+import { CartItem } from '@/redux/slices/cartSlice'
 import styles from './Confirmation.module.css'
 import { checkErrors } from '../../functions'
 
@@ -13,7 +17,8 @@ interface Props {
     hasError: boolean
     setHasError: (hasError: boolean) => void
     setIsSuccess: (isSuccess: boolean) => void
-    onSubmit: () => void
+    cart: CartItem[]
+    storeInputStates: Order
 }
 
 const errorMeassageObj = {
@@ -29,11 +34,14 @@ export const Confirmation: FC<Props> = ({
     hasError,
     setHasError,
     setIsSuccess,
-    onSubmit,
+    cart,
+    storeInputStates,
 }) => {
     const [errorMessage, setErrorMessage] = useState<string>(
         errorMeassageObj.empty
     )
+    const dispatch = useDispatch()
+
     useEffect(() => {
         if (inputStates.zone) {
             const minSum =
@@ -46,9 +54,39 @@ export const Confirmation: FC<Props> = ({
             if (minSum >= sum) {
                 setErrorMessage(errorMeassageObj.sumError)
                 setHasError(true)
+            } else {
+                setErrorMessage('')
+                setHasError(false)
             }
         }
     }, [sum, inputStates])
+    // On submit button
+    const onSubmit = (): void => {
+        const currentDate = new Date()
+        const hours = currentDate.getHours()
+        const minutes = currentDate.getMinutes()
+
+        const time = `${hours < 10 ? `0${hours}` : hours}:${
+            minutes < 10 ? `0${minutes}` : minutes
+        }`
+        const orderInfo: CompleteOrder = {
+            time,
+            cart,
+            sum,
+            phone: storeInputStates?.PhoneInput?.value,
+            name: storeInputStates?.NameInput?.value,
+            deliveryType: storeInputStates?.DeliveryTypeSelect?.selected?.value,
+            street: storeInputStates?.StreetInput?.value,
+            house: storeInputStates?.HouseInput?.value,
+            personQty: storeInputStates?.PersonQtySelect?.selected?.value,
+            deliveryTime: storeInputStates?.TimeSelect?.selected?.value,
+            paymentMethod: storeInputStates?.PaymentSelect?.selected?.value,
+            hasChange: storeInputStates?.ChangeSelect?.selected?.value,
+            comment: storeInputStates?.CommentInput?.value,
+        }
+        dispatch(addAdminOrder(orderInfo))
+        dispatch(resetCart())
+    }
     return (
         <>
             <div className={styles.upperInfoContainer}>

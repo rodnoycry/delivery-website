@@ -21,7 +21,7 @@ export const getPrice = (
 
 export const getQty = (
     cart: CartItem[],
-    id: number,
+    id: string,
     selected: number
 ): number => {
     return cart.filter((item) => item.id === id && item.selected === selected)

@@ -1,0 +1,25 @@
+li.item {
+    transform: translateZ(0);
+    will-change: opacity;
+    position: relative;
+
+    padding-left: 15px;
+    padding-right: 15px;
+
+    background-color: black;
+    box-shadow: none;
+    transition: box-shadow 0.3s ease-in-out;
+
+    animation: skeleton-loading 1s ease-in-out infinite alternate;
+}
+
+
+@keyframes skeleton-loading {
+    0% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 0.5;
+    }
+}

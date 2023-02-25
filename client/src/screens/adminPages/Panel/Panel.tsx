@@ -5,7 +5,7 @@ import { onAuthStateChanged, User } from 'firebase/auth'
 import { Link, useHistory } from 'react-router-dom'
 import { auth } from '@/firebase'
 import { getIsAdminFromServer, createSampleUser } from '@/services/apiService'
-import { AdminOrder } from '@/redux/slices/adminOrdersSlice'
+import { CompleteOrder } from '@/redux/slices/adminOrdersSlice'
 import { RootState as StoreState } from '@/redux/store'
 import styles from './Panel.module.css'
 import LogoImg from './images/Logo.png'
@@ -24,7 +24,7 @@ export const Panel: FC = () => {
 
     const [soundOn, setSoundOn] = useState<boolean>(true)
 
-    const [orders, setOrders] = useState<AdminOrder[]>([])
+    const [orders, setOrders] = useState<CompleteOrder[]>([])
     const itemsData = useSelector((state: StoreState) => state.itemDataState)
     const reduxOrders = useSelector(
         (state: StoreState) => state.adminOrdersState

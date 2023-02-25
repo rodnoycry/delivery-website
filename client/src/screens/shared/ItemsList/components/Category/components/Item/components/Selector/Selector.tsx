@@ -7,7 +7,7 @@ import styles from './Selector.module.css'
 
 export interface Props {
     type: string
-    itemId: number
+    itemId: string
     setItemSelected: (selected: number) => void
     selected?: number | false
     style?: object
@@ -23,7 +23,7 @@ export const Selector: FC<Props> = ({
     const defaultSelected = selected_ !== false ? selected_ : 1
     const dispatch = useDispatch()
     const [selected, setSelected] = useState(defaultSelected)
-    const onSelectedChange = (itemId: number, selectorId: number): void => {
+    const onSelectedChange = (itemId: string, selectorId: number): void => {
         setSelected(selectorId)
         setItemSelected(selectorId)
         dispatch(updateItemState({ id: itemId, selected: selectorId }))

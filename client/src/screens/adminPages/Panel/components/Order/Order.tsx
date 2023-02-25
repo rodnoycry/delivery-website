@@ -3,13 +3,13 @@ import type { FC } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState as StoreState } from '@/redux/store'
 import { CartItemData } from '@/interfaces'
-import { AdminOrder } from '@/redux/slices/adminOrdersSlice'
+import { CompleteOrder } from '@/redux/slices/adminOrdersSlice'
 import { getCartItemsData } from '@/functions'
 import styles from './Order.module.css'
 import { Item } from './components/Item'
 import { Detail } from './components/Detail'
 
-export const Order: FC<AdminOrder> = ({
+export const Order: FC<CompleteOrder> = ({
     time,
     cart,
     sum,

@@ -1,0 +1,27 @@
+ul.category {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 20px;
+    column-gap: 40px;
+    padding-top: 20px;
+}
+
+div.categoryLabel {
+    margin-top: 40px;
+    width: 200px;
+    height: 29px;
+    border-radius: 14px;
+    opacity: 0.1;
+    background-color: rgb(173, 173, 173);
+    animation: skeleton-loading 1s ease-in-out infinite alternate;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        opacity: 0.1;
+    }
+
+    100% {
+        opacity: 0.2;
+    }
+}

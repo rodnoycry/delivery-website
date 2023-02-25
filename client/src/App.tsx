@@ -7,7 +7,6 @@ import './reset.module.css'
 import {
     setCart as setReduxCart,
     updateOrder as updateReduxOrder,
-    setAdminOrders as setReduxAdminOrders,
 } from './redux/store'
 import styles from './App.module.css'
 import { topItemsAppearancePaths, categoriesPaths } from './config'
@@ -88,35 +87,22 @@ export const App: FC = () => {
                     <Route exact path="/promo">
                         <span>1</span>
                     </Route>
-                    <Route exact path="/sets">
-                        <UserItemsList search={search.trim()} />
-                    </Route>
-                    <Route exact path="/pizza">
-                        <UserItemsList search={search.trim()} />
-                    </Route>
-                    <Route exact path="/cold-rolls">
-                        <span>4</span>
-                    </Route>
-                    <Route exact path="/hot-rolls">
-                        <span>5</span>
-                    </Route>
-                    <Route exact path="/wok">
-                        <span>6</span>
-                    </Route>
-                    <Route exact path="/meals">
-                        <span>7</span>
-                    </Route>
-                    <Route exact path="/burgers">
-                        <span>8</span>
-                    </Route>
-                    <Route exact path="/extra">
-                        <span>9</span>
-                    </Route>
 
+                    {/* Categories of items */}
+                    {categoriesPaths.map((path) => {
+                        return (
+                            <Route exact path={`${path}`} key={path}>
+                                <UserItemsList search={search} />
+                            </Route>
+                        )
+                    })}
+
+                    {/* Cart */}
                     <Route exact path="/cart">
                         <Cart />
                     </Route>
 
+                    {/* Order related */}
                     <Route exact path="/order-details">
                         <OrderDetails />
                     </Route>
@@ -128,7 +114,6 @@ export const App: FC = () => {
                     <Route exact path="/admin/panel">
                         <AdminPanel />
                     </Route>
-
                     <Route exact path="/admin/editing">
                         <AdminHome />
                     </Route>

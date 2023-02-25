@@ -8,7 +8,7 @@ import Image5 from '@mockData/items/sets/images/set-5.jpg'
 
 export const itemsData: ItemData[] = [
     {
-        id: 5,
+        id: '5',
         type: 'set',
         image: Image0,
         name: '1,5 кг. Ассорти',
@@ -20,7 +20,7 @@ export const itemsData: ItemData[] = [
         price: 1700,
     },
     {
-        id: 6,
+        id: '6',
         type: 'set',
         image: Image1,
         name: 'Сет Талдом',
@@ -32,7 +32,7 @@ export const itemsData: ItemData[] = [
         price: 1200,
     },
     {
-        id: 7,
+        id: '7',
         type: 'set',
         image: Image2,
         name: 'Грин сет',
@@ -44,7 +44,7 @@ export const itemsData: ItemData[] = [
         price: 799,
     },
     {
-        id: 8,
+        id: '8',
         type: 'set',
         image: Image3,
         name: '1,5кг. Холодного',
@@ -56,7 +56,7 @@ export const itemsData: ItemData[] = [
         price: 799,
     },
     {
-        id: 9,
+        id: '9',
         type: 'set',
         image: Image4,
         name: 'Сет Панда',
@@ -68,7 +68,7 @@ export const itemsData: ItemData[] = [
         price: 445,
     },
     {
-        id: 10,
+        id: '1',
         type: 'set',
         image: Image5,
         name: 'Шифу сет',

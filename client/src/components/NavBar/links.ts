@@ -1,5 +1,5 @@
 export const linksObject = {
-    '/promo': `АКЦИИ`,
+    // '/promo': `АКЦИИ`,
     '/sets': `СЕТЫ`,
     '/pizza': `ПИЦЦА`,
     '/cold-rolls': `ХОЛОДНЫЕ РОЛЛЫ`,
