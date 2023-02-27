@@ -50,7 +50,7 @@ export const getSumWithDelivery = (
         return false
     }
 
-    if (pureSum < freeDeliverySum) {
+    if (pureSum <= freeDeliverySum) {
         sum += deliveryPrice
     }
     return sum

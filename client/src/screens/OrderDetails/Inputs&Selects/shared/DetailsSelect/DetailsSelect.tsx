@@ -40,9 +40,6 @@ export const DetailsSelect: FC<Props> = ({
     style,
 }) => {
     const [selected, setSelected] = useState(options[0])
-    if (inputType === 'DaySelect') {
-        console.log(selected)
-    }
     useEffect(() => {
         if (inputState?.selected) {
             if (inputType === 'DaySelect') {

@@ -7,7 +7,7 @@ interface OrderError {
     uncompleteData?: string[]
 }
 
-export const sendOrderAndCartToServer = async (
+export const sendOrderToServer = async (
     data: DetailedOrder
 ): Promise<number | OrderError> => {
     try {

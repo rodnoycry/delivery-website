@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express'
+import { FieldPath } from 'firebase-admin/firestore'
 // import { FieldValue } from 'firebase-admin/firestore'
 import { db } from '../../firebase'
 import { ItemData } from '@/interfaces'
@@ -8,7 +9,7 @@ export const handleItemsRequest = (req: Request, res: Response): void => {
     const ids = req.body.ids
     const type = req.body.type
     const search = req.body.search
-    getItems(type)
+    getItems(type, ids)
         .then((itemsRaw) => {
             const items = itemsRaw.map(
                 (
@@ -19,14 +20,13 @@ export const handleItemsRequest = (req: Request, res: Response): void => {
                 res.status(200).json(items)
             }
             if (ids) {
-                const result = items.filter((item: ItemData) => {
-                    return ids.includes(item.id)
-                })
-                res.status(200).json(result)
+                res.status(200).json(items)
             }
             if (search) {
                 const result = items.filter((item: ItemData) => {
-                    return item.name.includes(search)
+                    return item.name
+                        .toLowerCase()
+                        .includes(search.toLowerCase())
                 })
                 res.status(200).json(result)
             }
@@ -36,13 +36,18 @@ export const handleItemsRequest = (req: Request, res: Response): void => {
         })
 }
 
-const getItems = async (type: string | null): Promise<any> => {
+const getItems = async (type: string | null, ids?: string[]): Promise<any> => {
     const ref = db.collection('items')
     let docData
     if (type) {
         docData = await ref
-            .where('isActive', '==', true)
             .where('type', '==', type)
+            .where('isActive', '==', true)
+            .get()
+    } else if (ids) {
+        docData = await ref
+            .where(FieldPath.documentId(), 'in', ids)
+            .where('isActive', '==', true)
             .get()
     } else {
         docData = await ref.where('isActive', '==', true).get()

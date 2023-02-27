@@ -5,6 +5,7 @@ import { body } from 'express-validator'
 import path from 'path'
 import { handleTestRequest } from './api'
 import { handleAddItem, handleItemsRequest } from './api/items'
+import { handleNewOrder } from './api/order'
 import { checkAdmin } from './utils'
 
 const app = express()
@@ -51,6 +52,8 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage })
 app.post('/api/items/add', upload.single('image'), checkAdmin, handleAddItem)
+
+app.post('/api/orders/add', handleNewOrder)
 
 // Start the server
 app.listen(port, () => {

@@ -31,10 +31,22 @@ export interface CartItemData extends ItemData {
     qtyInCart: number
 }
 
+export interface DetailedInputData {
+    zone: string
+    value?: string
+    selected?: {
+        label: string
+        value: string
+    }
+    hasError?: boolean
+    isRed?: boolean
+}
+
 // Orders related
 export interface DetailedOrder {
     // Main data
     time: string
+    zone: string
     cart: CartItem[]
     // Inputs and selects data
     phone: string
@@ -48,6 +60,8 @@ export interface DetailedOrder {
     intercom: string
     // Part 2
     personQty: string
+    deliveryTimeType: string
+    deliveryDay: string
     deliveryTime: string
     toDay: string
     toTime: string

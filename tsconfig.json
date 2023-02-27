@@ -25,19 +25,19 @@
       "name": "typescript-plugin-css-modules"
     }],
     "paths": {
-      "@/*": ["./client/src/*"],
-      "@fonts/*": ["./client/src/fonts/*"],
-      "@images/*": ["./client/public/images/*"],
-      "@interfaces/*": ["./client/src/interfaces/*"],
-      "@redux/*": ["./client/src/redux/*"],
-      "@mockData/*": ["./client/src/mockData/*"],
-      "@shared/*": ["./client/src/components/shared/*"],
-      "@config/*": ["./client/src/config/*"],
-      "@functions/*": ["./client/src/functions/*"],
+      "@/*": ["client/src/*"],
+      "@fonts/*": ["client/src/fonts/*"],
+      "@images/*": ["client/public/images/*"],
+      "@interfaces/*": ["client/src/interfaces/*"],
+      "@redux/*": ["client/src/redux/*"],
+      "@mockData/*": ["client/src/mockData/*"],
+      "@shared/*": ["client/src/components/shared/*"],
+      "@config/*": ["client/src/config/*"],
+      "@functions/*": ["client/src/functions/*"],
     },
   },
   "include": [
     "client/src/**/*",
     "server/**/*"
-  ]
+  ],
 }

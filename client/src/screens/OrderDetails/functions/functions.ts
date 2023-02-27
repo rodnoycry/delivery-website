@@ -1,7 +1,8 @@
 import { Order } from '@/redux/slices/orderSlice'
+import { DetailedInputData } from '@/interfaces'
 
 export const checkErrors = (
-    inputStates: Order | Record<string, string>,
+    inputStates: Order | Record<keyof Order, DetailedInputData>,
     requiredInputs: string[]
 ): boolean => {
     if (inputStates === undefined) {

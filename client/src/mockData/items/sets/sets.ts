@@ -1,16 +1,17 @@
 import { ItemData } from '@/interfaces'
-import Image0 from '@mockData/items/sets/images/set-0.jpg'
-import Image1 from '@mockData/items/sets/images/set-1.jpg'
-import Image2 from '@mockData/items/sets/images/set-2.jpg'
-import Image3 from '@mockData/items/sets/images/set-3.jpg'
-import Image4 from '@mockData/items/sets/images/set-4.jpg'
-import Image5 from '@mockData/items/sets/images/set-5.jpg'
+// import Image0 from './images/set-0.jpg'
+// import Image1 from './images/set-1.jpg'
+// import Image2 from './images/set-2.jpg'
+// import Image3 from './images/set-3.jpg'
+// import Image4 from './images/set-4.jpg'
+// import Image5 from './images/set-5.jpg'
 
 export const itemsData: ItemData[] = [
     {
         id: '5',
         type: 'set',
-        image: Image0,
+        // image: Image0,
+        image: 'Image0',
         name: '1,5 кг. Ассорти',
         description:
             'Калифорния с лососем Цуки ролл Ясай маки Тори запечённая Парадайз с крабом Калифорния темпура Сяке темпура',
@@ -22,7 +23,8 @@ export const itemsData: ItemData[] = [
     {
         id: '6',
         type: 'set',
-        image: Image1,
+        // image: Image1,
+        image: 'Image1',
         name: 'Сет Талдом',
         description:
             'Фила лайт Калифорния классическая Парадайз Темпура с креветкой Мини с лососем запечённая Мини с крабом запечённая 48шт.',
@@ -34,7 +36,8 @@ export const itemsData: ItemData[] = [
     {
         id: '7',
         type: 'set',
-        image: Image2,
+        // image: Image2,
+        image: '',
         name: 'Грин сет',
         description:
             'Калифорния с лососем Монако Чука ролл Мини ролл с огурцом',
@@ -46,7 +49,8 @@ export const itemsData: ItemData[] = [
     {
         id: '8',
         type: 'set',
-        image: Image3,
+        // image: Image3,
+        image: '',
         name: '1,5кг. Холодного',
         description:
             'Ясай маки Чука ролл Ролл спайс с лососем Бонито Калифорния с лососем Монако Мини ролл с авокадой Мини ролл с огурцом',
@@ -58,7 +62,8 @@ export const itemsData: ItemData[] = [
     {
         id: '9',
         type: 'set',
-        image: Image4,
+        // image: Image4,
+        image: '',
         name: 'Сет Панда',
         description:
             'Парадайз 4шт. Парадайз с мидиями 4шт. Тори запечённая 4шт. Калифорния запечённая 4шт.',
@@ -70,7 +75,8 @@ export const itemsData: ItemData[] = [
     {
         id: '1',
         type: 'set',
-        image: Image5,
+        // image: Image5,
+        image: '',
         name: 'Шифу сет',
         description:
             'Цезарь запечёный Гункан с лососем запечёный Мини ролл с крабом и спайс соусом',

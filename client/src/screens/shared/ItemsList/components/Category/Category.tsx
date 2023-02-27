@@ -62,7 +62,9 @@ export const Category: FC<Props> = ({ type, itemsData, reloadData, style }) => {
     return (
         <>
             <div className={styles.category} style={style}>
-                <h1 className={styles.category}>{title}</h1>
+                <h1 className={styles.category}>
+                    {title || `Результаты поиска`}
+                </h1>
                 <ul className={styles.category}>
                     {itemsData.map((itemData) => {
                         const selected =

@@ -2,20 +2,27 @@ import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import axios, { AxiosError } from 'axios'
 import { zoneDeliveryInfo } from '@/config'
+import { DetailedOrder, DetailedInputData } from '@/interfaces'
 import { resetCart, addAdminOrder } from '@redux/store'
-import { Order } from '@/redux/slices/orderSlice'
-import { CompleteOrder } from '@/redux/slices/adminOrdersSlice'
+import { Order, InputState } from '@/redux/slices/orderSlice'
 import { CartItem } from '@/redux/slices/cartSlice'
+import { domain } from '@/services/apiService/config'
 import styles from './Confirmation.module.css'
+import { getCompleteOrder, getTime } from './functions'
 import { checkErrors } from '../../functions'
+import LoadImage from '@images/Load.png'
 
 interface Props {
     sum: number
-    inputStates: Order | Record<string, string>
+    inputStates: Order | Record<keyof Order, DetailedInputData>
+    setInputStates: (
+        inputStates: Order | Record<keyof Order, DetailedInputData>
+    ) => void
     requiredInputs: string[]
     hasError: boolean
-    setHasError: (hasError: boolean) => void
+    setParentHasError: (hasError: boolean) => void
     setIsSuccess: (isSuccess: boolean) => void
     cart: CartItem[]
     storeInputStates: Order
@@ -27,20 +34,50 @@ const errorMeassageObj = {
     inputError: 'Необходимые для заказа поля не заполненны',
 }
 
+interface ErrorData {
+    hasError?: boolean
+    isRed?: boolean
+}
+
+type OrderError = Record<keyof DetailedOrder, ErrorData>
+interface OrderErrorData {
+    errorMessage: string
+    errorObject?: OrderError
+}
+
 export const Confirmation: FC<Props> = ({
-    sum,
+    sum: sum_,
     inputStates,
+    setInputStates,
     requiredInputs,
-    hasError,
-    setHasError,
+    hasError: hasParentError,
+    setParentHasError,
     setIsSuccess,
     cart,
     storeInputStates,
 }) => {
+    const [sum, setSum] = useState<number>(sum_)
+
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [hasError, setHasError] = useState<boolean>(hasParentError)
     const [errorMessage, setErrorMessage] = useState<string>(
         errorMeassageObj.empty
     )
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (!hasError) {
+            setErrorMessage(errorMeassageObj.empty)
+        }
+    }, [hasError])
+
+    useEffect(() => {
+        setSum(sum_)
+    }, [sum_])
+
+    useEffect(() => {
+        setHasError(hasParentError)
+    }, [hasParentError])
 
     useEffect(() => {
         if (inputStates.zone) {
@@ -51,41 +88,59 @@ export const Confirmation: FC<Props> = ({
             if (hasError) {
                 setErrorMessage(errorMeassageObj.inputError)
             }
-            if (minSum >= sum) {
+            if (minSum > sum) {
                 setErrorMessage(errorMeassageObj.sumError)
-                setHasError(true)
+                setParentHasError(true)
             } else {
                 setErrorMessage('')
-                setHasError(false)
+                setParentHasError(false)
             }
         }
-    }, [sum, inputStates])
+    }, [sum, inputStates.zone])
     // On submit button
     const onSubmit = (): void => {
-        const currentDate = new Date()
-        const hours = currentDate.getHours()
-        const minutes = currentDate.getMinutes()
-
-        const time = `${hours < 10 ? `0${hours}` : hours}:${
-            minutes < 10 ? `0${minutes}` : minutes
-        }`
-        const orderInfo: CompleteOrder = {
-            time,
-            cart,
-            sum,
-            phone: storeInputStates?.PhoneInput?.value,
-            name: storeInputStates?.NameInput?.value,
-            deliveryType: storeInputStates?.DeliveryTypeSelect?.selected?.value,
-            street: storeInputStates?.StreetInput?.value,
-            house: storeInputStates?.HouseInput?.value,
-            personQty: storeInputStates?.PersonQtySelect?.selected?.value,
-            deliveryTime: storeInputStates?.TimeSelect?.selected?.value,
-            paymentMethod: storeInputStates?.PaymentSelect?.selected?.value,
-            hasChange: storeInputStates?.ChangeSelect?.selected?.value,
-            comment: storeInputStates?.CommentInput?.value,
-        }
-        dispatch(addAdminOrder(orderInfo))
-        dispatch(resetCart())
+        setIsLoading(true)
+        const time = getTime()
+        const orderInfo = getCompleteOrder(time, cart, sum, storeInputStates)
+        axios
+            .post(`${domain}/api/orders/add`, orderInfo)
+            .then((res) => {
+                setIsLoading(false)
+                setIsSuccess(true)
+                dispatch(addAdminOrder(orderInfo))
+                dispatch(resetCart())
+            })
+            .catch((error: AxiosError<OrderErrorData | null>) => {
+                console.log(`$$$$$$$$`, error.response)
+                if (error.response?.status === 400) {
+                    if (
+                        error.response?.data?.errorObject &&
+                        typeof error.response?.data?.errorObject === 'object'
+                    ) {
+                        const inputStatesCopy = JSON.parse(
+                            JSON.stringify(inputStates)
+                        )
+                        Object.entries(
+                            error.response?.data?.errorObject
+                        ).forEach(([inputName, errorData]) => {
+                            inputStatesCopy[inputName] = {
+                                ...inputStatesCopy[inputName],
+                                ...errorData,
+                            }
+                        })
+                        setInputStates(inputStatesCopy)
+                    }
+                    if (error.response?.data?.errorMessage) {
+                        setErrorMessage(error.response?.data?.errorMessage)
+                    }
+                } else {
+                    console.error(error)
+                    setErrorMessage(
+                        'Произошла ошибка, пожалуйста попробуйте отправить заказ повторно'
+                    )
+                }
+                setIsLoading(false)
+            })
     }
     return (
         <>
@@ -108,22 +163,24 @@ export const Confirmation: FC<Props> = ({
                 </Link>
                 <button
                     onClick={() => {
-                        const hasError = checkErrors(
-                            inputStates,
-                            requiredInputs
-                        )
-                        setHasError(hasError)
                         if (!hasError) {
-                            setIsSuccess(true)
                             onSubmit()
                         }
                     }}
                     className={styles.submitButton}
                     disabled={hasError}
                 >
-                    <p className={styles.submitButton}>
-                        Оформить заказ {`\u00a0`}✅
-                    </p>
+                    {!isLoading ? (
+                        <p className={styles.submitButton}>
+                            Оформить заказ {`\u00a0`}✅
+                        </p>
+                    ) : (
+                        <img
+                            className={styles.loadImage}
+                            src={LoadImage}
+                            style={{ width: 30 }}
+                        />
+                    )}
                 </button>
             </div>
             <div className={styles.lowerInfoContainer}>

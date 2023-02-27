@@ -1,15 +1,16 @@
 import { ItemData } from '@/interfaces'
-import Image0 from '@mockData/items/pizza/images/pizza-0.jpg'
-import Image1 from '@mockData/items/pizza/images/pizza-1.jpg'
-import Image2 from '@mockData/items/pizza/images/pizza-2.jpg'
-import Image3 from '@mockData/items/pizza/images/pizza-3.jpg'
-import Image4 from '@mockData/items/pizza/images/pizza-4.jpg'
+// import Image0 from '@mockData/items/pizza/images/pizza-0.jpg'
+// import Image1 from '@mockData/items/pizza/images/pizza-1.jpg'
+// import Image2 from '@mockData/items/pizza/images/pizza-2.jpg'
+// import Image3 from '@mockData/items/pizza/images/pizza-3.jpg'
+// import Image4 from '@mockData/items/pizza/images/pizza-4.jpg'
 
 export const itemsData: ItemData[] = [
     {
         id: '0',
         type: 'pizza',
-        image: Image0,
+        // image: Image0,
+        image: '',
         name: 'Острая с курицей',
         description:
             'Курица, перец халапень, салат айсберг, помидор, перец болгарский спайс соус.',
@@ -20,7 +21,8 @@ export const itemsData: ItemData[] = [
     {
         id: '1',
         type: 'pizza',
-        image: Image1,
+        // image: Image1,
+        image: '',
         name: 'Карбонара',
         description: 'Соус томатный, лук красный, бекон, яйцо куриное',
         isNew: true,
@@ -30,7 +32,8 @@ export const itemsData: ItemData[] = [
     {
         id: '2',
         type: 'pizza',
-        image: Image2,
+        // image: Image2,
+        image: '',
         name: 'Деревенская',
         description:
             'Сыр моцарелла, пепперони, охотничьи колбаски, боварские сосиски, свинина, бекон, красный лук, спайс соус',
@@ -41,7 +44,8 @@ export const itemsData: ItemData[] = [
     {
         id: '3',
         type: 'pizza',
-        image: Image3,
+        // image: Image3,
+        image: '',
         name: 'Салями',
         description: 'Соус томатный для пиццы, сыр моцарелла, колбаса салями',
         isNew: false,
@@ -51,7 +55,8 @@ export const itemsData: ItemData[] = [
     {
         id: '4',
         type: 'pizza',
-        image: Image4,
+        // image: Image4,
+        image: '',
         name: 'Цезарь',
         description:
             'Курица, салат айсберг, сыр Моцарелла, помидоры черри, сыр Пармезан, соус цезарь, соус томатный для пиццы',

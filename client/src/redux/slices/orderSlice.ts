@@ -27,6 +27,7 @@ const createDefaultInputStates = (
     inputNames.forEach(
         (inputName) =>
             (defaultInputStates[inputName] = {
+                value: '',
                 hasError: false,
                 isRed: false,
                 onFocus: false,

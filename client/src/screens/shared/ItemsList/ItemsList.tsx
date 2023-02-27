@@ -40,10 +40,16 @@ const getItemsFromServer = async (
 
 export const IsAdminContext = createContext<boolean>(false)
 
-export const ItemsList: FC<Props> = ({ isAdmin, search, style }) => {
+export const ItemsList: FC<Props> = ({
+    isAdmin,
+    search: parentSearch,
+    style,
+}) => {
     const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [showLoading, setShowLoading] = useState<boolean>(true)
+    const [search, setSearch] = useState<string>(parentSearch)
     const [itemsData, setItemsData] = useState<ItemData[] | null>(null)
-    const [category, setCategory] = useState<string | undefined>('init')
+    const [category, setCategory] = useState<string | undefined>()
     const location = useLocation()
     const reloadData = (): void => {
         getItemsFromServer(category, search, setIsLoading)
@@ -54,13 +60,23 @@ export const ItemsList: FC<Props> = ({ isAdmin, search, style }) => {
             })
     }
     useEffect(() => {
+        reloadData()
+    }, [search])
+
+    useEffect(() => {
+        setSearch(parentSearch)
+    }, [parentSearch])
+
+    useEffect(() => {
         const path = location.pathname
         const category = path.split('/').pop()
         setCategory(category)
     }, [location])
     useEffect(() => {
         if (category !== 'init') {
+            setShowLoading(true)
             reloadData()
+            setShowLoading(false)
         }
     }, [category])
     const title =
@@ -69,7 +85,7 @@ export const ItemsList: FC<Props> = ({ isAdmin, search, style }) => {
     return (
         <IsAdminContext.Provider value={isAdmin}>
             <main className={styles.itemsList}>
-                {isLoading ? (
+                {(isLoading && showLoading) || Object.is(itemsData, null) ? (
                     <LoadingCategory />
                 ) : (
                     <>

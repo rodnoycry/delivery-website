@@ -6,7 +6,7 @@ import { Order, InputState } from '@redux/slices/orderSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { checkErrors } from './functions'
 import { getItemsData, getSumWithDelivery } from '@/functions'
-import { ItemData } from '@/interfaces'
+import { ItemData, DetailedInputData } from '@/interfaces'
 
 import styles from './OrderDetails.module.css'
 
@@ -34,11 +34,12 @@ import { SuccessScreen } from './components/SuccessScreen'
 interface Props {
     style?: CSSProperties
 }
+
 export const OrderDetails: FC<Props> = ({ style }) => {
     // States definition
-    const [inputStates, setInputStates] = useState<Order | Record<string, any>>(
-        {}
-    )
+    const [inputStates, setInputStates] = useState<
+        Order | Record<keyof Order, DetailedInputData>
+    >({})
     const [requiredInputs, setRequiredInputs] = useState<string[]>([
         'PhoneInput',
         'NameInput',
@@ -66,8 +67,7 @@ export const OrderDetails: FC<Props> = ({ style }) => {
     }, [cart])
 
     useEffect(() => {
-        console.log(itemsData)
-        if (itemsData && cart !== undefined && storeInputStates !== undefined) {
+        if (itemsData && cart && storeInputStates) {
             setSum(
                 getSumWithDelivery(storeInputStates.zone, itemsData, cart) || 0
             )
@@ -156,7 +156,7 @@ export const OrderDetails: FC<Props> = ({ style }) => {
                     setInputState={setInputState}
                 />
                 <LocalityInput
-                    inputState={inputStates?.StreetInput}
+                    inputState={inputStates?.LocalityInput}
                     setInputState={setInputState}
                     isVisible={
                         inputStates?.DeliveryTypeSelect?.selected?.label ===
@@ -263,9 +263,10 @@ export const OrderDetails: FC<Props> = ({ style }) => {
             <Confirmation
                 sum={sum}
                 inputStates={inputStates}
+                setInputStates={setInputStates}
                 requiredInputs={requiredInputs}
                 hasError={hasError}
-                setHasError={setHasError}
+                setParentHasError={setHasError}
                 setIsSuccess={setIsSuccess}
                 cart={cart}
                 storeInputStates={storeInputStates}

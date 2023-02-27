@@ -37,7 +37,6 @@ export const DetailsInput: FC<Props> = ({
     const [isRed, setIsRed] = useState<boolean>(
         inputState?.isRed ? inputState.isRed : false
     )
-
     useEffect(() => {
         if (inputState) {
             if (inputType !== 'TimeInput') {
@@ -45,7 +44,7 @@ export const DetailsInput: FC<Props> = ({
                 setIsRed(inputState?.isRed as boolean)
             }
         }
-    }, [inputState])
+    }, [inputState?.value, inputState?.isRed])
 
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement>

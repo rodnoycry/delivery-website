@@ -77,6 +77,9 @@ export const App: FC = () => {
                             style={{ marginTop: '30px' }}
                             search={search.trim()}
                         />
+                        {search.trim() ? (
+                            <UserItemsList search={search} />
+                        ) : null}
                     </Route>
 
                     {/* TEST */}

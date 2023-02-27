@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getItemData } from './functions'
 import { ItemData } from '@/interfaces'
 
-const itemDataInitialState: ItemData[] = getItemData()
+const itemDataInitialState: ItemData[] = []
 
 export const itemDataSlice = createSlice({
     name: 'itemDataState',
