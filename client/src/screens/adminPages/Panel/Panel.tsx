@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
-import { useSelector } from 'react-redux'
 import { onAuthStateChanged, User } from 'firebase/auth'
-import { Link, useHistory } from 'react-router-dom'
 import { auth } from '@/firebase'
-import { getIsAdminFromServer, createSampleUser } from '@/services/apiService'
-import { CompleteOrder } from '@/redux/slices/adminOrdersSlice'
-import { RootState as StoreState } from '@/redux/store'
+import { getIsAdmin, getItems, getOrders } from '@/services/apiService'
+import { domain } from '@/services/apiService/config'
+import { ItemData, ServerOrder } from '@/interfaces'
 import styles from './Panel.module.css'
-import LogoImg from './images/Logo.png'
-import EditImg from './images/Edit.png'
-import BonusImg from './images/Bonus.png'
-import SoundOnImg from './images/SoundOn.png'
-import SoundOffImg from './images/SoundOff.png'
-import { Order } from './components/Order'
+import { Header, AdminOrder } from './components'
 // FOR TESTS
 import { signOut } from './functions'
 
@@ -22,39 +15,75 @@ export const Panel: FC = () => {
     const [isAdmin, setIsAdmin] = useState<boolean>()
     const [isIntruder, setIsIntruder] = useState<boolean>(false)
 
+    const [showIsActive, setShowIsActive] = useState<boolean>(true)
+
+    const [timeToNextRequest, setTimeToNextRequest] = useState<number>(6)
+    const [errorMessage, setErrorMessage] = useState<string>('')
+
     const [soundOn, setSoundOn] = useState<boolean>(true)
 
-    const [orders, setOrders] = useState<CompleteOrder[]>([])
-    const itemsData = useSelector((state: StoreState) => state.itemDataState)
-    const reduxOrders = useSelector(
-        (state: StoreState) => state.adminOrdersState
-    )
+    const [orders, setOrders] = useState<ServerOrder[]>([])
+    const [ordersQty, setOrdersQty] = useState<number>(0)
+    const [shouldNotify, setShouldNotify] = useState<boolean>(false)
 
-    const history = useHistory()
+    const [itemsData, setItemsData] = useState<ItemData[]>([])
 
+    const notification = new Audio(`${domain}/audio/notification.mp3`)
+
+    useEffect(() => {
+        getItems().then(setItemsData).catch(console.error)
+    }, [])
+
+    useEffect(() => {
+        if (itemsData) {
+            updateOrders()
+        }
+    }, [itemsData])
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTimeToNextRequest((prevTime) => prevTime - 1)
+        }, 1000)
+
+        if (timeToNextRequest === 0) {
+            updateOrders()
+            setTimeToNextRequest(5)
+        }
+
+        return () => {
+            clearInterval(interval)
+        }
+    }, [orders, timeToNextRequest])
+
+    // Admin auth check
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user)
-                getIsAdmin(user)
+                getIsAdmin(user, setIsAdmin)
                     .then(setIsAdmin)
                     .catch((error) => {
                         setIsAdmin(isAdmin)
-                        console.log(error)
+                        console.error(error)
                     })
             } else {
                 setUser(null)
             }
-            return () => {
-                unsubscribe()
-            }
         })
         if (isIntruder) {
             // history.push('/') // CHANGE ON PROD
-            console.log()
+            console.error()
+        }
+        return () => {
+            unsubscribe()
         }
     }, [])
 
+    useEffect(() => {
+        updateOrders()
+    }, [user])
+
+    // Non-admin redirect
     useEffect(() => {
         if (user && !isAdmin) {
             // history.push('/') // CHANGE ON PROD
@@ -63,31 +92,34 @@ export const Panel: FC = () => {
         }
     }, [isAdmin])
 
-    useEffect(() => {
-        if (reduxOrders) {
-            setOrders(reduxOrders)
-        }
-    }, [reduxOrders, itemsData])
-
-    const getIsAdmin = async (user: User): Promise<boolean> => {
+    const updateOrders = (): void => {
         if (!user) {
-            return false
+            return
         }
-        const isAdmin_ = await user
-            .getIdToken()
-            .then(
-                async (token) => await getIsAdminFromServer({ idToken: token })
-            )
-            .then((isAdmin) => {
-                setIsAdmin(isAdmin)
-                console.log(`isAdmin = `, isAdmin)
-                return isAdmin
+        user.getIdToken()
+            .then(async (token) => {
+                return await getOrders(token)
+            })
+            .then((orders) => {
+                if (!orders) {
+                    return
+                }
+                if (shouldNotify && soundOn && orders.length > ordersQty) {
+                    notification.play().catch(console.error)
+                }
+                setOrders(orders.reverse())
+                setOrdersQty(orders.length)
+                setErrorMessage('')
+                if (!shouldNotify) {
+                    setShouldNotify(true)
+                }
             })
             .catch((error) => {
-                console.log(error.message)
-                return false
+                console.error(error)
+                setErrorMessage(
+                    'Произошла ошибка запроса к серверу, пытаемся подключиться ещё раз'
+                )
             })
-        return isAdmin_
     }
 
     const handleSignOut = (): void => {
@@ -99,58 +131,59 @@ export const Panel: FC = () => {
                 console.error(error)
             })
     }
-
-    const handleAddUser = (): void => {
-        createSampleUser()
-            .then(() => {
-                console.log('success?')
-            })
-            .catch((error) => {
-                console.error(error)
-            })
-    }
     return (
         <div className={styles.admin}>
-            <div className={styles.header}>
-                <img className={styles.header} src={LogoImg} />
-                <Link
-                    to="/admin/editing"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <button className={styles.header}>
-                        <img className={styles.edit} src={EditImg} />
-                        <h1>Редактировать сайт</h1>
-                    </button>
-                </Link>
-                <Link
-                    to="/admin/panel"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <button className={styles.header}>
-                        <img className={styles.edit} src={BonusImg} />
-                        <h1>Бонусные программы</h1>
-                    </button>
-                </Link>
-                <div className={styles.notifications}>
-                    <h1>Уведомления:</h1>
-                    <img
-                        className={styles.notifications}
-                        src={soundOn ? SoundOnImg : SoundOffImg}
-                        onClick={() => {
-                            setSoundOn(!soundOn)
+            <Header soundOn={soundOn} setSoundOn={setSoundOn} />
+            <div className={styles.navContainer}>
+                <div className={styles.nav}>
+                    <button
+                        className={styles.button}
+                        style={{
+                            backgroundColor: showIsActive ? '#FF000A' : '#222',
                         }}
-                    />
+                        onClick={() => {
+                            setShowIsActive(true)
+                        }}
+                    >
+                        Активные заказы
+                    </button>
+                    <button
+                        className={styles.button}
+                        style={{
+                            backgroundColor: showIsActive ? '#222' : '#FF000A',
+                        }}
+                        onClick={() => {
+                            setShowIsActive(false)
+                        }}
+                    >
+                        Завершённые заказы
+                    </button>
                 </div>
             </div>
-            <button onClick={handleSignOut}>Sign Out</button>
-            <button onClick={handleAddUser}>Add sample user</button>
-            <div className={styles.orders} style={{ marginTop: 20 }}>
-                {orders.map((order) => {
-                    return <Order key={order.time} {...order} />
-                })}
+            <div>
+                <h1>
+                    Список заказов обновится через {timeToNextRequest - 1}{' '}
+                    секунд{[4, 3, 2].includes(timeToNextRequest - 1) ? 'ы' : ''}
+                    {timeToNextRequest - 1 === 1 ? 'у' : ''}
+                </h1>
+                <h1 style={{ color: '#FF000A' }}>{errorMessage}</h1>
             </div>
+            <div className={styles.orders} style={{ marginTop: 20 }}>
+                {orders
+                    .filter((order) => order.isActive === showIsActive)
+                    .map((order) => {
+                        return (
+                            <AdminOrder
+                                key={order.time}
+                                user={user}
+                                showIsActive={showIsActive}
+                                order={order}
+                                itemsData={itemsData}
+                            />
+                        )
+                    })}
+            </div>
+            <button onClick={handleSignOut}>Sign Out</button>
         </div>
     )
 }

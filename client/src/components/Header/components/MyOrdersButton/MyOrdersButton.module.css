@@ -1,0 +1,47 @@
+button.myOrders {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 48px;
+    margin-top: 8px;
+    background: linear-gradient(99.03deg, #323232 19.8%, rgba(15, 15, 15, 0) 100%);
+    opacity: 1;
+    border-radius: 6px;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+button.myOrders:hover {
+    background-color: #323232;
+}
+
+/* myOrders button */
+img.myOrders {
+    display: inline-block;
+    max-width: 25px;
+    height: auto;
+}
+
+p.myOrders {
+    display: inline-block;
+    font-size: 14px;
+}
+
+/* myOrders counter */
+div.myOrdersCounter {
+    margin-right: 17px;
+    position: relative;
+}
+
+span.myOrdersCounter {
+    position: absolute;
+    left: 17px;
+    top: -3px;
+    padding: 1px;
+    min-width: 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    z-index: 1;
+    background: #FF000A;
+    border-radius: 5px;
+}

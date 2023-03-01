@@ -9,7 +9,7 @@ export const handleItemsRequest = (req: Request, res: Response): void => {
     const ids = req.body.ids
     const type = req.body.type
     const search = req.body.search
-    getItems(type, ids)
+    getItems(type, search, ids)
         .then((itemsRaw) => {
             const items = itemsRaw.map(
                 (
@@ -36,7 +36,11 @@ export const handleItemsRequest = (req: Request, res: Response): void => {
         })
 }
 
-const getItems = async (type: string | null, ids?: string[]): Promise<any> => {
+const getItems = async (
+    type: string | null,
+    search: string | null,
+    ids?: string[]
+): Promise<any> => {
     const ref = db.collection('items')
     let docData
     if (type) {
@@ -49,8 +53,10 @@ const getItems = async (type: string | null, ids?: string[]): Promise<any> => {
             .where(FieldPath.documentId(), 'in', ids)
             .where('isActive', '==', true)
             .get()
-    } else {
+    } else if (search) {
         docData = await ref.where('isActive', '==', true).get()
+    } else {
+        docData = await ref.get()
     }
     const items = docData.docs
     return items

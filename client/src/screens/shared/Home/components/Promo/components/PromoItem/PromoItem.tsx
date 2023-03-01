@@ -5,9 +5,10 @@ import { PromoData } from '@/interfaces'
 import styles from './PromoItem.module.css'
 import { IsAdminContext } from '../../../../Home'
 import EditImage from './images/Edit.png'
+import { domain } from '@/services/apiService/config'
 
 interface Props {
-    id: number
+    id: string
     name: string
     description: string
     image: string
@@ -20,7 +21,7 @@ interface Props {
 }
 
 export const PromoItem: FC<Props> = ({
-    id,
+    id: stringId,
     name,
     description,
     image,
@@ -31,6 +32,7 @@ export const PromoItem: FC<Props> = ({
     setCurrentPromoData,
     style,
 }) => {
+    const id = parseInt(stringId)
     const isAdmin = useContext(IsAdminContext)
     const goToSnapItem = useScroll({ ref: snapList })
     useDragToScroll({ ref: snapList })
@@ -58,7 +60,7 @@ export const PromoItem: FC<Props> = ({
                             if (setCurrentPromoData && setIsEditing) {
                                 setIsEditing(true)
                                 setCurrentPromoData({
-                                    id,
+                                    id: stringId,
                                     name,
                                     description,
                                     image,
@@ -75,7 +77,7 @@ export const PromoItem: FC<Props> = ({
                     className={`${styles.promo as string} ${
                         styles.selector as string
                     }`}
-                    src={image}
+                    src={`${domain}${image}`}
                 />
                 <div
                     className={styles.promoTip}

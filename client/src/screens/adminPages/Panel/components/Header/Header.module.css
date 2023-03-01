@@ -1,0 +1,56 @@
+/* Header */
+div.header {
+    max-width: 1200px;
+    width: 90vw;
+    position: absolute;
+    top: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+img.header {
+    width: 260px;
+    height: 43px;
+}
+
+button.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 50px;
+    padding: 0 20px;
+
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 100%), #202020;
+    transition: background-color 0.2s ease-in-out;
+    border-radius: 9px;
+
+    font-weight: bold;
+    font-size: 16px;
+}
+
+button.header:hover {
+    background-color: #333;
+}
+
+img.edit {
+    width: 26px;
+    height: auto;
+    margin-right: 10px;
+}
+
+div.notifications {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+img.notifications {
+    width: 32px;
+    height: auto;
+    margin-left: 15px;
+    cursor: pointer;
+}

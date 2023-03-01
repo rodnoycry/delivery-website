@@ -39,3 +39,9 @@ img.addItem {
 img.addItem:hover {
     opacity: 0.8;
 }
+
+/* Failed search */
+h1.failedSearch {
+    margin-top: 10px;
+    font-family: 'Montserrat', open-sans;
+}

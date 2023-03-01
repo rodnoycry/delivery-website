@@ -1,8 +1,9 @@
 import { CartItem } from '@/redux/slices/cartSlice'
+import { Zone } from '@/redux/slices/orderSlice'
 
 // Promo related
 export interface PromoData {
-    id: number
+    id: string
     name: string
     description: string
     image: string
@@ -31,6 +32,11 @@ export interface CartItemData extends ItemData {
     qtyInCart: number
 }
 
+export interface CarouselData {
+    id: string
+    image: string
+}
+
 export interface DetailedInputData {
     zone: string
     value?: string
@@ -43,11 +49,14 @@ export interface DetailedInputData {
 }
 
 // Orders related
-export interface DetailedOrder {
+export interface ServerOrder {
+    id: string
     // Main data
     time: string
-    zone: string
+    date: string
+    zone: string | Zone['zone']
     cart: CartItem[]
+    sum: number
     // Inputs and selects data
     phone: string
     name: string
@@ -63,10 +72,11 @@ export interface DetailedOrder {
     deliveryTimeType: string
     deliveryDay: string
     deliveryTime: string
-    toDay: string
-    toTime: string
     paymentMethod: string
+    hasChange: string
     comment: string
+
+    isActive: boolean
 }
 // interface Item {
 //     id: number

@@ -1,0 +1,31 @@
+div.pageName {
+    padding: 25px 0 50px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+
+    width: 90vw;
+    max-width: 1200px;
+
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+h1.label {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+h3.homeLink {
+    font-size: 16px;
+    text-decoration: underline;
+}
+
+div.orders {
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 30px;
+}

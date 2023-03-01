@@ -1,12 +1,12 @@
 import { FieldPath } from 'firebase-admin/firestore'
 import type { Request, Response } from 'express'
 import { db } from '../../firebase'
-import { ItemData, DetailedOrder } from '@/interfaces'
+import { ItemData, ServerOrder } from '@/interfaces'
 import { getSum } from '@/functions'
 import { zoneDeliveryInfo } from '@/config'
 
 export const handleNewOrder = (req: Request, res: Response): void => {
-    const order: DetailedOrder = req.body
+    const order: ServerOrder = req.body
     getOrderErrorsObject(order)
         .then((errorData) => {
             if (errorData) {
@@ -26,11 +26,7 @@ export const handleNewOrder = (req: Request, res: Response): void => {
         })
 }
 
-interface ServerOrder extends DetailedOrder {
-    id: string
-}
-
-const createOrder = async (order: DetailedOrder): Promise<void> => {
+const createOrder = async (order: ServerOrder): Promise<void> => {
     const counterDocRef = db.collection('counters').doc('orders')
     try {
         const id = await db.runTransaction(async (t) => {
@@ -55,7 +51,7 @@ interface ErrorData {
     hasError?: boolean
     isRed?: boolean
 }
-type OrderError = Record<keyof DetailedOrder, ErrorData>
+type OrderError = Record<keyof ServerOrder, ErrorData>
 
 interface OrderErrorData {
     errorMessage: string
@@ -78,7 +74,7 @@ const getOrderErrorsObject = async ({
     house,
     deliveryTimeType,
     deliveryTime,
-}: DetailedOrder): Promise<OrderErrorData | null> => {
+}: ServerOrder): Promise<OrderErrorData | null> => {
     const result: Record<string, any> = {}
     // Sum validation
     const ids: string[] = cart.map((cartItemData) => cartItemData.id)

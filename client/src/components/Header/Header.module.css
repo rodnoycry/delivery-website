@@ -9,7 +9,8 @@ header {
     justify-content: center;
 }
 
-button.login {
+button.login,
+button.myOrders {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,7 +23,13 @@ button.login {
     transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-button.login:hover {
+button.myOrders {
+    width: auto;
+    padding: 0 30px;
+}
+
+button.login:hover,
+button.myOrders:hover {
     background-color: #323232;
 }
 
@@ -112,11 +119,16 @@ div.loginCartContainer {
 }
 
 /* Login button */
-img.login {
+img.login,
+img.myOrders {
     display: inline-block;
     max-width: 28px;
     height: auto;
     margin-right: 10px;
+}
+
+img.myOrders {
+    max-width: 25px;
 }
 
 p.login {

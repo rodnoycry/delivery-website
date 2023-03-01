@@ -15,6 +15,7 @@ import { Button } from './components/Button'
 import { Counter } from './components/Counter'
 import { CartItem } from '@/redux/slices/cartSlice'
 import EditImage from './images/Edit.png'
+import { domain } from '@/services/apiService/config'
 
 interface Props extends CartItemData {
     setIsEditingItem?: (isEditingItem: boolean) => void
@@ -92,7 +93,7 @@ export const Item: FC<Props> = ({
                     <img className={styles.adminEdit} src={EditImage} />
                 </button>
             ) : null}
-            <img className={styles.item} src={image} />
+            <img className={styles.item} src={`${domain}${image}`} />
             <h1 className={styles.item}>{name}</h1>
             <p
                 className={styles.item}

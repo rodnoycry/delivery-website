@@ -3,10 +3,18 @@ import type { FC } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
+import { onAuthStateChanged } from 'firebase/auth'
+import type { User } from 'firebase/auth'
+import { auth } from '@/firebase'
+import { CarouselData } from './interfaces'
+import axios from 'axios'
+import { domain } from './services/apiService/config'
+
 import './reset.module.css'
 import {
     setCart as setReduxCart,
     updateOrder as updateReduxOrder,
+    setLocalOrdersData,
 } from './redux/store'
 import styles from './App.module.css'
 import { topItemsAppearancePaths, categoriesPaths } from './config'
@@ -17,6 +25,7 @@ import { NavBar } from './components/NavBar'
 import { Search } from './components/Search'
 import { UserHome } from './screens/UserHome'
 import { UserItemsList } from './screens/UserItemsList'
+import { MyOrders } from './screens/MyOrders'
 
 import { Cart } from './screens/Cart'
 import { OrderDetails } from './screens/OrderDetails'
@@ -35,13 +44,45 @@ import { Terms } from './screens/legal/Terms'
 import { DataPolicy } from './screens/legal/DataPolicy'
 
 export const App: FC = () => {
+    const [user, setUser] = useState<User | null>(null)
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUser(user)
+            } else {
+                setUser(null)
+            }
+        })
+        return () => {
+            unsubscribe()
+        }
+    }, [])
+
     const [search, setSearch] = useState<string>('')
     const [isCartStoreLoaded, setIsCartStoreLoaded] = useState<boolean>(false)
     const [isOrderStoreLoaded, setIsOrderStoreLoaded] = useState<boolean>(false)
     const localStorageStore = {
         cart: window.localStorage.getItem('cart'),
         order: window.localStorage.getItem('order'),
+        localOrdersData: window.localStorage.getItem('localOrdersData'),
     }
+    const [carouselsData, setCarouselsData] = useState<CarouselData[]>([])
+
+    const reloadCarouselData = (): void => {
+        axios
+            .post(`${domain}/api/carousels/get`)
+            .then((response) => {
+                setCarouselsData(response.data)
+            })
+            .catch((error) => {
+                console.error(error)
+                setCarouselsData([])
+            })
+    }
+    useEffect(() => {
+        reloadCarouselData()
+    }, [])
+
     const dispatch = useDispatch()
     useEffect(() => {
         if (localStorageStore.cart && !isCartStoreLoaded) {
@@ -50,6 +91,14 @@ export const App: FC = () => {
         }
         if (localStorageStore.order && !isOrderStoreLoaded) {
             dispatch(updateReduxOrder(JSON.parse(localStorageStore.order)))
+            setIsOrderStoreLoaded(true)
+        }
+        if (localStorageStore.localOrdersData && !isOrderStoreLoaded) {
+            dispatch(
+                setLocalOrdersData(
+                    JSON.parse(localStorageStore.localOrdersData)
+                )
+            )
             setIsOrderStoreLoaded(true)
         }
     }, [localStorageStore])
@@ -64,7 +113,14 @@ export const App: FC = () => {
                         marginTop: '90px',
                     }}
                 />
-                <HomeCarousel appearancePaths={topItemsAppearancePaths} />
+                {carouselsData.length > 0 ? (
+                    <HomeCarousel
+                        user={user}
+                        carouselsData={carouselsData}
+                        reloadData={reloadCarouselData}
+                        appearancePaths={topItemsAppearancePaths}
+                    />
+                ) : null}
                 <NavBar style={{ marginTop: '10px' }} />
                 <Search
                     search={search}
@@ -80,6 +136,10 @@ export const App: FC = () => {
                         {search.trim() ? (
                             <UserItemsList search={search} />
                         ) : null}
+                    </Route>
+
+                    <Route exact path="/my-orders">
+                        <MyOrders />
                     </Route>
 
                     {/* TEST */}
@@ -118,7 +178,10 @@ export const App: FC = () => {
                         <AdminPanel />
                     </Route>
                     <Route exact path="/admin/editing">
-                        <AdminHome />
+                        <AdminHome
+                            style={{ marginTop: '30px' }}
+                            search={search.trim()}
+                        />
                     </Route>
 
                     {categoriesPaths.map((path) => {

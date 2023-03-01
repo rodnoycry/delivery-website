@@ -4,14 +4,13 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import axios, { AxiosError } from 'axios'
 import { zoneDeliveryInfo } from '@/config'
-import { DetailedOrder, DetailedInputData } from '@/interfaces'
-import { resetCart, addAdminOrder } from '@redux/store'
-import { Order, InputState } from '@/redux/slices/orderSlice'
+import { ServerOrder, DetailedInputData } from '@/interfaces'
+import { resetCart, addLocalOrderData } from '@redux/store'
+import { Order } from '@/redux/slices/orderSlice'
 import { CartItem } from '@/redux/slices/cartSlice'
 import { domain } from '@/services/apiService/config'
 import styles from './Confirmation.module.css'
-import { getCompleteOrder, getTime } from './functions'
-import { checkErrors } from '../../functions'
+import { getServerOrder, getTime } from './functions'
 import LoadImage from '@images/Load.png'
 
 interface Props {
@@ -39,7 +38,7 @@ interface ErrorData {
     isRed?: boolean
 }
 
-type OrderError = Record<keyof DetailedOrder, ErrorData>
+type OrderError = Record<keyof ServerOrder, ErrorData>
 interface OrderErrorData {
     errorMessage: string
     errorObject?: OrderError
@@ -101,17 +100,17 @@ export const Confirmation: FC<Props> = ({
     const onSubmit = (): void => {
         setIsLoading(true)
         const time = getTime()
-        const orderInfo = getCompleteOrder(time, cart, sum, storeInputStates)
+        const orderInfo = getServerOrder(time, cart, sum, storeInputStates)
+        const serverOrderInfo: ServerOrder = { ...orderInfo, isActive: true }
         axios
-            .post(`${domain}/api/orders/add`, orderInfo)
+            .post(`${domain}/api/orders/add`, serverOrderInfo)
             .then((res) => {
                 setIsLoading(false)
                 setIsSuccess(true)
-                dispatch(addAdminOrder(orderInfo))
+                dispatch(addLocalOrderData(serverOrderInfo))
                 dispatch(resetCart())
             })
             .catch((error: AxiosError<OrderErrorData | null>) => {
-                console.log(`$$$$$$$$`, error.response)
                 if (error.response?.status === 400) {
                     if (
                         error.response?.data?.errorObject &&

@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express'
 import { db } from '../../firebase'
 import { ServerItemData } from '@/interfaces'
+import { getIntegerPrice, validateItemData } from './functions'
 
 // Add item to db
 export const handleAddItem = (req: Request, res: Response): void => {
@@ -27,40 +28,20 @@ export const handleAddItem = (req: Request, res: Response): void => {
         })
 }
 
-const getIntegerPrice = (price: string | string[]): number | number[] => {
-    if (Array.isArray(price)) {
-        return price.map(parseInt)
-    } else {
-        return parseInt(price)
-    }
-}
-
-const validateItemData = ({ type, name, price }: ServerItemData): boolean => {
-    let isValid = true
-    if (!name) {
-        isValid = false
-    }
-    if (['pizza', 'wok'].includes(type)) {
-        isValid = !!Array.isArray(price)
-    } else {
-        isValid = typeof price === 'string'
-    }
-    return isValid
-}
-
 const addItem = async (itemData: ServerItemData): Promise<void> => {
     const counterDocRef = db.collection('counters').doc('items')
     try {
-        const id = await db.runTransaction(async (t) => {
+        const idNumber = await db.runTransaction(async (t) => {
             const itemsCounterDoc: any = await t.get(counterDocRef)
             const counter = itemsCounterDoc.data().counter
             const id = (counter as number) + 1
             t.update(counterDocRef, { counter: id })
             return id
         })
-        const stringId = id.toString().padStart(6, '0')
-        itemData.id = stringId
-        const docRef = db.collection('items').doc(stringId)
+        const idNumberString = idNumber.toString().padStart(6, '0')
+        const id = `${itemData.type}-${idNumberString}`
+        itemData.id = id
+        const docRef = db.collection('items').doc(id)
         await docRef.set(itemData)
         return
     } catch (error) {

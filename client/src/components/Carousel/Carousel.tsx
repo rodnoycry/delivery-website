@@ -3,18 +3,21 @@ import type { FC } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Slide } from 'react-slideshow-image'
 import 'react-slideshow-image/dist/styles.css'
+import { CarouselData } from '@/interfaces'
+import { UpdateCarouselWindow } from './components'
 import styles from './Carousel.module.css'
 import ArrowPrev from './images/ArrowLeft.png'
 import ArrowNext from './images/ArrowRight.png'
 
 import EditImg from './images/Edit.png'
 import AddImg from './images/Add.png'
-
-import Image0 from '@images/carousel/00.png'
-import Image1 from '@images/carousel/01.jpg'
-import Image2 from '@images/carousel/02.jpg'
+import { User } from 'firebase/auth'
+import { domain } from '@/services/apiService/config'
 
 interface Props {
+    user: User | null
+    carouselsData: CarouselData[]
+    reloadData: () => void
     appearancePaths: string[]
     style?: object
 }
@@ -35,20 +38,46 @@ const properties = {
     ),
 }
 
-export const HomeCarousel: FC<Props> = ({ appearancePaths, style }) => {
+const blankCarouselData: CarouselData = {
+    id: '',
+    image: '',
+}
+
+export const HomeCarousel: FC<Props> = ({
+    user: parentUser,
+    carouselsData: parentCarouselsData,
+    reloadData,
+    appearancePaths,
+    style,
+}) => {
+    const [carouselsData, setCarouselsData] =
+        useState<CarouselData[]>(parentCarouselsData)
+
+    useEffect(() => {
+        console.log(parentCarouselsData)
+        setCarouselsData(parentCarouselsData)
+    }, [parentCarouselsData])
+
+    const [user, setUser] = useState<User | null>(null)
+
+    useEffect(() => {
+        setUser(parentUser)
+    }, [parentUser])
+
     const [isAdding, setIsAdding] = useState<boolean>(false)
     const [isEditing, setIsEditing] = useState<boolean>(false)
-    const [currentPromoData, setCurrentPromoData] = useState<string>('')
+    const [currentCarouselData, setCurrentCarouselData] =
+        useState<CarouselData>(blankCarouselData)
 
     useEffect(() => {
         if (!isAdding) {
-            setCurrentPromoData('')
+            setCurrentCarouselData(blankCarouselData)
         }
     }, [isAdding])
 
     useEffect(() => {
         if (!isEditing) {
-            setCurrentPromoData('')
+            setCurrentCarouselData(blankCarouselData)
         }
     }, [isEditing])
 
@@ -59,7 +88,6 @@ export const HomeCarousel: FC<Props> = ({ appearancePaths, style }) => {
         appearancePaths.includes(currentPath) || currentPath === '/' || isAdmin
             ? {}
             : { display: 'none' }
-    const images = [Image0, Image1, Image2]
     return (
         <div
             className={styles.carouselContainer}
@@ -70,10 +98,12 @@ export const HomeCarousel: FC<Props> = ({ appearancePaths, style }) => {
                 canSwipe={false}
                 easing="ease-out"
                 transitionDuration={2000}
-                slidesToShow={3}
+                slidesToShow={
+                    carouselsData.length > 3 ? carouselsData.length : 3
+                }
                 {...properties}
             >
-                {images.map((image: string) => {
+                {carouselsData.map(({ id, image }: CarouselData) => {
                     let index = 0
                     const item = (
                         <div
@@ -82,11 +112,22 @@ export const HomeCarousel: FC<Props> = ({ appearancePaths, style }) => {
                             id={`slide-${index}`}
                         >
                             <div className={styles.item}>
+                                <div className={styles.itemContainer}>
+                                    <img
+                                        className={styles.item}
+                                        src={`${domain}${image}`}
+                                        // src={Image0}
+                                    />
+                                </div>
                                 {isAdmin ? (
                                     <div className={styles.admin}>
                                         <button
                                             className={styles.admin}
                                             onClick={() => {
+                                                setCurrentCarouselData({
+                                                    id,
+                                                    image,
+                                                })
                                                 setIsEditing(true)
                                             }}
                                         >
@@ -108,7 +149,6 @@ export const HomeCarousel: FC<Props> = ({ appearancePaths, style }) => {
                                         </button>
                                     </div>
                                 ) : null}
-                                <img className={styles.item} src={image} />
                             </div>
                         </div>
                     )
@@ -116,6 +156,17 @@ export const HomeCarousel: FC<Props> = ({ appearancePaths, style }) => {
                     return item
                 })}
             </Slide>
+            {isAdmin && (isEditing || isAdding) ? (
+                <UpdateCarouselWindow
+                    user={user}
+                    carouselData={currentCarouselData}
+                    isAdding={isAdding}
+                    setIsAdding={setIsAdding}
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
+                    reloadData={reloadData}
+                />
+            ) : null}
         </div>
     )
 }

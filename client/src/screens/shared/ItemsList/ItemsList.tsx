@@ -52,12 +52,14 @@ export const ItemsList: FC<Props> = ({
     const [category, setCategory] = useState<string | undefined>()
     const location = useLocation()
     const reloadData = (): void => {
-        getItemsFromServer(category, search, setIsLoading)
-            .then(setItemsData)
-            .catch((error) => {
-                console.error(error)
-                setItemsData([])
-            })
+        if (category !== undefined || search) {
+            getItemsFromServer(category, search, setIsLoading)
+                .then(setItemsData)
+                .catch((error) => {
+                    console.error(error)
+                    setItemsData([])
+                })
+        }
     }
     useEffect(() => {
         reloadData()
@@ -72,6 +74,7 @@ export const ItemsList: FC<Props> = ({
         const category = path.split('/').pop()
         setCategory(category)
     }, [location])
+
     useEffect(() => {
         if (category !== 'init') {
             setShowLoading(true)
@@ -79,6 +82,7 @@ export const ItemsList: FC<Props> = ({
             setShowLoading(false)
         }
     }, [category])
+
     const title =
         categoryNamesDecode[category as keyof typeof categoryNamesDecode]
     const categoriesData = [{ [title]: itemsData }]

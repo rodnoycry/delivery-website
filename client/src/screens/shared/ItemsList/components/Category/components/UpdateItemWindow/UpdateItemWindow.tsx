@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import axios from 'axios'
+import { domain } from '@/services/apiService/config'
 import { onAuthStateChanged, User } from 'firebase/auth'
 import { auth } from '@/firebase'
 import { ItemData, ServerItemData } from '@/interfaces'
@@ -51,10 +52,10 @@ export const UpdateItemWindow: FC<Props> = ({
             } else {
                 setUser(null)
             }
-            return () => {
-                unsubscribe()
-            }
         })
+        return () => {
+            unsubscribe()
+        }
     }, [])
 
     if (isAddingItem && isEditingItem) {
@@ -62,8 +63,10 @@ export const UpdateItemWindow: FC<Props> = ({
             'Update items error: both isAddingItem and isEditingItem is true'
         )
     }
+
     const categoryName =
         categoryNamesDecode[type as keyof typeof categoryNamesDecode]
+
     const label = isAddingItem
         ? `Добавление в категорию: ${categoryName}`
         : `Изменение товара: ${initName}`
@@ -103,7 +106,7 @@ export const UpdateItemWindow: FC<Props> = ({
         formData.append('image', image as Blob)
         formData.append('itemData', JSON.stringify(serverItemData))
         try {
-            const response = await axios.post(address, formData, {
+            const response = await axios.post(`${domain}${address}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -124,6 +127,34 @@ export const UpdateItemWindow: FC<Props> = ({
                 setIsLoading(false)
                 setIsAddingItem(false)
                 setIsEditingItem(false)
+            })
+            .catch((error) => {
+                setIsLoading(false)
+                setIsError(true)
+                console.error(error)
+            })
+    }
+
+    const handleDelete = (): void => {
+        setIsLoading(true)
+        user?.getIdToken()
+            .then((token) => {
+                axios
+                    .post(`${domain}/api/items/delete`, {
+                        itemId: itemData.id,
+                        idToken: token,
+                    })
+                    .then(() => {
+                        setIsLoading(false)
+                        setIsAddingItem(false)
+                        setIsEditingItem(false)
+                        reloadData()
+                    })
+                    .catch((error) => {
+                        setIsLoading(false)
+                        setIsError(true)
+                        console.error(error)
+                    })
             })
             .catch((error) => {
                 setIsLoading(false)
@@ -158,7 +189,9 @@ export const UpdateItemWindow: FC<Props> = ({
                 <h1 className={styles.window}>{label}</h1>
                 {/* Image input */}
                 <div className={styles.line}>
-                    <h2 className={styles.window}>Выбор фотографии</h2>
+                    <h2
+                        className={styles.window}
+                    >{`Выбор фотографии (соотношение 1:1)`}</h2>
                     <input
                         name="image"
                         title="Выберите фото"
@@ -257,9 +290,9 @@ export const UpdateItemWindow: FC<Props> = ({
                             <input
                                 type="checkbox"
                                 style={{ transform: 'scale(1.5)' }}
-                                checked={isNew}
+                                checked={isWok}
                                 onChange={() => {
-                                    setIsWok(!isNew)
+                                    setIsWok(!isWok)
                                 }}
                             />
                         </div>
@@ -378,7 +411,9 @@ export const UpdateItemWindow: FC<Props> = ({
                 </div>
                 <p style={{ color: '#FF000A', fontSize: '14px' }}>
                     {isError
-                        ? `Произошла ошибка. Пожалуйста, проверьте все поля и попробуйте снова`
+                        ? isAddingItem
+                            ? `Произошла ошибка. Пожалуйста, проверьте все поля и попробуйте снова`
+                            : `Произошла ошибка. Пожалуйста, попробуйте ещё раз`
                         : ``}
                 </p>
                 {/* Delete item */}
@@ -389,9 +424,7 @@ export const UpdateItemWindow: FC<Props> = ({
                         </h3>
                         <input
                             type="text"
-                            disabled={!hasQty}
                             className={styles.text}
-                            value={itemData.qty}
                             placeholder=""
                             onChange={(event) => {
                                 const value = event.target.value
@@ -406,7 +439,7 @@ export const UpdateItemWindow: FC<Props> = ({
                             disabled={!accessDelete}
                             onClick={() => {
                                 setIsDeleting(true)
-                                handleSubmit()
+                                handleDelete()
                             }}
                         >
                             {isLoading ? (

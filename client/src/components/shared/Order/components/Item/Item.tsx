@@ -3,6 +3,7 @@ import type { FC } from 'react'
 import { CartItemData } from '@/interfaces'
 import styles from './Item.module.css'
 import { selectorsData } from '@/config'
+import { domain } from '@/services/apiService/config'
 
 interface Props extends CartItemData {
     style?: CSSProperties
@@ -21,7 +22,7 @@ export const Item: FC<Props> = ({
     return (
         <div className={styles.item} style={style}>
             <div className={styles.imageContainer}>
-                <img className={styles.item} src={image} />
+                <img className={styles.item} src={`${domain}${image}`} />
             </div>
             <div className={styles.leftTextContainer}>
                 <h2 className={styles.leftText}>

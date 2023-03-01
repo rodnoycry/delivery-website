@@ -24,12 +24,16 @@ export const Search: FC<Props> = ({ search, setSearch, appearancePaths }) => {
                 appearancePaths.includes(currentPath) || currentPath === '/'
             )
         }
+    } else {
+        shouldShow = currentPath !== '/my-orders'
     }
+
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ): void => {
         setSearch(event.target.value)
     }
+
     return shouldShow ? (
         <div style={{ marginTop: '30px' }} className={styles.searchContainer}>
             <div className={styles.search}>

@@ -252,7 +252,9 @@ export const OrderDetails: FC<Props> = ({ style }) => {
                     setInputState={setInputState}
                     isVisible={
                         inputStates?.PaymentSelect?.selected?.label ===
-                        'Наличными'
+                            'Наличными' &&
+                        inputStates?.DeliveryTypeSelect?.selected?.label ===
+                            'На указанный адрес'
                     }
                 />
                 <CommentInput

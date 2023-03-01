@@ -6,16 +6,16 @@ export const syncCookieMiddleware: Middleware =
         const storeState = store.getState()
         const cartState = storeState.cartState
         const orderState = storeState.orderState
-        const adminOrdersState = storeState.adminOrdersState
+        const localOrdersDataState = storeState.localOrdersDataState
 
         if (action.type.startsWith('cartState/')) {
             window.localStorage.setItem('cart', JSON.stringify(cartState))
         } else if (action.type.startsWith('orderState/')) {
             window.localStorage.setItem('order', JSON.stringify(orderState))
-        } else if (action.type.startsWith('adminOrdersState/')) {
+        } else if (action.type.startsWith('localOrdersDataState/')) {
             window.localStorage.setItem(
-                'adminOrders',
-                JSON.stringify(adminOrdersState)
+                'localOrdersData',
+                JSON.stringify(localOrdersDataState)
             )
         }
 

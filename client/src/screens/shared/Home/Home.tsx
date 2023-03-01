@@ -1,5 +1,11 @@
-import React, { createContext } from 'react'
+import React, { useState, useEffect, createContext } from 'react'
 import type { FC } from 'react'
+import { onAuthStateChanged } from 'firebase/auth'
+import type { User } from 'firebase/auth'
+import axios from 'axios'
+import { auth } from '@/firebase'
+import { PromoData } from '@/interfaces'
+import { domain } from '@/services/apiService/config'
 import { Promo } from './components/Promo'
 import { Categories } from './components/Categories'
 
@@ -10,15 +16,50 @@ interface Props {
 }
 
 export const IsAdminContext = createContext<boolean>(false)
+export const UserContext = createContext<User | null>(null)
 
 export const Home: FC<Props> = ({ isAdmin, search, style }) => {
+    const [user, setUser] = useState<User | null>(null)
+    const [promosData, setPromosData] = useState<PromoData[]>([])
     const appearanceStyle = search ? { display: 'none' } : {}
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUser(user)
+            } else {
+                setUser(null)
+            }
+        })
+        return () => {
+            unsubscribe()
+        }
+    }, [])
+
+    useEffect(() => {
+        reloadData()
+    }, [])
+
+    const reloadData = (): void => {
+        axios
+            .post(`${domain}/api/promos/get`)
+            .then((response) => {
+                setPromosData(response.data)
+            })
+            .catch((error) => {
+                console.error(error)
+                setPromosData([])
+            })
+    }
+
     return (
-        <IsAdminContext.Provider value={isAdmin}>
-            <div style={{ ...style, ...appearanceStyle }}>
-                <Promo />
-                <Categories style={{ marginTop: '30px' }} />
-            </div>
-        </IsAdminContext.Provider>
+        <UserContext.Provider value={user}>
+            <IsAdminContext.Provider value={isAdmin}>
+                <div style={{ ...style, ...appearanceStyle }}>
+                    <Promo promosData={promosData} reloadData={reloadData} />
+                    <Categories style={{ marginTop: '30px' }} />
+                </div>
+            </IsAdminContext.Provider>
+        </UserContext.Provider>
     )
 }

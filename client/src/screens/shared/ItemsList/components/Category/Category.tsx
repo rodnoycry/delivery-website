@@ -23,7 +23,7 @@ const blankItemData: ItemData = {
     image: '',
     name: '',
     description: '',
-    isNew: false,
+    isNew: true,
     spiciness: 0,
     qty: 1,
     price: 0,
@@ -37,13 +37,12 @@ export const Category: FC<Props> = ({ type, itemsData, reloadData, style }) => {
     }
     const [currentItemData, setCurrentItemData] =
         useState<ItemData>(blankItemData)
-
+    console.log()
     useEffect(() => {
         if (!isEditingItem) {
             setCurrentItemData({ ...blankItemData, isNew: true })
         }
     }, [isEditingItem])
-
     useEffect(() => {
         if (!isEditingItem) {
             setCurrentItemData(blankItemData)
@@ -65,38 +64,49 @@ export const Category: FC<Props> = ({ type, itemsData, reloadData, style }) => {
                 <h1 className={styles.category}>
                     {title || `Результаты поиска`}
                 </h1>
-                <ul className={styles.category}>
-                    {itemsData.map((itemData) => {
-                        const selected =
-                            itemData.id in itemsStates
-                                ? itemsStates[itemData.id].selected
-                                : false
-                        return (
-                            <Item
-                                key={itemData.id}
-                                {...itemData}
-                                qtyInCart={0}
-                                selected={selected}
-                                setIsEditingItem={
-                                    isAdmin ? setIsEditingItem : undefined
-                                }
-                                setCurrentItemData={
-                                    isAdmin ? setCurrentItemData : undefined
-                                }
+                {itemsData.length !== 0 || isAdmin ? (
+                    <ul className={styles.category}>
+                        {itemsData.map((itemData) => {
+                            const selected =
+                                itemData.id in itemsStates
+                                    ? itemsStates[itemData.id].selected
+                                    : false
+                            return (
+                                <Item
+                                    key={itemData.id}
+                                    {...itemData}
+                                    qtyInCart={0}
+                                    selected={selected}
+                                    setIsEditingItem={
+                                        isAdmin ? setIsEditingItem : undefined
+                                    }
+                                    setCurrentItemData={
+                                        isAdmin ? setCurrentItemData : undefined
+                                    }
+                                    style={itemSizeStyle}
+                                />
+                            )
+                        })}
+                        {isAdmin ? (
+                            <li
+                                className={styles.addItem}
                                 style={itemSizeStyle}
-                            />
-                        )
-                    })}
-                    {isAdmin ? (
-                        <li
-                            className={styles.addItem}
-                            style={itemSizeStyle}
-                            onClick={handleAddItem}
-                        >
-                            <img className={styles.addItem} src={AddImage} />
-                        </li>
-                    ) : null}
-                </ul>
+                                onClick={handleAddItem}
+                            >
+                                <img
+                                    className={styles.addItem}
+                                    src={AddImage}
+                                />
+                            </li>
+                        ) : null}
+                    </ul>
+                ) : (
+                    <div>
+                        <h1 className={styles.failedSearch}>
+                            Мы не смогли найти результаты по вашему запросу 😔
+                        </h1>
+                    </div>
+                )}
             </div>
             {isAddingItem || isEditingItem ? (
                 <UpdateItemWindow

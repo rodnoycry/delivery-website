@@ -1,12 +1,12 @@
-import { CompleteOrder } from '@/redux/slices/adminOrdersSlice'
+import { ServerOrder } from '@/interfaces'
 import { CartItem } from '@/redux/slices/cartSlice'
 
-export const getCompleteOrder = (
+export const getServerOrder = (
     time: string,
     cart: CartItem[],
     sum: number,
     storeInputStates: any
-): CompleteOrder => {
+): ServerOrder => {
     let deliveryTime = storeInputStates?.TimeInput?.value
     if (!deliveryTime) {
         const now = new Date()
@@ -18,9 +18,18 @@ export const getCompleteOrder = (
         const time = `${hour}:${minute}`
         deliveryTime = time
     }
-
-    const orderInfo: CompleteOrder = {
+    const deliveryTimeType = storeInputStates?.deliveryTimeType?.selected?.value
+    let deliveryDay = storeInputStates?.DaySelect?.selected?.value
+    if (
+        deliveryTimeType === 'Самовывоз' &&
+        !getIsDeliveryDateValid(deliveryDay)
+    ) {
+        deliveryDay = getCurrentDayRussian()
+    }
+    const orderInfo: ServerOrder = {
+        id: Date.now().toString(),
         time,
+        date: getCurrentDayRussian(),
         cart,
         sum,
         zone: storeInputStates?.zone,
@@ -36,11 +45,80 @@ export const getCompleteOrder = (
 
         personQty: storeInputStates?.PersonQtySelect?.selected?.value,
         deliveryTimeType: storeInputStates?.TimeSelect?.selected?.value,
-        deliveryDay: storeInputStates?.DaySelect?.selected?.value,
+        deliveryDay,
         deliveryTime,
         paymentMethod: storeInputStates?.PaymentSelect?.selected?.value,
         hasChange: storeInputStates?.ChangeSelect?.selected?.value,
         comment: storeInputStates?.CommentInput?.value,
+
+        isActive: true,
     }
     return orderInfo
+}
+
+const getCurrentDayRussian = (): string => {
+    const months = [
+        'января',
+        'февраля',
+        'марта',
+        'апреля',
+        'мая',
+        'июня',
+        'июля',
+        'августа',
+        'сентября',
+        'октября',
+        'ноября',
+        'декабря',
+    ]
+    const today = new Date()
+    const currentDate = today.getUTCDate()
+    const currentMonth = months[today.getUTCMonth()]
+
+    const day = `${currentDate} ${currentMonth}`
+    return day
+}
+
+const getIsDeliveryDateValid = (dateString: string | undefined): boolean => {
+    if (!dateString) {
+        return false
+    }
+    const months = [
+        'января',
+        'февраля',
+        'марта',
+        'апреля',
+        'мая',
+        'июня',
+        'июля',
+        'августа',
+        'сентября',
+        'октября',
+        'ноября',
+        'декабря',
+    ]
+    const [dayString, monthName] = dateString.split(` `)
+    const dayNumber = parseInt(dayString)
+    const monthNumber = months.indexOf(monthName)
+    const currentDate = new Date()
+    if (!isNaN(dayNumber) && monthNumber !== -1) {
+        // Create a new Date object with the given day and month, and the current year
+        const inputDate = new Date(
+            currentDate.getFullYear(),
+            monthNumber,
+            dayNumber
+        )
+
+        // Calculate the difference between the input date and today's date in milliseconds
+        const timeDiff = currentDate.getTime() - inputDate.getTime()
+
+        // Calculate the difference in days by dividing the time difference by the number of milliseconds in a day
+        const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24))
+
+        // Check if the input date is not more than 7 days from today
+        const isDateWithin7Days = dayDiff <= 7 && dayDiff >= 0
+        return isDateWithin7Days
+    } else {
+        return false
+    }
 }

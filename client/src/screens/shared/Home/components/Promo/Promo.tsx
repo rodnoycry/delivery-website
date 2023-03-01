@@ -8,14 +8,12 @@ import React, {
 import type { FC } from 'react'
 import { SnapList } from 'react-snaplist-carousel'
 import { PromoData } from '@/interfaces'
-import { PromoItem } from './components/PromoItem'
-import { BlankItem } from './components/BlankItem'
+import { PromoItem, BlankItem, UpdatePromoWindow } from './components'
 import { IsAdminContext } from '../../Home'
 import styles from './Promo.module.css'
-import { promoData } from './promoData'
 
 const blankPromoData: PromoData = {
-    id: 0,
+    id: '0',
     name: '',
     description: '',
     image: '',
@@ -27,11 +25,24 @@ const itemStyle: CSSProperties = {
     borderRadius: 7,
 }
 
-export const Promo: FC = () => {
+interface Props {
+    promosData: PromoData[]
+    reloadData: () => void
+}
+
+export const Promo: FC<Props> = ({
+    promosData: parentPromosData,
+    reloadData,
+}) => {
     const [isAdding, setIsAdding] = useState<boolean>(false)
     const [isEditing, setIsEditing] = useState<boolean>(false)
+    const [promosData, setPromosData] = useState<PromoData[]>(parentPromosData)
     const [currentPromoData, setCurrentPromoData] =
         useState<PromoData>(blankPromoData)
+
+    useEffect(() => {
+        setPromosData(parentPromosData)
+    }, [parentPromosData])
 
     useEffect(() => {
         if (!isAdding) {
@@ -55,8 +66,8 @@ export const Promo: FC = () => {
                 direction="horizontal"
                 ref={snapList}
             >
-                {promoData.map((props: PromoData): JSX.Element => {
-                    const isLast = props.id === promoData.at(-1)?.id
+                {promosData.map((props: PromoData): JSX.Element => {
+                    const isLast = props.id === promosData.at(-1)?.id
                     return (
                         <PromoItem
                             key={props.id}
@@ -73,6 +84,17 @@ export const Promo: FC = () => {
                 })}
                 {isAdmin ? <BlankItem setIsAdding={setIsAdding} /> : null}
             </SnapList>
+            {isAdmin && (isAdding || isEditing) ? (
+                <UpdatePromoWindow
+                    currentPromoData={currentPromoData}
+                    setCurrentPromoData={setCurrentPromoData}
+                    isAddingPromo={isAdding}
+                    setIsAddingPromo={setIsAdding}
+                    isEditingPromo={isEditing}
+                    setIsEditingPromo={setIsEditing}
+                    reloadData={reloadData}
+                />
+            ) : null}
         </div>
     )
 }
