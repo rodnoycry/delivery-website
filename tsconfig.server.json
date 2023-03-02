@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./",
+        "target": "es2017",
+        "module": "commonjs",
+        "lib": [
+            "es2017"
+        ],
+        "skipLibCheck": true,
+        "outDir": "./dist",
+        "resolveJsonModule": true,
+        "sourceMap": true,
+        "allowSyntheticDefaultImports": true,
+        /* Strict Type-Checking Options */
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+
+        /* Module Resolution Options */
+        "moduleResolution": "node",
+        "forceConsistentCasingInFileNames": true,
+        "esModuleInterop": true,
+        "paths": {
+            "@/*": ["client/src/*"],
+            "@interfaces/*": ["client/src/interfaces/*"],
+            "@config/*": ["client/src/config/*"],
+            "@functions/*": ["client/src/functions/*"],
+        },
+    },
+    "include": [
+        "server/**/*",
+        "client/dist",
+        "client/src/interfaces",
+        "client/src/functions",
+        "client/src/config",
+    ],
+}

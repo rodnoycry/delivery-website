@@ -106,13 +106,7 @@ export const App: FC = () => {
         <Router>
             <div className={styles.main}>
                 <Header />
-                <hr
-                    style={{
-                        width: '1200px',
-                        border: '1px solid #313131',
-                        marginTop: '90px',
-                    }}
-                />
+                <hr className={styles.hr} />
                 {carouselsData.length > 0 ? (
                     <HomeCarousel
                         user={user}

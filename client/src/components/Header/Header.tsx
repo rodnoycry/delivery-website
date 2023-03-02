@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { RootState as StoreState } from '@/redux/store'
 import styles from './Header.module.css'
 import LogoImg from './images/Logo.png'
+import MiniLogoImg from './images/LogoMini.png'
 import PhoneImg from './images/Phone.png'
 import DeliveryImg from './images/Delivery.png'
 import LoginImg from './images/Login.png'
@@ -40,13 +41,14 @@ export const Header: FC = () => {
     return shouldShow ? (
         <header>
             <div className={styles.headerBlocks}>
-                <Link
-                    className={styles.logo}
-                    to={isAdmin ? '/admin/editing' : '/'}
-                >
-                    <img className={styles.logo} src={LogoImg} />
-                </Link>
                 <div className={styles.infoContainer}>
+                    <Link
+                        className={styles.logo}
+                        to={isAdmin ? '/admin/editing' : '/'}
+                    >
+                        <img className={styles.logo} src={LogoImg} />
+                        <img className={styles.logoMini} src={MiniLogoImg} />
+                    </Link>
                     <div className={styles.phone}>
                         <img className={styles.phone} src={PhoneImg} />
                         <div className={styles.textContainer}>

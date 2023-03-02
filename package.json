@@ -4,9 +4,12 @@
   "description": "San-Sei delivery website project",
   "main": "./server/server.ts",
   "scripts": {
+    "fix-alias": "npx replace-tsconfig-paths -c tsconfig.server.json",
+    "server": "node -r tsconfig-paths/register ./dist/server/server.js",
     "dev-server": "nodemon -r dotenv/config .",
     "dev": "webpack serve --mode development --config client/webpack.config.js",
     "build": "webpack --mode production --progress --config client/webpack.config.js",
+    "build-server": "tsc --project tsconfig.server.json",
     "tscheck": "tsc",
     "test": "jest && npx eslint client/src/*",
     "jest": "jest",
@@ -64,8 +67,7 @@
     "react-select": "^5.7.0",
     "react-slideshow-image": "^4.2.0",
     "react-snaplist-carousel": "^4.4.2",
-    "ts-node": "^10.9.1",
-    "tsconfig-paths": "^3.14.2"
+    "ts-node": "^10.9.1"
   },
   "jest": {
     "moduleNameMapper": {
@@ -115,6 +117,7 @@
     "react-svg-loader": "^3.0.3",
     "regenerator-runtime": "^0.13.11",
     "style-loader": "^3.3.1",
+    "tsconfig-paths": "^3.14.2",
     "typescript": "^4.9.4",
     "typescript-plugin-css-modules": "^4.1.1",
     "webpack": "^5.75.0",

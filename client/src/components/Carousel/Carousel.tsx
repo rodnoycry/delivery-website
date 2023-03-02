@@ -54,10 +54,18 @@ export const HomeCarousel: FC<Props> = ({
         useState<CarouselData[]>(parentCarouselsData)
 
     useEffect(() => {
-        console.log(parentCarouselsData)
-        setCarouselsData(parentCarouselsData)
+        if (parentCarouselsData.length !== 0) {
+            const carouselsQty = parentCarouselsData.length
+            if (carouselsQty % 2 === 0) {
+                setCarouselsData([
+                    ...parentCarouselsData,
+                    parentCarouselsData[Math.ceil(carouselsQty / 2)],
+                ])
+            } else {
+                setCarouselsData(parentCarouselsData)
+            }
+        }
     }, [parentCarouselsData])
-
     const [user, setUser] = useState<User | null>(null)
 
     useEffect(() => {
@@ -91,16 +99,19 @@ export const HomeCarousel: FC<Props> = ({
     return (
         <div
             className={styles.carouselContainer}
-            style={{ ...style, ...appearanceStyle }}
+            style={{
+                ...style,
+                ...appearanceStyle,
+                maxWidth: 1300 * carouselsData.length,
+                width: `calc(100vw * ${carouselsData.length})`,
+            }}
         >
             <Slide
                 indicators={indicators}
-                canSwipe={false}
+                canSwipe={true}
                 easing="ease-out"
                 transitionDuration={2000}
-                slidesToShow={
-                    carouselsData.length > 3 ? carouselsData.length : 3
-                }
+                slidesToShow={carouselsData.length}
                 {...properties}
             >
                 {carouselsData.map(({ id, image }: CarouselData) => {

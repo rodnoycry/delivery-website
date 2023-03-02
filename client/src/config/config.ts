@@ -1,17 +1,3 @@
-import { itemsData as setsData } from '@mockData/items/sets'
-import { itemsData as pizzaData } from '@mockData/items/pizza'
-
-export const itemsPathsRenderData = {
-    '/sets': {
-        title: 'Сеты',
-        data: setsData,
-    },
-    '/pizza': {
-        title: 'Пицца',
-        data: pizzaData,
-    },
-}
-
 export const topItemsAppearancePaths = [
     '/promo',
     '/sets',

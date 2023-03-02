@@ -32,6 +32,25 @@ html {
     color: #fff;
 }
 
+hr.hr {
+    width: 100%;
+    max-width: 1200px;
+    border: 1px solid #313131;
+    margin-top: 90px;
+}
+
+@media screen and (max-width: 530px) {
+    hr.hr {
+        margin-top: 85px;
+    }
+}
+
+@media screen and (max-width: 460px) {
+    hr.hr {
+        margin-top: 80px;
+    }
+}
+
 :global h1.category {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
