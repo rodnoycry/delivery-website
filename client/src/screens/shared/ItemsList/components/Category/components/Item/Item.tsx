@@ -94,23 +94,25 @@ export const Item: FC<Props> = ({
                 </button>
             ) : null}
             <img className={styles.item} src={`${domain}${image}`} />
-            <h1 className={styles.item}>{name}</h1>
-            <p
-                className={styles.item}
+            <div
+                className={styles.labelAndDescription}
                 style={{
                     height:
-                        type === 'pizza' || type === 'wok' ? '66px' : '96px',
+                        type === 'pizza' || type === 'wok' ? '110px' : '140px',
                 }}
             >
-                {description}
-            </p>
-            <Selector
-                type={type}
-                selected={selected as number}
-                itemId={id}
-                setItemSelected={setSelected}
-                style={{ marginTop: '7px' }}
-            />
+                <h1 className={styles.item}>{name}</h1>
+                <p className={styles.item}>{description}</p>
+            </div>
+            {type !== 'wok' || name.includes('WOK') ? (
+                <Selector
+                    type={type}
+                    selected={selected as number}
+                    itemId={id}
+                    setItemSelected={setSelected}
+                    style={{ marginTop: '7px' }}
+                />
+            ) : null}
             <span className={styles.itemQty}>
                 {innerQty ? `${innerQty} шт.` : `\u00a0`}
             </span>

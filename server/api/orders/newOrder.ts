@@ -100,16 +100,16 @@ const getOrderErrorsObject = async ({
     }
     let isValid = true
     result.errorObject = {}
-    if (!phone.trim()) {
+    if (!phone?.trim()) {
         isValid = false
         result.errorObject.PhoneInput = errorData
     }
-    if (!name.trim()) {
+    if (!name?.trim()) {
         isValid = false
         result.errorObject.NameInput = errorData
     }
     if (deliveryType === 'На указанный адрес') {
-        if (zone !== 'Талдом' && !locality.trim()) {
+        if (zone !== 'Талдом' && !locality?.trim()) {
             isValid = false
             result.errorObject.LocalityInput = errorData
         }

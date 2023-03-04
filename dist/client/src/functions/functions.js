@@ -1,6 +1,10 @@
 'use strict'
 Object.defineProperty(exports, '__esModule', { value: true })
-exports.getSumWithDelivery = exports.getSum = exports.getItemsData = void 0
+exports.getCurrentDayRussian =
+    exports.getSumWithDelivery =
+    exports.getSum =
+    exports.getItemsData =
+        void 0
 const config_1 = require('./../config')
 const items_1 = require('./../services/apiService/items')
 const getItemsData = async (cart, setItemsData) => {
@@ -45,4 +49,26 @@ const getSumWithDelivery = (zone, itemsData, cart) => {
     return sum
 }
 exports.getSumWithDelivery = getSumWithDelivery
+const getCurrentDayRussian = () => {
+    const months = [
+        'января',
+        'февраля',
+        'марта',
+        'апреля',
+        'мая',
+        'июня',
+        'июля',
+        'августа',
+        'сентября',
+        'октября',
+        'ноября',
+        'декабря',
+    ]
+    const today = new Date()
+    const currentDate = today.getUTCDate()
+    const currentMonth = months[today.getUTCMonth()]
+    const day = `${currentDate} ${currentMonth}`
+    return day
+}
+exports.getCurrentDayRussian = getCurrentDayRussian
 // # sourceMappingURL=functions.js.map

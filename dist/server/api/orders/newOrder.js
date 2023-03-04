@@ -87,16 +87,21 @@ const getOrderErrorsObject = async ({
     }
     let isValid = true
     result.errorObject = {}
-    if (!phone.trim()) {
+    if (!(phone === null || phone === void 0 ? void 0 : phone.trim())) {
         isValid = false
         result.errorObject.PhoneInput = errorData
     }
-    if (!name.trim()) {
+    if (!(name === null || name === void 0 ? void 0 : name.trim())) {
         isValid = false
         result.errorObject.NameInput = errorData
     }
     if (deliveryType === 'На указанный адрес') {
-        if (zone !== 'Талдом' && !locality.trim()) {
+        if (
+            zone !== 'Талдом' &&
+            !(locality === null || locality === void 0
+                ? void 0
+                : locality.trim())
+        ) {
             isValid = false
             result.errorObject.LocalityInput = errorData
         }

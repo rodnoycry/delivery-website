@@ -52,17 +52,16 @@ export const HomeCarousel: FC<Props> = ({
 }) => {
     const [carouselsData, setCarouselsData] =
         useState<CarouselData[]>(parentCarouselsData)
+    const [slidesToShow, setSlidesToShow] = useState<number>(1)
 
     useEffect(() => {
-        if (parentCarouselsData.length !== 0) {
+        if (parentCarouselsData.length > 0) {
+            setCarouselsData(parentCarouselsData)
             const carouselsQty = parentCarouselsData.length
             if (carouselsQty % 2 === 0) {
-                setCarouselsData([
-                    ...parentCarouselsData,
-                    parentCarouselsData[Math.ceil(carouselsQty / 2)],
-                ])
+                setSlidesToShow(carouselsQty - 1)
             } else {
-                setCarouselsData(parentCarouselsData)
+                setSlidesToShow(carouselsQty)
             }
         }
     }, [parentCarouselsData])
@@ -102,16 +101,19 @@ export const HomeCarousel: FC<Props> = ({
             style={{
                 ...style,
                 ...appearanceStyle,
-                maxWidth: 1300 * carouselsData.length,
-                width: `calc(100vw * ${carouselsData.length})`,
+                maxWidth: 1300 * slidesToShow,
+                width: `calc(100vw * ${slidesToShow})`,
             }}
         >
             <Slide
                 indicators={indicators}
+                autoplay={carouselsData.length > 1}
                 canSwipe={true}
+                pauseOnHover={true}
                 easing="ease-out"
                 transitionDuration={2000}
-                slidesToShow={carouselsData.length}
+                slidesToShow={slidesToShow}
+                duration={5000}
                 {...properties}
             >
                 {carouselsData.map(({ id, image }: CarouselData) => {

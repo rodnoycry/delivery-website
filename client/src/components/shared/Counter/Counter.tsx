@@ -14,11 +14,19 @@ export interface Props {
 export const Counter: FC<Props> = ({ qty, addItem, removeItem, style }) => {
     return (
         <div className={styles.counter} style={style}>
-            <button className={styles.counter} onClick={removeItem}>
+            <button
+                className={styles.counter}
+                onClick={removeItem}
+                // disabled={qty <= 1}
+            >
                 <img className={styles.counter} src={MinusImage} />
             </button>
             <span>{`${qty}`}</span>
-            <button className={styles.counter} onClick={addItem}>
+            <button
+                className={styles.counter}
+                onClick={addItem}
+                disabled={qty >= 99}
+            >
                 <img src={PlusImage} />
             </button>
         </div>

@@ -368,7 +368,7 @@ export const UpdateItemWindow: FC<Props> = ({
                                 className={styles.text}
                                 value={
                                     Array.isArray(itemData.price)
-                                        ? 0
+                                        ? itemData.price[0]
                                         : itemData.price
                                 }
                                 placeholder="500₽"

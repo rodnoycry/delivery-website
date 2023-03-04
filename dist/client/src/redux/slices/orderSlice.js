@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.orderSlice = void 0;
 const toolkit_1 = require("@reduxjs/toolkit");
+const functions_1 = require('./..\..\functions');
 const createDefaultInputStates = (inputNames) => {
     const defaultInputStates = {};
     inputNames.forEach((inputName) => (defaultInputStates[inputName] = {
@@ -36,7 +37,7 @@ const defaultSelectorStates = createDefaultSelectStates({
     DeliveryTypeSelect: 'На указанный адрес',
     PersonQtySelect: '1 человек',
     TimeSelect: 'По готовности',
-    DaySelect: '10 февраля',
+    DaySelect: (0, functions_1.getCurrentDayRussian)(),
     PaymentSelect: 'Банковской картой курьеру',
     ChangeSelect: 'Со сдачей',
 });

@@ -22,6 +22,11 @@ button.counter:hover {
     background-color: #fafafa;
 }
 
+button.counter:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
 img.counter {
     width: 15px;
     height: auto;

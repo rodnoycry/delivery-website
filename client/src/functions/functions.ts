@@ -55,3 +55,26 @@ export const getSumWithDelivery = (
     }
     return sum
 }
+
+export const getCurrentDayRussian = (): string => {
+    const months = [
+        'января',
+        'февраля',
+        'марта',
+        'апреля',
+        'мая',
+        'июня',
+        'июля',
+        'августа',
+        'сентября',
+        'октября',
+        'ноября',
+        'декабря',
+    ]
+    const today = new Date()
+    const currentDate = today.getUTCDate()
+    const currentMonth = months[today.getUTCMonth()]
+
+    const day = `${currentDate} ${currentMonth}`
+    return day
+}

@@ -8,6 +8,7 @@ const handleAddItem = (req, res) => {
     var _a;
     const filename = (_a = req.file) === null || _a === void 0 ? void 0 : _a.filename;
     if (!filename) {
+        console.error(`handleAddItem: new item image is missing (400)`);
         res.status(400).send();
         return;
     }

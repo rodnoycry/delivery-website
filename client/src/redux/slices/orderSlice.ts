@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { getCurrentDayRussian } from '@/functions'
 
 export interface InputState {
     value?: string
@@ -62,11 +63,12 @@ const defaultInputStates = createDefaultInputStates([
     'EntranceInput',
     'IntercomInput',
 ])
+
 const defaultSelectorStates = createDefaultSelectStates({
     DeliveryTypeSelect: 'На указанный адрес',
     PersonQtySelect: '1 человек',
     TimeSelect: 'По готовности',
-    DaySelect: '10 февраля',
+    DaySelect: getCurrentDayRussian(),
     PaymentSelect: 'Банковской картой курьеру',
     ChangeSelect: 'Со сдачей',
 })

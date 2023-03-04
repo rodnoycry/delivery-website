@@ -66,6 +66,18 @@ export const Category: FC<Props> = ({ type, itemsData, reloadData, style }) => {
                 </h1>
                 {itemsData.length !== 0 || isAdmin ? (
                     <ul className={styles.category}>
+                        {isAdmin ? (
+                            <li
+                                className={styles.addItem}
+                                style={itemSizeStyle}
+                                onClick={handleAddItem}
+                            >
+                                <img
+                                    className={styles.addItem}
+                                    src={AddImage}
+                                />
+                            </li>
+                        ) : null}
                         {itemsData.map((itemData) => {
                             const selected =
                                 itemData.id in itemsStates
@@ -87,18 +99,6 @@ export const Category: FC<Props> = ({ type, itemsData, reloadData, style }) => {
                                 />
                             )
                         })}
-                        {isAdmin ? (
-                            <li
-                                className={styles.addItem}
-                                style={itemSizeStyle}
-                                onClick={handleAddItem}
-                            >
-                                <img
-                                    className={styles.addItem}
-                                    src={AddImage}
-                                />
-                            </li>
-                        ) : null}
                     </ul>
                 ) : (
                     <div>

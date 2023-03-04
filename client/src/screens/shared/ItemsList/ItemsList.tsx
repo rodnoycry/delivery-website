@@ -51,10 +51,13 @@ export const ItemsList: FC<Props> = ({
     const [itemsData, setItemsData] = useState<ItemData[] | null>(null)
     const [category, setCategory] = useState<string | undefined>()
     const location = useLocation()
+
     const reloadData = (): void => {
         if (category !== undefined || search) {
             getItemsFromServer(category, search, setIsLoading)
-                .then(setItemsData)
+                .then((items) => {
+                    setItemsData(items.reverse())
+                })
                 .catch((error) => {
                     console.error(error)
                     setItemsData([])

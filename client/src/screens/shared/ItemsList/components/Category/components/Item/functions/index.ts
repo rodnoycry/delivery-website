@@ -5,17 +5,16 @@ export const getPrice = (
     price: number | number[],
     selected: number
 ): number => {
-    switch (type) {
-        case 'pizza' || 'wok':
-            if (!Array.isArray(price)) {
-                throw new Error(
-                    `Item has ${type} type but don't have price selection, current price arg: ${price.toString()}`
-                )
-            } else {
-                return price[selected]
-            }
-        default:
-            return price as number
+    if (['pizza', 'wok'].includes(type)) {
+        if (!Array.isArray(price)) {
+            throw new Error(
+                `Item has ${type} type but don't have price selection, current price arg: ${price.toString()}`
+            )
+        } else {
+            return price[selected]
+        }
+    } else {
+        return price as number
     }
 }
 

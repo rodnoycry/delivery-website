@@ -37,9 +37,15 @@ img.item {
     margin-top: 15px;
 }
 
+/* Description and label */
+div.labelAndDescription {
+    height: 110px;
+    overflow: hidden;
+}
+
 h1.item {
     font-family: 'Montserrat', sans-serif;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
     width: 100%;
     margin-top: 13px;
@@ -53,7 +59,6 @@ p.item {
     letter-spacing: -0.005em;
     color: #A9A9A9;
     margin-top: 5px;
-    overflow: hidden;
     cursor: default;
 }
 

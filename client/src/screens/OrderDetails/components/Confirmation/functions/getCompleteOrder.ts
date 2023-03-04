@@ -1,5 +1,6 @@
 import { ServerOrder } from '@/interfaces'
 import { CartItem } from '@/redux/slices/cartSlice'
+import { getCurrentDayRussian } from '@/functions'
 
 export const getServerOrder = (
     time: string,
@@ -54,29 +55,6 @@ export const getServerOrder = (
         isActive: true,
     }
     return orderInfo
-}
-
-const getCurrentDayRussian = (): string => {
-    const months = [
-        'января',
-        'февраля',
-        'марта',
-        'апреля',
-        'мая',
-        'июня',
-        'июля',
-        'августа',
-        'сентября',
-        'октября',
-        'ноября',
-        'декабря',
-    ]
-    const today = new Date()
-    const currentDate = today.getUTCDate()
-    const currentMonth = months[today.getUTCMonth()]
-
-    const day = `${currentDate} ${currentMonth}`
-    return day
 }
 
 const getIsDeliveryDateValid = (dateString: string | undefined): boolean => {

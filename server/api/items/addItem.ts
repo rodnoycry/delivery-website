@@ -7,6 +7,7 @@ import { getIntegerPrice, validateItemData } from './functions'
 export const handleAddItem = (req: Request, res: Response): void => {
     const filename = req.file?.filename
     if (!filename) {
+        console.error(`handleAddItem: new item image is missing (400)`)
         res.status(400).send()
         return
     }
