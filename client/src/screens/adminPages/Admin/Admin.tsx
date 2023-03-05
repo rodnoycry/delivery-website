@@ -135,7 +135,14 @@ export const Admin: FC = () => {
     return (
         <div className={styles.adminContainer}>
             <div className={styles.admin}>
-                <div className={styles.modeToggle}>
+                <button
+                    className={styles.google}
+                    style={{ backgroundColor: '#FF000A' }}
+                    onClick={handleSignInGoogle}
+                >
+                    Войти
+                </button>
+                {/* <div className={styles.modeToggle}>
                     <button
                         className={styles.toggle}
                         onClick={() => {
@@ -217,9 +224,9 @@ export const Admin: FC = () => {
                             Выйти
                         </button>
                     </>
-                ) : null}
-                <h1>Is Admin: {isAdmin?.toString()}</h1>
-                <h1>Current User: {user?.email}</h1>
+                ) : null} */}
+                {/* <h1>Is Admin: {isAdmin?.toString()}</h1>
+                <h1>Current User: {user?.email}</h1> */}
             </div>
         </div>
     )

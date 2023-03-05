@@ -2,20 +2,30 @@ nav {
     width: 90%;
     max-width: 1200px;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
+    column-gap: 15px;
 }
 
 button.link {
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     font-weight: bold;
+
     letter-spacing: 1px;
     border-radius: 5px;
     padding: 2px;
+    flex-grow: calc(100% + 10px);
 }
 
 button.link:hover {
     background-color: #fafafa;
     border-radius: 5px;
     color: black;
+}
+
+@media screen and (max-width: 550px) {
+    button.link {
+        font-size: 14px;
+    }
 }

@@ -8,9 +8,27 @@ h1.category {
 ul.category {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
+
     row-gap: 20px;
-    column-gap: 40px;
     padding-top: 20px;
+}
+
+
+@media screen and (max-width: 664px) {
+    h1.category {
+        margin-top: 20px;
+    }
+
+    ul.category {
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    ul.category {
+        row-gap: 0;
+    }
 }
 
 /* "Add item" component for admins */
@@ -19,6 +37,7 @@ li.addItem {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0 12.5px;
 
     background-color: #353535;
     transition: background-color 0.2s ease-in-out;

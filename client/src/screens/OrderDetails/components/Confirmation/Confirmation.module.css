@@ -30,6 +30,15 @@ div.buttons {
     margin-top: 36px;
 }
 
+@media screen and (max-width: 940px) {
+    div.buttons {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        row-gap: 30px;
+    }
+}
+
 button.backButton {
     font-size: 20px;
     font-weight: bold;

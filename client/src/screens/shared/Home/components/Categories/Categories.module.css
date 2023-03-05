@@ -1,11 +1,13 @@
 div.categories {
-    width: 1200px;
+    max-width: 1200px;
 }
 
 ul.categories {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    column-gap: 15px;
     list-style-type: none;
     row-gap: 40px;
     margin-top: 15px;
@@ -22,10 +24,19 @@ li.categories {
     transition: transform 0.2s ease-in-out;
 }
 
+@media screen and (max-width: 550px) {
+    li.categories {
+        width: 252px;
+        height: 270px;
+    }
+}
+
 li.categories:hover {
     transform: scale(1.05);
 }
+
 h1.categories {
+    width: 100%;
     position: absolute;
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;

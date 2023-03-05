@@ -41,7 +41,9 @@ export const TableItem: FC<CartItemData> = ({
                 <div className={styles.textContainer}>
                     <h1 className={styles.name}>{name}</h1>
                     <h4 className={styles.secondaryLabel}>
-                        {getSecondaryLabel(type, selected, qty)}
+                        {type === 'wok' && !name.includes('WOK')
+                            ? ''
+                            : getSecondaryLabel(type, selected, qty)}
                     </h4>
                 </div>
             </div>

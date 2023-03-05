@@ -8,6 +8,7 @@ import { PromoData } from '@/interfaces'
 import { domain } from '@/services/apiService/config'
 import { Promo } from './components/Promo'
 import { Categories } from './components/Categories'
+import styles from './Home.module.css'
 
 interface Props {
     isAdmin: boolean
@@ -55,7 +56,10 @@ export const Home: FC<Props> = ({ isAdmin, search, style }) => {
     return (
         <UserContext.Provider value={user}>
             <IsAdminContext.Provider value={isAdmin}>
-                <div style={{ ...style, ...appearanceStyle }}>
+                <div
+                    className={styles.homeContainer}
+                    style={{ ...style, ...appearanceStyle }}
+                >
                     <Promo promosData={promosData} reloadData={reloadData} />
                     <Categories style={{ marginTop: '30px' }} />
                 </div>

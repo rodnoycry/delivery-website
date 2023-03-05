@@ -43,7 +43,7 @@ export const UpdateItemWindow: FC<Props> = ({
     const [hasDescription, setHasDescription] = useState<boolean>(true)
     const [hasQty, setHasQty] = useState<boolean>(true)
     const [isNew, setIsNew] = useState<boolean>(itemData.isNew)
-    const [isWok, setIsWok] = useState<boolean>(true)
+    const [isWok, setIsWok] = useState<boolean>(false)
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -283,7 +283,7 @@ export const UpdateItemWindow: FC<Props> = ({
                     </div>
                 </div>
                 {/* Is WOK with sause select */}
-                {type === 'wok' ? (
+                {/* {type === 'wok' ? (
                     <div className={styles.line}>
                         <div className={styles.labelWithCheckbox}>
                             <h2 className={styles.window}>{`Выбор соуса: `}</h2>
@@ -297,7 +297,7 @@ export const UpdateItemWindow: FC<Props> = ({
                             />
                         </div>
                     </div>
-                ) : null}
+                ) : null} */}
                 {/* Price input */}
                 {type === 'pizza' || (type === 'wok' && isWok) ? (
                     <>

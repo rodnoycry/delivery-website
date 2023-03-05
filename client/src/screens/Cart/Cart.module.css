@@ -1,5 +1,6 @@
 div.cart {
-    width: 1200px;
+    width: 90%;
+    max-width: 1200px;
     margin-bottom: 200px;
 }
 
@@ -18,8 +19,19 @@ h1.label {
 h3.linkToHome {
     font-family: 'Montserrat', sans-serif;
     font-size: 18px;
+    text-align: end;
     text-decoration-line: underline;
     padding-top: 5px;
+}
+
+@media screen and (max-width: 550px) {
+    h1.label {
+        font-size: 24px;
+    }
+
+    h3.linkToHome {
+        font-size: 16px;
+    }
 }
 
 /* Submit button */
@@ -27,6 +39,12 @@ div.button {
     margin-top: 40px;
     display: flex;
     justify-content: end;
+}
+
+@media screen and (max-width: 600px) {
+    div.button {
+        justify-content: center;
+    }
 }
 
 button.button {
@@ -39,6 +57,20 @@ button.button {
 
     background: #FF000A;
     border-radius: 12px;
+}
+
+@media screen and (max-width: 600px) {
+    button.button {
+        font-size: 18px;
+        width: 90vw;
+    }
+
+    div.adaptiveContainer {
+        display: flex;
+        width: 425px;
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 button.button:disabled {
@@ -57,4 +89,11 @@ h4.error {
     padding-left: 10px;
     padding-right: 10px;
     color: #FF000A
+}
+
+@media screen and (max-width: 600px) {
+
+    h4.error {
+        width: 90vw;
+    }
 }

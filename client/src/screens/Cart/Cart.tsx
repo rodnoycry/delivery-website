@@ -66,7 +66,7 @@ export const Cart: FC = () => {
 
             <DeliveryDetails zone={zone} setZone={setZone} isError={isError} />
             <div className={styles.button}>
-                <div>
+                <div className={styles.adaptiveContainer}>
                     <Link to="/order-details">
                         <button
                             className={styles.button}

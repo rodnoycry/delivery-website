@@ -27,7 +27,9 @@ export const Item: FC<Props> = ({
             <div className={styles.leftTextContainer}>
                 <h2 className={styles.leftText}>
                     {name}{' '}
-                    {['pizza', 'wok'].includes(type)
+                    {type === 'wok' && !name.includes('WOK')
+                        ? ''
+                        : ['pizza', 'wok'].includes(type)
                         ? `(${
                               selectorsData[type as keyof typeof selectorsData][
                                   selected as number

@@ -93,7 +93,9 @@ export const Item: FC<Props> = ({
                     <img className={styles.adminEdit} src={EditImage} />
                 </button>
             ) : null}
-            <img className={styles.item} src={`${domain}${image}`} />
+            <div className={styles.imgContainer}>
+                <img className={styles.item} src={`${domain}${image}`} />
+            </div>
             <div
                 className={styles.labelAndDescription}
                 style={{

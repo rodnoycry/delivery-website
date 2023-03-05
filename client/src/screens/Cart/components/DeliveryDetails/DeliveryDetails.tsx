@@ -29,44 +29,48 @@ export const DeliveryDetails: FC<Props> = ({
                         бесплатно!
                     </h4>
                 </div>
-                <div
-                    className={styles.zoneInfo}
-                    style={{ border: isError ? '2px solid #ff000a' : '0px' }}
-                >
-                    <h2 className={styles.zoneInfo}>
-                        {zoneInfo[zone].minSum} ₽
-                    </h2>
-                    <h3 className={styles.zoneInfo}>
-                        Минимальный
-                        <br /> заказ
-                    </h3>
-                </div>
-                <div className={styles.zoneInfo}>
-                    <h2 className={styles.zoneInfo}>
-                        {zoneInfo[zone].deliveryPrice} ₽
-                    </h2>
-                    <h3 className={styles.zoneInfo}>
-                        Стоимость
-                        <br /> доставки
-                    </h3>
-                </div>
-                <div className={styles.zoneInfo}>
-                    <h2 className={styles.zoneInfo}>
-                        {zoneInfo[zone].freeDelivery} ₽
-                    </h2>
-                    <h3 className={styles.zoneInfo}>
-                        Бесплатная
-                        <br /> доставка от
-                    </h3>
-                </div>
-                <div className={styles.zoneInfo}>
-                    <h2 className={styles.zoneInfo}>
-                        {zoneInfo[zone].approximateTime} минут
-                    </h2>
-                    <h3 className={styles.zoneInfo}>
-                        Среднее время
-                        <br /> доставки
-                    </h3>
+                <div className={styles.zoneInfoContainer}>
+                    <div
+                        className={styles.zoneInfo}
+                        style={{
+                            border: isError ? '2px solid #ff000a' : '0px',
+                        }}
+                    >
+                        <h2 className={styles.zoneInfo}>
+                            {zoneInfo[zone].minSum} ₽
+                        </h2>
+                        <h3 className={styles.zoneInfo}>
+                            Минимальный
+                            <br /> заказ
+                        </h3>
+                    </div>
+                    <div className={styles.zoneInfo}>
+                        <h2 className={styles.zoneInfo}>
+                            {zoneInfo[zone].deliveryPrice} ₽
+                        </h2>
+                        <h3 className={styles.zoneInfo}>
+                            Стоимость
+                            <br /> доставки
+                        </h3>
+                    </div>
+                    <div className={styles.zoneInfo}>
+                        <h2 className={styles.zoneInfo}>
+                            {zoneInfo[zone].freeDelivery} ₽
+                        </h2>
+                        <h3 className={styles.zoneInfo}>
+                            Бесплатная
+                            <br /> доставка от
+                        </h3>
+                    </div>
+                    <div className={styles.zoneInfo}>
+                        <h2 className={styles.zoneInfo}>
+                            {zoneInfo[zone].approximateTime} минут
+                        </h2>
+                        <h3 className={styles.zoneInfo}>
+                            Среднее время
+                            <br /> доставки
+                        </h3>
+                    </div>
                 </div>
             </div>
         </div>

@@ -57,6 +57,12 @@ hr.hr {
     font-size: 28px;
 }
 
+@media screen and (max-width: 650px) {
+    :global h1.category {
+        font-size: 24px;
+    }
+}
+
 ul {
     list-style-type: none;
 }
