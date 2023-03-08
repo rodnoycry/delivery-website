@@ -34,6 +34,7 @@ export const CartButton: FC = () => {
     return (
         <Link to="/cart">
             <button
+                disabled
                 className={styles.cart}
                 onClick={() => {
                     window.scrollTo(0, 0)

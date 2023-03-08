@@ -15,6 +15,11 @@ button.cart:hover {
     background-color: #323232;
 }
 
+button.cart:disabled {
+    cursor: default;
+    opacity: 0.3;
+}
+
 /* Cart button */
 img.cart {
     display: inline-block;
