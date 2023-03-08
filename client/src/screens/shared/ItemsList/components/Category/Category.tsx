@@ -8,6 +8,7 @@ import { categoryNamesDecode } from '@/config'
 import { IsAdminContext, itemSizeStyle } from '../../ItemsList'
 import AddImage from './images/Add.png'
 import { Item } from './components/Item'
+import { BlankItem } from './components/BlankItem'
 import { UpdateItemWindow } from './components/UpdateItemWindow'
 
 interface Props {
@@ -99,6 +100,8 @@ export const Category: FC<Props> = ({ type, itemsData, reloadData, style }) => {
                                 />
                             )
                         })}
+                        <BlankItem style={itemSizeStyle} />
+                        <BlankItem style={itemSizeStyle} />
                     </ul>
                 ) : (
                     <div>

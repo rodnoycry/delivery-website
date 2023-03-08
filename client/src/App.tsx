@@ -107,9 +107,9 @@ export const App: FC = () => {
             <div className={styles.main}>
                 <Header />
                 <hr className={styles.hr} />
-                <h1 className={styles.dontAcceptOrders}>
+                {/* <h1 className={styles.dontAcceptOrders}>
                     {`Извините, сегодня (8 марта), мы больше не принимаем заказы, приносим извинения за предоставленные неудобства!`}
-                </h1>
+                </h1> */}
                 {carouselsData.length > 0 ? (
                     <HomeCarousel
                         user={user}
