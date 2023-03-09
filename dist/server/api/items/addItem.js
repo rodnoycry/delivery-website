@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleAddItem = void 0;
 const firebase_1 = require("../../firebase");
 const functions_1 = require("./functions");
+const cacheDb_1 = require("../../functions/cacheDb");
 // Add item to db
 const handleAddItem = (req, res) => {
     var _a;
@@ -22,7 +23,14 @@ const handleAddItem = (req, res) => {
     }
     addItem(itemData)
         .then(() => {
-        return res.status(201).send();
+        (0, cacheDb_1.cacheItemsDb)() // Update cached items from db
+            .then(() => {
+            res.status(201).send();
+        })
+            .catch((error) => {
+            console.log(error);
+            return res.status(500).json({ error }).send();
+        });
     })
         .catch((error) => {
         console.error(error);

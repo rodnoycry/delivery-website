@@ -1,62 +1,55 @@
-import fs from 'fs'
-import { db } from '../../firebase'
-import carouselsJSON from './stored/carousels.json'
-import countersJSON from './stored/counters.json'
-import itemsJSON from './stored/items.json'
-import ordersJSON from './stored/orders.json'
-import promosJSON from './stored/promos.json'
-
-const store = (dbKey: string): void => {
-    const ref = db.collection(dbKey)
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs_1 = __importDefault(require("fs"));
+const firebase_1 = require("../../firebase");
+const store = (dbKey) => {
+    const ref = firebase_1.db.collection(dbKey);
     ref.get()
         .then((docData) => {
-            const itemsRaw = docData.docs
-            const items = itemsRaw.map((doc) => doc.data())
-            const jsonItems = JSON.stringify(items)
-            fs.writeFile(
-                `./server/api/hell_/stored/${dbKey}.json`,
-                jsonItems,
-                (err) => {
-                    if (err) {
-                        console.error(err)
-                    } else {
-                        console.log('Data written to file')
-                    }
-                }
-            )
-        })
+        const itemsRaw = docData.docs;
+        const items = itemsRaw.map((doc) => doc.data());
+        const jsonItems = JSON.stringify(items);
+        fs_1.default.writeFile(`./server/api/hell_/stored/${dbKey}.json`, jsonItems, (err) => {
+            if (err) {
+                console.error(err);
+            }
+            else {
+                console.log('Data written to file');
+            }
+        });
+    })
         .catch((error) => {
-            console.error(error)
-        })
-}
+        console.error(error);
+    });
+};
 // store('counters')
 // store('carousels')
 // store('items')
 // store('orders')
 // store('promos')
-
-const sendSingle = (dbKey: string, dbValue: Record<string, any>): void => {
-    console.log(`data`, dbValue)
-    const collectionRef = db.collection(dbKey)
+const sendSingle = (dbKey, dbValue) => {
+    console.log(`data`, dbValue);
+    const collectionRef = firebase_1.db.collection(dbKey);
     Object.entries(dbValue).forEach(([key, value]) => {
         collectionRef
             .doc(value.id)
             .set(value)
             .then(() => {
-                console.log('Collection successfully created!')
-            })
+            console.log('Collection successfully created!');
+        })
             .catch((error) => {
-                console.error('Error creating collection: ', error)
-            })
-    })
-}
-
+            console.error('Error creating collection: ', error);
+        });
+    });
+};
 // sendSingle('counters', JSON.parse(JSON.stringify(countersJSON)))
 // sendSingle('carousels', JSON.parse(JSON.stringify(carouselsJSON)))
 // sendSingle('items', JSON.parse(JSON.stringify(itemsJSON)))
 // sendSingle('orders', JSON.parse(JSON.stringify(ordersJSON)))
 // sendSingle('promos', JSON.parse(JSON.stringify(promosJSON)))
-
 // const send = (dbKeys: string[]): void => {
 //     dbKeys.forEach((dbKey) => {
 //         // Read the data from the 'data.json' file
@@ -85,6 +78,6 @@ const sendSingle = (dbKey: string, dbValue: Record<string, any>): void => {
 //         )
 //     })
 // }
-
 // const dbKeys = ['counters', 'carousels', 'items', 'orders', 'promos']
 // // clone(dbKeys)
+//# sourceMappingURL=init.js.map

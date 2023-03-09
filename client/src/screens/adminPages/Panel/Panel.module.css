@@ -1,6 +1,6 @@
 div.admin {
     font-family: 'Montserrat', sans-serif;
-    min-height: 80vw;
+    min-height: 70vw;
 }
 
 /* Nav container */
@@ -41,7 +41,13 @@ div.orders {
     flex-wrap: wrap;
     max-width: 1200px;
     width: 90vw;
+    /* min-height: 50vh; */
     flex-direction: column;
     row-gap: 20px;
     align-items: center;
+}
+
+button.signOut {
+    display: block;
+    color: #FF000A;
 }

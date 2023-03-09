@@ -20,7 +20,7 @@ export const Panel: FC = () => {
     const [timeToNextRequest, setTimeToNextRequest] = useState<number>(6)
     const [errorMessage, setErrorMessage] = useState<string>('')
 
-    const [soundOn, setSoundOn] = useState<boolean>(true)
+    const [soundOn, setSoundOn] = useState<boolean>(false)
 
     const [orders, setOrders] = useState<ServerOrder[]>([])
     const [ordersQty, setOrdersQty] = useState<number>(0)
@@ -47,7 +47,7 @@ export const Panel: FC = () => {
 
         if (timeToNextRequest === 0) {
             updateOrders()
-            setTimeToNextRequest(5)
+            setTimeToNextRequest(6)
         }
 
         return () => {
@@ -132,58 +132,78 @@ export const Panel: FC = () => {
             })
     }
     return (
-        <div className={styles.admin}>
-            <Header soundOn={soundOn} setSoundOn={setSoundOn} />
-            <div className={styles.navContainer}>
-                <div className={styles.nav}>
-                    <button
-                        className={styles.button}
-                        style={{
-                            backgroundColor: showIsActive ? '#FF000A' : '#222',
-                        }}
-                        onClick={() => {
-                            setShowIsActive(true)
-                        }}
-                    >
-                        Активные заказы
-                    </button>
-                    <button
-                        className={styles.button}
-                        style={{
-                            backgroundColor: showIsActive ? '#222' : '#FF000A',
-                        }}
-                        onClick={() => {
-                            setShowIsActive(false)
-                        }}
-                    >
-                        Завершённые заказы
-                    </button>
+        <>
+            <div className={styles.admin}>
+                <Header soundOn={soundOn} setSoundOn={setSoundOn} />
+                <div className={styles.navContainer}>
+                    <div className={styles.nav}>
+                        <button
+                            className={styles.button}
+                            style={{
+                                backgroundColor: showIsActive
+                                    ? '#FF000A'
+                                    : '#222',
+                            }}
+                            onClick={() => {
+                                setShowIsActive(true)
+                            }}
+                        >
+                            Активные заказы
+                        </button>
+                        <button
+                            className={styles.button}
+                            style={{
+                                backgroundColor: showIsActive
+                                    ? '#222'
+                                    : '#FF000A',
+                            }}
+                            onClick={() => {
+                                setShowIsActive(false)
+                            }}
+                        >
+                            Завершённые заказы
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <h1>
+                        Список заказов обновится через {timeToNextRequest - 1}{' '}
+                        секунд
+                        {[4, 3, 2].includes(timeToNextRequest - 1) ? 'ы' : ''}
+                        {timeToNextRequest - 1 === 1 ? 'у' : ''}
+                    </h1>
+                    <h1 style={{ color: '#FF000A' }}>{errorMessage}</h1>
+                </div>
+                <div className={styles.orders} style={{ marginTop: 20 }}>
+                    {orders
+                        .filter((order) => order.isActive === showIsActive)
+                        .map((order) => {
+                            return (
+                                <AdminOrder
+                                    key={order.time}
+                                    user={user}
+                                    showIsActive={showIsActive}
+                                    order={order}
+                                    itemsData={itemsData}
+                                />
+                            )
+                        })}
+                    {`Скоро здесь появятся новые заказы!`}
                 </div>
             </div>
-            <div>
-                <h1>
-                    Список заказов обновится через {timeToNextRequest - 1}{' '}
-                    секунд{[4, 3, 2].includes(timeToNextRequest - 1) ? 'ы' : ''}
-                    {timeToNextRequest - 1 === 1 ? 'у' : ''}
-                </h1>
-                <h1 style={{ color: '#FF000A' }}>{errorMessage}</h1>
+            <div style={{ width: `90%` }}>
+                <button
+                    className={styles.signOut}
+                    style={{
+                        fontFamily: 'Montserrat',
+                        fontSize: 16,
+                        marginTop: 30,
+                    }}
+                    onClick={handleSignOut}
+                >
+                    Выйти из аккаунта
+                </button>
             </div>
-            <div className={styles.orders} style={{ marginTop: 20 }}>
-                {orders
-                    .filter((order) => order.isActive === showIsActive)
-                    .map((order) => {
-                        return (
-                            <AdminOrder
-                                key={order.time}
-                                user={user}
-                                showIsActive={showIsActive}
-                                order={order}
-                                itemsData={itemsData}
-                            />
-                        )
-                    })}
-            </div>
-            <button onClick={handleSignOut}>Sign Out</button>
-        </div>
+        </>
     )
 }
