@@ -6,6 +6,7 @@ const firebase_1 = require("../../firebase");
 const handleGetCarousels = (req, res) => {
     getCarousels()
         .then((carousels) => {
+        // console.log(`carousels geted`)
         res.status(200).json(carousels).send();
     })
         .catch((error) => {

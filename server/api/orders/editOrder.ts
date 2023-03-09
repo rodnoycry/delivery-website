@@ -1,10 +1,12 @@
 import type { Request, Response } from 'express'
 import { db } from '../../firebase'
+import { cacheOrdersDb } from '../../functions/cacheDb'
 
 export const handleEditOrder = (req: Request, res: Response): void => {
     const { id, isActive } = req.body.orderData
     updateOrder(id, isActive)
         .then(() => {
+            cacheOrdersDb()
             res.status(204).send()
         })
         .catch((error) => {

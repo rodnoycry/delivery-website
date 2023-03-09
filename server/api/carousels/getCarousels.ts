@@ -5,6 +5,7 @@ import { db } from '../../firebase'
 export const handleGetCarousels = (req: Request, res: Response): void => {
     getCarousels()
         .then((carousels) => {
+            // console.log(`carousels geted`)
             res.status(200).json(carousels).send()
         })
         .catch((error) => {

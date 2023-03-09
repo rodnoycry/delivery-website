@@ -14,6 +14,7 @@ const functions_1 = require("./functions");
 const utils_1 = require("./utils");
 const cacheDb_1 = require("./functions/cacheDb");
 (0, cacheDb_1.cacheItemsDb)().catch(console.error); // Initial items caching
+(0, cacheDb_1.cacheOrdersDb)(); // Initial orders caching
 const app = (0, express_1.default)();
 const port = 3000;
 // Serve static files from the 'dist' directory

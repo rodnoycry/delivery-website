@@ -4,6 +4,7 @@ import { db } from '../../firebase'
 import { ItemData, ServerOrder } from '@/interfaces'
 import { getSum } from '@/functions'
 import { zoneDeliveryInfo } from '@/config'
+import { cacheOrdersDb } from '../../functions/cacheDb'
 
 export const handleNewOrder = (req: Request, res: Response): void => {
     const order: ServerOrder = req.body
@@ -14,7 +15,10 @@ export const handleNewOrder = (req: Request, res: Response): void => {
                 return
             }
             createOrder(order)
-                .then(() => res.status(201).send())
+                .then(() => {
+                    cacheOrdersDb()
+                    res.status(201).send()
+                })
                 .catch((error) => {
                     console.error(error)
                     res.status(500).json(error).send()

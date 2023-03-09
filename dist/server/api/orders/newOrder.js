@@ -5,6 +5,7 @@ const firestore_1 = require('firebase-admin/firestore')
 const firebase_1 = require('../../firebase')
 const functions_1 = require('./../../../client/src/functions')
 const config_1 = require('./../../../client/src/config')
+const cacheDb_1 = require('../../functions/cacheDb')
 const handleNewOrder = (req, res) => {
     const order = req.body
     getOrderErrorsObject(order)
@@ -14,7 +15,10 @@ const handleNewOrder = (req, res) => {
                 return
             }
             createOrder(order)
-                .then(() => res.status(201).send())
+                .then(() => {
+                    ;(0, cacheDb_1.cacheOrdersDb)()
+                    res.status(201).send()
+                })
                 .catch((error) => {
                     console.error(error)
                     res.status(500).json(error).send()
