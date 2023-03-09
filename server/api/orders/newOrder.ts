@@ -17,7 +17,13 @@ export const handleNewOrder = (req: Request, res: Response): void => {
             createOrder(order)
                 .then(() => {
                     cacheOrdersDb()
-                    res.status(201).send()
+                        .then(() => {
+                            res.status(201).send()
+                        })
+                        .catch((error) => {
+                            console.error(error)
+                            res.status(500).json(error).send()
+                        })
                 })
                 .catch((error) => {
                     console.error(error)

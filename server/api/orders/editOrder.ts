@@ -7,7 +7,13 @@ export const handleEditOrder = (req: Request, res: Response): void => {
     updateOrder(id, isActive)
         .then(() => {
             cacheOrdersDb()
-            res.status(204).send()
+                .then(() => {
+                    res.status(204).send()
+                })
+                .catch((error) => {
+                    console.error(error)
+                    res.status(500).json(error).send()
+                })
         })
         .catch((error) => {
             console.error(error)

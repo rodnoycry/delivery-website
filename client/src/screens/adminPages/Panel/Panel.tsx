@@ -180,7 +180,7 @@ export const Panel: FC = () => {
                         .map((order) => {
                             return (
                                 <AdminOrder
-                                    key={order.time}
+                                    key={`${order.id}${order.time}`}
                                     user={user}
                                     showIsActive={showIsActive}
                                     order={order}
