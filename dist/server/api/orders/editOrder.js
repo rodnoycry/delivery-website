@@ -2,10 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleEditOrder = void 0;
 const firebase_1 = require("../../firebase");
+const cacheDb_1 = require("../../functions/cacheDb");
 const handleEditOrder = (req, res) => {
     const { id, isActive } = req.body.orderData;
     updateOrder(id, isActive)
         .then(() => {
+        (0, cacheDb_1.cacheOrdersDb)();
         res.status(204).send();
     })
         .catch((error) => {

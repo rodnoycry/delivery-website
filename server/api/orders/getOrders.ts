@@ -1,8 +1,9 @@
 import type { Request, Response } from 'express'
 import { db } from '../../firebase'
+import { getOrdersFromCache } from '../../functions/cacheDb'
 
 export const handleGetOrders = (req: Request, res: Response): void => {
-    getOrders()
+    getOrdersFromCache()
         .then((orders) => res.status(200).send(orders))
         .catch((error) => {
             console.error(error)
@@ -10,14 +11,15 @@ export const handleGetOrders = (req: Request, res: Response): void => {
         })
 }
 
-const getOrders = async (): Promise<any> => {
-    try {
-        const ref = db.collection('orders')
-        const docData = await ref.get()
-        const ordersDocs = docData.docs
-        const orders = ordersDocs.map((orderDoc) => orderDoc.data())
-        return orders
-    } catch (error) {
-        return error
-    }
-}
+// const getOrders = async (): Promise<any> => {
+//     try {
+//         // console.log(`orders geted`)
+//         const ref = db.collection('orders')
+//         const docData = await ref.get()
+//         const ordersDocs = docData.docs
+//         const orders = ordersDocs.map((orderDoc) => orderDoc.data())
+//         return orders
+//     } catch (error) {
+//         return error
+//     }
+// }

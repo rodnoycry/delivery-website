@@ -10,6 +10,7 @@ export const handleGetPromos = (req: Request, res: Response): void => {
                     doc: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>
                 ) => doc.data()
             )
+            // console.log(`promos geted`)
             res.status(200).json(promos)
         })
         .catch((error) => {

@@ -22,9 +22,10 @@ import {
 import { handleNewOrder, handleGetOrders, handleEditOrder } from './api/orders'
 import { getUploader } from './functions'
 import { checkAdmin } from './utils'
-import { cacheItemsDb } from './functions/cacheDb'
+import { cacheItemsDb, cacheOrdersDb } from './functions/cacheDb'
 
 cacheItemsDb().catch(console.error) // Initial items caching
+cacheOrdersDb() // Initial orders caching
 
 const app = express()
 const port = 3000

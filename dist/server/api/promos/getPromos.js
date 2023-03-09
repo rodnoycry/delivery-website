@@ -7,6 +7,7 @@ const handleGetPromos = (req, res) => {
     getPromos()
         .then((promosRaw) => {
         const promos = promosRaw.map((doc) => doc.data());
+        // console.log(`promos geted`)
         res.status(200).json(promos);
     })
         .catch((error) => {
