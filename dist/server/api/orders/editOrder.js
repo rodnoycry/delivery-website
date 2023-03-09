@@ -7,8 +7,14 @@ const handleEditOrder = (req, res) => {
     const { id, isActive } = req.body.orderData;
     updateOrder(id, isActive)
         .then(() => {
-        (0, cacheDb_1.cacheOrdersDb)();
-        res.status(204).send();
+        (0, cacheDb_1.cacheOrdersDb)()
+            .then(() => {
+            res.status(204).send();
+        })
+            .catch((error) => {
+            console.error(error);
+            res.status(500).json(error).send();
+        });
     })
         .catch((error) => {
         console.error(error);

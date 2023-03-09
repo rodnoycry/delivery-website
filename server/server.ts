@@ -25,7 +25,7 @@ import { checkAdmin } from './utils'
 import { cacheItemsDb, cacheOrdersDb } from './functions/cacheDb'
 
 cacheItemsDb().catch(console.error) // Initial items caching
-cacheOrdersDb() // Initial orders caching
+cacheOrdersDb().catch(console.error) // Initial orders caching
 
 const app = express()
 const port = 3000

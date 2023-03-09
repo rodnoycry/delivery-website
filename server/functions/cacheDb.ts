@@ -32,17 +32,18 @@ export const getItemsFromCache = async (): Promise<ServerItemData[]> => {
 }
 
 // Orders caching
-export const cacheOrdersDb = (): void => {
+export const cacheOrdersDb = async (): Promise<void> => {
     const ref = db.collection('orders')
-    ref.get()
-        .then((docData) => {
-            const ordersRaw = docData.docs
-            const orders = ordersRaw.map((doc) => doc.data())
-            const jsonOrders = JSON.stringify(orders)
-            fs.writeFileSync(`./server/db-cache/${'items'}.json`, jsonOrders)
-            console.log('Data written to file')
-        })
-        .catch(console.error)
+    try {
+        const docData = await ref.get()
+        const ordersRaw = docData.docs
+        const orders = ordersRaw.map((doc) => doc.data())
+        const jsonOrders = JSON.stringify(orders)
+        fs.writeFileSync(`./server/db-cache/${'orders'}.json`, jsonOrders)
+        console.log('Data written to file')
+    } catch (error) {
+        console.error(error)
+    }
 }
 
 export const getOrdersFromCache = async (): Promise<ServerItemData[]> => {

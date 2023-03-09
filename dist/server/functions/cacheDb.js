@@ -35,17 +35,19 @@ const getItemsFromCache = async () => {
 };
 exports.getItemsFromCache = getItemsFromCache;
 // Orders caching
-const cacheOrdersDb = () => {
+const cacheOrdersDb = async () => {
     const ref = firebase_1.db.collection('orders');
-    ref.get()
-        .then((docData) => {
+    try {
+        const docData = await ref.get();
         const ordersRaw = docData.docs;
         const orders = ordersRaw.map((doc) => doc.data());
         const jsonOrders = JSON.stringify(orders);
-        fs_1.default.writeFileSync(`./server/db-cache/${'items'}.json`, jsonOrders);
+        fs_1.default.writeFileSync(`./server/db-cache/${'orders'}.json`, jsonOrders);
         console.log('Data written to file');
-    })
-        .catch(console.error);
+    }
+    catch (error) {
+        console.error(error);
+    }
 };
 exports.cacheOrdersDb = cacheOrdersDb;
 const getOrdersFromCache = async () => {
