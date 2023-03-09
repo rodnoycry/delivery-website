@@ -46,6 +46,14 @@ div.notifications {
     align-items: center;
     font-weight: bold;
     font-size: 16px;
+    padding: 5px 7px;
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+div.notifications:hover {
+    background-color: #303030;
 }
 
 img.notifications {

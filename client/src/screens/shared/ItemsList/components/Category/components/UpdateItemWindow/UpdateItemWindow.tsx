@@ -113,6 +113,7 @@ export const UpdateItemWindow: FC<Props> = ({
                 },
             })
             reloadData()
+
             return response.status
         } catch (error) {
             console.error(error)

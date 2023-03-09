@@ -19,7 +19,7 @@ export interface ItemData {
     description?: string
     isNew: boolean
     spiciness?: number
-    qty?: number
+    qty?: number | string
     price: number[] | number
 }
 

@@ -19,4 +19,4 @@ const getUploader = (uploadPath) => {
     return upload;
 };
 exports.getUploader = getUploader;
-//# sourceMappingURL=functions.js.map
+//# sourceMappingURL=getUploader.js.map

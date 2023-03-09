@@ -29,14 +29,17 @@ export const Header: FC<Props> = ({ soundOn, setSoundOn }) => {
                     <h1>Бонусные программы</h1>
                 </button>
             </Link>
-            <div className={styles.notifications}>
+            <div
+                className={styles.notifications}
+                style={{ border: soundOn ? 'none' : '1px solid #FF000A' }}
+                onClick={() => {
+                    setSoundOn(!soundOn)
+                }}
+            >
                 <h1>Уведомления:</h1>
                 <img
                     className={styles.notifications}
                     src={soundOn ? SoundOnImg : SoundOffImg}
-                    onClick={() => {
-                        setSoundOn(!soundOn)
-                    }}
                 />
             </div>
         </div>

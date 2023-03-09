@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 import { db } from '../../firebase'
 import { ServerItemData } from '@/interfaces'
 import { getIntegerPrice, validateItemData } from './functions'
+import { cacheItemsDb } from '../../functions/cacheDb'
 
 // Add item to db
 export const handleEditItem = (req: Request, res: Response): void => {
@@ -23,7 +24,14 @@ export const handleEditItem = (req: Request, res: Response): void => {
     }
     editItem(itemData)
         .then(() => {
-            return res.status(201).send()
+            cacheItemsDb() // Update cached items from db
+                .then(() => {
+                    res.status(201).send()
+                })
+                .catch((error) => {
+                    console.log(error)
+                    return res.status(500).json({ error }).send()
+                })
         })
         .catch((error) => {
             console.error(error)
