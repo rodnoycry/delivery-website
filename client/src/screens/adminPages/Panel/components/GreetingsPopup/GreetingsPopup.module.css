@@ -1,0 +1,57 @@
+div.screenArea {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 15, 15, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: opacity 0.3s ease-in-out;
+
+    cursor: pointer;
+}
+
+div.popup {
+    width: 655px;
+    height: 325px;
+
+    font-family: 'Montserrat', sans-serif;
+
+    background: #000000;
+    border: 1px solid #FFFFFF;
+    border-radius: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 15px;
+}
+
+img.popup {
+    width: 120px;
+    height: auto;
+}
+
+h2.popup {
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+button.popup {
+    font-size: 20px;
+    font-weight: bold;
+
+    width: 375px;
+    height: 55px;
+
+    background: #FF000A;
+    border-radius: 12px;
+
+    padding-bottom: 8px;
+    cursor: pointer;
+}

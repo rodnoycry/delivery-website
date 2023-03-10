@@ -6,7 +6,7 @@ import { getIsAdmin, getItems, getOrders } from '@/services/apiService'
 import { domain } from '@/services/apiService/config'
 import { ItemData, ServerOrder } from '@/interfaces'
 import styles from './Panel.module.css'
-import { Header, AdminOrder } from './components'
+import { Header, AdminOrder, GreetingsPopup } from './components'
 // FOR TESTS
 import { signOut } from './functions'
 
@@ -21,6 +21,7 @@ export const Panel: FC = () => {
     const [errorMessage, setErrorMessage] = useState<string>('')
 
     const [soundOn, setSoundOn] = useState<boolean>(true)
+    const [showPopup, setShowPopup] = useState<boolean>(true)
 
     const [orders, setOrders] = useState<ServerOrder[]>([])
     const [ordersQty, setOrdersQty] = useState<number>(0)
@@ -190,6 +191,13 @@ export const Panel: FC = () => {
                         })}
                     {`Скоро здесь появятся новые заказы!`}
                 </div>
+                {showPopup ? (
+                    <GreetingsPopup
+                        onClick={() => {
+                            setShowPopup(false)
+                        }}
+                    />
+                ) : null}
             </div>
             <div style={{ width: `90%` }}>
                 <button
