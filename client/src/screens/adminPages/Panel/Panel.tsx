@@ -20,7 +20,7 @@ export const Panel: FC = () => {
     const [timeToNextRequest, setTimeToNextRequest] = useState<number>(6)
     const [errorMessage, setErrorMessage] = useState<string>('')
 
-    const [soundOn, setSoundOn] = useState<boolean>(false)
+    const [soundOn, setSoundOn] = useState<boolean>(true)
 
     const [orders, setOrders] = useState<ServerOrder[]>([])
     const [ordersQty, setOrdersQty] = useState<number>(0)
