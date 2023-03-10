@@ -23,7 +23,7 @@ const getItems = async (type, search, ids) => {
         if (search) {
             return items.filter((item) => item.isActive &&
                 item.type === type &&
-                item.name.includes(search));
+                item.name.toLowerCase().includes(search.toLowerCase()));
         }
         return items.filter((item) => item.isActive && item.type === type);
     }
@@ -31,7 +31,8 @@ const getItems = async (type, search, ids) => {
         return items.filter((item) => item.isActive && ids.includes(item.id));
     }
     if (search) {
-        return items.filter((item) => item.isActive && item.name.includes(search));
+        return items.filter((item) => item.isActive &&
+            item.name.toLowerCase().includes(search.toLowerCase()));
     }
     return items;
 };

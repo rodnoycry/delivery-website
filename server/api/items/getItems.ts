@@ -29,7 +29,7 @@ const getItems = async (
                 (item) =>
                     item.isActive &&
                     item.type === type &&
-                    item.name.includes(search)
+                    item.name.toLowerCase().includes(search.toLowerCase())
             )
         }
         return items.filter((item) => item.isActive && item.type === type)
@@ -39,7 +39,9 @@ const getItems = async (
     }
     if (search) {
         return items.filter(
-            (item) => item.isActive && item.name.includes(search)
+            (item) =>
+                item.isActive &&
+                item.name.toLowerCase().includes(search.toLowerCase())
         )
     }
     return items
