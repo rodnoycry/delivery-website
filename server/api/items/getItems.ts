@@ -24,6 +24,14 @@ const getItems = async (
 ): Promise<ServerItemData[]> => {
     const items = await getItemsFromCache()
     if (type) {
+        if (search) {
+            return items.filter(
+                (item) =>
+                    item.isActive &&
+                    item.type === type &&
+                    item.name.includes(search)
+            )
+        }
         return items.filter((item) => item.isActive && item.type === type)
     }
     if (ids) {

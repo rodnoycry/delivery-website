@@ -20,6 +20,11 @@ exports.handleItemsRequest = handleItemsRequest;
 const getItems = async (type, search, ids) => {
     const items = await (0, cacheDb_1.getItemsFromCache)();
     if (type) {
+        if (search) {
+            return items.filter((item) => item.isActive &&
+                item.type === type &&
+                item.name.includes(search));
+        }
         return items.filter((item) => item.isActive && item.type === type);
     }
     if (ids) {
