@@ -30,6 +30,7 @@ export const Panel: FC = () => {
     const [itemsData, setItemsData] = useState<ItemData[]>([])
 
     const notification = new Audio(`${domain}/audio/notification.mp3`)
+    const icebreaker = new Audio(`${domain}/audio/icebreaker.mp3`)
 
     useEffect(() => {
         getItems().then(setItemsData).catch(console.error)
@@ -92,6 +93,12 @@ export const Panel: FC = () => {
             console.log(user, isAdmin)
         }
     }, [isAdmin])
+
+    useEffect(() => {
+        if (!showPopup) {
+            icebreaker.play().catch(console.error)
+        }
+    }, [showPopup])
 
     const updateOrders = (): void => {
         if (!user) {
