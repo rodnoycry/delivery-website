@@ -1,5 +1,6 @@
 div.order {
-    width: 510px;
+    width: 80%;
+    max-width: 510px;
 
     background: #000000;
     border: 1px solid #A9A9A9;
@@ -7,14 +8,18 @@ div.order {
 
     font-family: 'Montserrat', sans-serif;
 
-    padding-top: 20px;
-    padding-left: 55px;
-    padding-right: 55px;
-    padding-bottom: 36px;
+    padding: 20px 55px 36px 55px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+@media screen and (max-width: 586px) {
+    div.order {
+        width: 100%;
+        padding: 20px 10px 36px 10px;
+    }
 }
 
 h1.order {
@@ -27,7 +32,9 @@ h3.order {
     font-size: 16px;
 }
 
+/* Items container */
 div.items {
+    width: 100%;
     margin-top: 36px;
     display: flex;
     flex-direction: column;
@@ -35,11 +42,26 @@ div.items {
     row-gap: 10px;
 }
 
+@media screen and (max-width: 586px) {
+    div.items {
+        margin-top: 15px;
+        row-gap: 4px;
+    }
+}
+
 /* Sum */
 h1.sum {
     font-size: 28px;
     font-weight: bold;
     margin-top: 36px;
+    text-align: center;
+}
+
+@media screen and (max-width: 1000px) {
+    h1.sum {
+        margin-top: 20px;
+        font-size: 24px;
+    }
 }
 
 /* Details */
@@ -49,7 +71,15 @@ div.details {
     flex-direction: column;
     align-items: center;
     row-gap: 18px;
-    width: 400px;
+    width: 90%;
+    max-width: 400px;
+}
+
+@media screen and (max-width: 1000px) {
+    div.details {
+        margin-top: 20px;
+        font-size: 24px;
+    }
 }
 
 /* Button */
