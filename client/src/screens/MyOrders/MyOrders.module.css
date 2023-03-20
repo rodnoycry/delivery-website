@@ -1,3 +1,4 @@
+/* Higher labels */
 div.pageName {
     padding: 25px 0 50px 0;
     display: flex;
@@ -10,19 +11,37 @@ div.pageName {
     font-family: 'Montserrat', sans-serif;
 }
 
-
+/* Page name */
 h1.label {
     font-size: 28px;
     font-weight: bold;
 }
 
+/* Back to home link */
 h3.homeLink {
     font-size: 16px;
     text-decoration: underline;
 }
 
+@media screen and (max-width: 586px) {
+    div.pageName {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px 0 30px 0;
+    }
+
+    h1.label {
+        font-size: 24px;
+    }
+
+    h3.homeLink {
+        font-size: 14px;
+    }
+}
+
 div.orders {
-    width: 90%;
+    width: 90vw;
     max-width: 1200px;
     display: flex;
     align-items: center;

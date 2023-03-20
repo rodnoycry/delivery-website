@@ -11,4 +11,5 @@ p.key {
 p.value {
     font-weight: bold;
     font-size: 16px;
+    text-align: end;
 }
