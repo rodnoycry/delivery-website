@@ -8,16 +8,23 @@ export interface Props {
     qty: number
     addItem: () => void
     removeItem: () => void
+    nonZero?: boolean
     style?: object
 }
 
-export const Counter: FC<Props> = ({ qty, addItem, removeItem, style }) => {
+export const Counter: FC<Props> = ({
+    qty,
+    addItem,
+    removeItem,
+    nonZero,
+    style,
+}) => {
     return (
         <div className={styles.counter} style={style}>
             <button
                 className={styles.counter}
                 onClick={removeItem}
-                // disabled={qty <= 1}
+                disabled={nonZero ? qty <= 1 : false}
             >
                 <img className={styles.counter} src={MinusImage} />
             </button>

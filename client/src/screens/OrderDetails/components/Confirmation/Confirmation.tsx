@@ -153,13 +153,6 @@ export const Confirmation: FC<Props> = ({
                 </div>
             </div>
             <div className={styles.buttons}>
-                <Link to="/cart">
-                    <button className={styles.backButton}>
-                        <p className={styles.backButton}>
-                            ⬅️ {`\u00a0`}Вернуться назад
-                        </p>
-                    </button>
-                </Link>
                 <button
                     onClick={() => {
                         if (!hasError) {
@@ -181,6 +174,13 @@ export const Confirmation: FC<Props> = ({
                         />
                     )}
                 </button>
+                <Link to="/cart">
+                    <button className={styles.backButton}>
+                        <p className={styles.backButton}>
+                            ⬅️ {`\u00a0`}Вернуться назад
+                        </p>
+                    </button>
+                </Link>
             </div>
             <div className={styles.lowerInfoContainer}>
                 <div className={styles.upperInfo}>

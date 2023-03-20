@@ -20,9 +20,9 @@ export const DeliveryDetails: FC<Props> = ({
 }) => {
     return (
         <div className={styles.details} style={style}>
+            <h1 className={styles.zone}>Зона доставки</h1>
             <div className={styles.zone}>
                 <div>
-                    <h1 className={styles.zone}>Зона доставки</h1>
                     <Dropdown setZone={setZone} style={{ marginTop: 20 }} />
                     <h4 className={styles.zone}>
                         От {zoneInfo[zone].freeDelivery} рублей доставка
