@@ -1,4 +1,5 @@
 div.blankItem {
     background-color: black;
     opacity: 0.01;
+    margin: 0 12.5px;
 }
