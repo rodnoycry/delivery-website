@@ -15,8 +15,10 @@ div.successScreen {
 }
 
 div.successWindow {
-    width: 755px;
-    height: 525px;
+    width: 90vw;
+    height: 50vh;
+    max-width: 755px;
+    max-height: 525px;
 
     font-family: 'Montserrat', sans-serif;
 
@@ -27,11 +29,12 @@ div.successWindow {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    row-gap: 15px;
+    row-gap: 5%;
 }
 
 img.successWindow {
     width: 120px;
+    margin-bottom: 5%;
     height: auto;
 }
 
@@ -41,14 +44,23 @@ h1.successWindow {
 }
 
 h3.successWindow {
-    font-size: 28px;
+    font-size: 22px;
+    padding: 0 20px;
+    text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+    h3.successWindow {
+        font-size: 18px;
+    }
 }
 
 button.button {
     font-size: 20px;
     font-weight: bold;
 
-    width: 385px;
+    width: 80vw;
+    max-width: 385px;
     height: 60px;
 
     background: #FF000A;

@@ -9,10 +9,22 @@ div.zone {
     align-items: center;
 }
 
+@media screen and (max-width: 1000px) {
+    div.zone {
+        flex-wrap: wrap;
+    }
+}
+
 h1.zone {
     font-family: 'Montserrat', sans-serif;
     font-size: 28px;
     font-weight: bold;
+}
+
+@media screen and (max-width: 550px) {
+    h1.zone {
+        font-size: 24px;
+    }
 }
 
 h4.zone {
@@ -31,15 +43,32 @@ div.zoneInfoContainer {
     max-width: 800px;
 }
 
+@media screen and (max-width: 1000px) {
+    div.zoneInfoContainer {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    div.zoneInfoContainer {
+        flex-wrap: wrap;
+    }
+}
+
 div.zoneInfo {
-    width: 15%;
     text-align: center;
     align-items: center;
     font-family: 'Montserrat', sans-serif;
-    margin-top: 50px;
     border-radius: 5px;
     padding-top: 5px;
     padding-bottom: 5px;
+}
+
+@media screen and (max-width: 600px) {
+    div.zoneInfo {
+        width: 50%;
+    }
 }
 
 h2.zoneInfo {

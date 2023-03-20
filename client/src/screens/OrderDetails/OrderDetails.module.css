@@ -13,6 +13,13 @@ div.head {
     margin-top: 5px;
 }
 
+@media screen and (max-width: 500px) {
+    div.head {
+        align-items: normal;
+    }
+}
+
+
 h1.head {
     font-size: 28px;
     font-weight: 800;
@@ -25,7 +32,25 @@ h4.head {
 
 h3.head {
     font-size: 18px;
+    text-align: end;
     text-decoration: underline;
+}
+
+@media screen and (max-width: 1000px) {
+    h1.head {
+        font-size: 24px;
+        max-width: 60%;
+        padding-right: 10px;
+    }
+
+    h3.head {
+        font-size: 16px;
+        padding-left: 10px;
+    }
+
+    h4.head {
+        font-size: 16px;
+    }
 }
 
 div.inputsContainer {

@@ -3,7 +3,7 @@ import { selectorsData } from '@/config'
 export const getSecondaryLabel = (
     type: string,
     selected: number | boolean,
-    qty?: number
+    qty?: number | string
 ): string => {
     if (type === 'pizza' || type === 'wok') {
         if (typeof selected === 'boolean') {
