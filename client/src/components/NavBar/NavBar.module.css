@@ -16,12 +16,12 @@ button.link {
     border-radius: 5px;
     padding: 2px;
     flex-grow: calc(100% + 10px);
+    transition: background-color 0.2s ease-in-out;
 }
 
 button.link:hover {
-    background-color: #fafafa;
+    background-color: #fafafa62;
     border-radius: 5px;
-    color: black;
 }
 
 @media screen and (max-width: 550px) {

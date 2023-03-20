@@ -26,6 +26,7 @@ h4.upperInfo {
 /* Buttons */
 div.buttons {
     display: flex;
+    flex-direction: row-reverse;
     justify-content: space-between;
     margin-top: 36px;
 }
@@ -43,7 +44,8 @@ button.backButton {
     font-size: 20px;
     font-weight: bold;
 
-    width: 385px;
+    width: 90vw;
+    max-width: 385px;
     height: 60px;
 
     background: #424242;
@@ -56,7 +58,8 @@ button.submitButton {
     font-size: 20px;
     font-weight: bold;
 
-    width: 385px;
+    width: 90vw;
+    max-width: 385px;
     height: 60px;
 
     background: #FF000A;

@@ -12,12 +12,28 @@ export const CartTable: FC<Props> = ({ cartItemsData }) => {
     return (
         <div className={styles.cartTable}>
             <div className={styles.tableHeader}>
-                <h4 style={{ marginLeft: '10%' }}>Название</h4>
-                <div style={{ marginRight: '20%' }} className={styles.headers2}>
-                    <h4 style={{ marginRight: 65 }}>Цена</h4>
-                    <h4 style={{ marginRight: 65 }}>Количество</h4>
-                    <h4>Сумма</h4>
-                </div>
+                <div></div>
+                <h4 className={styles.tableHeader}>Название</h4>
+                <h4 className={styles.tableHeader}>Цена</h4>
+                <h4
+                    className={styles.tableHeader}
+                    style={{
+                        display: `flex`,
+                        alignItems: `center`,
+                        justifyContent: `center`,
+                        padding: `0 15px`,
+                    }}
+                >
+                    Количество
+                </h4>
+                <h4
+                    className={styles.tableHeader}
+                    style={{
+                        paddingLeft: `10%`,
+                    }}
+                >
+                    Сумма
+                </h4>
             </div>
             <ul className={styles.items}>
                 {cartItemsData.map((itemData) => {

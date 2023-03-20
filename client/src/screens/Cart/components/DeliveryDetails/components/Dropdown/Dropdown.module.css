@@ -5,8 +5,33 @@
     cursor: pointer;
 }
 
+@media screen and (max-width: 400px) {
+    .selector {
+        width: 100%;
+    }
+}
+
 div.dropdown {
     width: 33.3vw;
     max-width: 400px;
     cursor: pointer;
+}
+
+@media screen and (max-width: 1000px) {
+    div.dropdown {
+        width: 50vw;
+        max-width: unset;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    div.dropdown {
+        width: 66.6vw;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    div.dropdown {
+        width: 100%;
+    }
 }
