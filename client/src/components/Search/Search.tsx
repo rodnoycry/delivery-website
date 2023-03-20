@@ -10,6 +10,8 @@ interface Props {
     appearancePaths: string[]
 }
 
+const notAppearPaths = ['/my-orders', '/cart', '/order-details']
+
 export const Search: FC<Props> = ({ search, setSearch, appearancePaths }) => {
     const location = useLocation()
     const currentPath = location.pathname
@@ -25,7 +27,7 @@ export const Search: FC<Props> = ({ search, setSearch, appearancePaths }) => {
             )
         }
     } else {
-        shouldShow = currentPath !== '/my-orders'
+        shouldShow = !notAppearPaths.includes(currentPath)
     }
 
     const handleInputChange = (

@@ -4,6 +4,19 @@ div.input {
     width: 80%;
 }
 
+@media screen and (max-width: 1000px) {
+    div.input {
+        width: 100%
+    }
+}
+
+@media screen and (max-width: 700px) {
+    div.input {
+        display: unset;
+    }
+}
+
+
 input.input {
     width: 450px;
     height: 50px;
@@ -37,4 +50,39 @@ h4.input {
 div.dropdown {
     width: 450px;
     cursor: pointer;
+}
+
+@media screen and (max-width: 1000px) {
+    div.dropdown {
+        width: 50%;
+        height: 45px;
+        font-size: 20px;
+    }
+
+    h1.input {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    h4.input {
+        font-size: 14px;
+        margin-top: 5px;
+        color: #767676
+    }
+}
+
+@media screen and (max-width: 700px) {
+    div.dropdown {
+        width: 100%;
+    }
+
+    h1.input {
+        font-size: 20px;
+    }
+
+    h4.input {
+        font-size: 14px;
+        margin-top: 0px;
+        margin-bottom: 5px;
+    }
 }

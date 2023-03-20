@@ -1,19 +1,33 @@
 li.item {
     position: relative;
-    display: flex;
+    display: grid;
+    grid-template-columns: calc(70px + 4.4%) 2.7fr 80px 1fr 1.3fr 6%;
     align-items: center;
     background-color: #000;
     width: 100%;
-    height: 120px;
+    min-height: 120px;
     border-radius: 12px;
 }
 
-/* Left side */
-div.leftElements {
-    display: flex;
-    height: 100%;
-    align-items: center;
+@media screen and (max-width: 750px) {
+    li.item {
+        grid-template-columns: calc(70px + 4.4%) 2.7fr 1fr 1.3fr 6%;
+    }
 }
+
+@media screen and (max-width: 650px) {
+    li.item {
+        grid-template-columns: calc(70px + 4.4%) 2.7fr 1fr 1.3fr
+    }
+}
+
+@media screen and (max-width: 450px) {
+    li.item {
+        zoom: 0.8
+    }
+}
+
+/* Left side */
 
 div.imageContainer {
     display: flex;
@@ -23,8 +37,10 @@ div.imageContainer {
 }
 
 div.image {
-    position: absolute;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 20px;
     width: 70px;
     height: 70px;
@@ -33,6 +49,7 @@ div.image {
 img.item {
     width: 100%;
     height: auto;
+    border-radius: 20px;
 }
 
 div.textContainer {
@@ -59,20 +76,51 @@ h4.secondaryLabel {
 /* Right side */
 
 h3.price {
-    position: absolute;
     font-family: 'Montserrat', sans-serif;
     font-size: 20px;
-    right: 43.3%;
+}
+
+@media screen and (max-width: 750px) {
+    h3.price {
+        display: none;
+    }
+}
+
+div.counterContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+}
+
+@media screen and (max-width: 650px) {
+    div.counterContainer {
+        position: absolute;
+        width: 200px;
+        padding: 0;
+        right: 0;
+        bottom: 20px;
+    }
 }
 
 h2.sum {
-    position: absolute;
     text-align: left;
-    right: 24.4%;
-    transform: translateX(100%);
     font-family: 'Montserrat', sans-serif;
     font-size: 20px;
     font-weight: bold;
+    padding-left: 10%;
+    min-width: 100px;
+}
+
+@media screen and (max-width: 650px) {
+    h2.sum {
+        position: absolute;
+        padding: 0;
+        right: 0;
+        text-align: center;
+        transform: translate(-50%);
+        top: 30px;
+    }
 }
 
 div.x {
@@ -83,12 +131,18 @@ div.x {
 }
 
 img.x {
-    position: absolute;
-    right: 52px;
     width: 17px;
     height: 17px;
     opacity: 0.7;
     cursor: pointer;
+}
+
+@media screen and (max-width: 650px) {
+    img.x {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
 }
 
 img.x:hover {

@@ -53,14 +53,20 @@ button.myOrders {
 }
 
 button.myOrders {
-    width: 200px;
+    width: auto;
+    min-width: 210px;
     padding: 0 30px;
 }
 
 @media screen and (max-width: 768px) {
     button.myOrders {
-        width: 180px;
+        width: 210px;
         padding: 0 15px;
+    }
+
+    button.login,
+    button.myOrders {
+        height: 44px;
     }
 }
 
@@ -97,7 +103,8 @@ img.logoMini {
     }
 
     img.logoMini {
-        transform: scale(0.9);
+        margin-top: 5px;
+        transform: scale(0.8);
         display: block;
     }
 }
