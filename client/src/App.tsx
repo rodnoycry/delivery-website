@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import { useCookies } from 'react-cookie'
 
 import { onAuthStateChanged } from 'firebase/auth'
 import type { User } from 'firebase/auth'
 import { auth } from '@/firebase'
+
 import { CarouselData } from './interfaces'
 import axios from 'axios'
+import { getUserData } from './services/apiService'
 import { domain } from './services/apiService/config'
 
 import './reset.module.css'
@@ -15,6 +18,7 @@ import {
     setCart as setReduxCart,
     updateOrder as updateReduxOrder,
     setLocalOrdersData,
+    updateUserState,
 } from './redux/store'
 import styles from './App.module.css'
 import { topItemsAppearancePaths, categoriesPaths } from './config'
@@ -45,11 +49,37 @@ import { DataPolicy } from './screens/legal/DataPolicy'
 
 export const App: FC = () => {
     const [user, setUser] = useState<User | null>(null)
+
+    const dispatch = useDispatch()
     useEffect(() => {
+        // Getting user data from server, create user in db if not exists
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user)
+                user.getIdToken()
+                    .then((token) => {
+                        const displayName = user?.displayName
+                            ? user.displayName
+                            : undefined
+                        getUserData(token, displayName)
+                            .then((userData) => {
+                                dispatch(
+                                    updateUserState({
+                                        isLoggedIn: true,
+                                        displayName: userData?.displayName,
+                                        phone: userData?.phone,
+                                    })
+                                )
+                            })
+                            .catch(console.error)
+                    })
+                    .catch(console.error)
             } else {
+                dispatch(
+                    updateUserState({
+                        isLoggedIn: false,
+                    })
+                )
                 setUser(null)
             }
         })
@@ -57,6 +87,15 @@ export const App: FC = () => {
             unsubscribe()
         }
     }, [])
+
+    const [cookies, setCookie] = useCookies(['sessionId'])
+
+    useEffect(() => {
+        if (!cookies?.sessionId) {
+            const sessionId = Math.random().toString(36).substring(2)
+            setCookie('sessionId', sessionId)
+        }
+    }, [cookies])
 
     const [search, setSearch] = useState<string>('')
     const [isCartStoreLoaded, setIsCartStoreLoaded] = useState<boolean>(false)
@@ -82,8 +121,6 @@ export const App: FC = () => {
     useEffect(() => {
         reloadCarouselData()
     }, [])
-
-    const dispatch = useDispatch()
     useEffect(() => {
         if (localStorageStore.cart && !isCartStoreLoaded) {
             dispatch(setReduxCart(JSON.parse(localStorageStore.cart)))

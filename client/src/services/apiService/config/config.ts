@@ -1,2 +1,3 @@
-export const domain = ''
-// export const domain = 'http://localhost:3000'
+import { isProd } from '@/config'
+
+export const domain = isProd ? '' : 'http://localhost:3000'

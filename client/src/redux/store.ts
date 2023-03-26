@@ -1,10 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { CartItem, cartSlice } from './slices/cartSlice'
 import { itemDataSlice } from './slices/itemsDataSlice'
-import { ItemData, ServerOrder } from '@/interfaces'
+import { ItemData, ServerOrder, UserData } from '@/interfaces'
 import { itemsStatesSlice, ItemState } from './slices/itemsStatesSlice'
 import { orderSlice, Order } from './slices/orderSlice'
-import { localOrdersDataSlice } from './slices/localOrdersDataSlice' // DEMO
+import { localOrdersDataSlice } from './slices/localOrdersDataSlice'
+import { windowsStatesSlice } from './slices/windowsSlice'
+import type { WindowName } from './slices/windowsSlice'
+import { userStateSlice } from './slices/userSlice'
 import { syncCookieMiddleware } from './middleware'
 
 export interface RootState {
@@ -12,8 +15,9 @@ export interface RootState {
     itemDataState: ItemData[]
     itemsStates: Record<string, ItemState>
     orderState: Order
-    // DEMO ONLY
     localOrdersDataState: ServerOrder[]
+    windowsStatesSlice: Record<WindowName, boolean>
+    userState: UserData
 }
 
 export const {
@@ -25,9 +29,10 @@ export const {
 } = cartSlice.actions
 export const { updateItemState } = itemsStatesSlice.actions
 export const { updateOrder } = orderSlice.actions
-// DEMO ONLY
 export const { setLocalOrdersData, addLocalOrderData } =
     localOrdersDataSlice.actions
+export const { updateLoginWindowState } = windowsStatesSlice.actions
+export const { updateUserState } = userStateSlice.actions
 
 export const store = configureStore({
     reducer: {
@@ -35,8 +40,9 @@ export const store = configureStore({
         itemDataState: itemDataSlice.reducer,
         itemsStates: itemsStatesSlice.reducer,
         orderState: orderSlice.reducer,
-        // DEMO ONLY
         localOrdersDataState: localOrdersDataSlice.reducer,
+        windowsStatesSlice: windowsStatesSlice.reducer,
+        userStateSlice: userStateSlice.reducer,
     },
     middleware: (gDM) => gDM().concat(syncCookieMiddleware),
 })
