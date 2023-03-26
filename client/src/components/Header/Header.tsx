@@ -1,30 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import type { FC } from 'react'
 import { useLocation, Link } from 'react-router-dom'
+import { ProfileButton } from './components/ProfileButton'
 import { CartButton } from './components/CartButton'
-import { useSelector } from 'react-redux'
-import { RootState as StoreState } from '@/redux/store'
 import styles from './Header.module.css'
 import LogoImg from './images/Logo.png'
 import MiniLogoImg from './images/LogoMini.png'
 import PhoneImg from './images/Phone.png'
 import DeliveryImg from './images/Delivery.png'
-import LoginImg from './images/Login.png'
-import MyOrders from './images/MyOrders.png'
 
 export const Header: FC = () => {
-    const [ordersQty, setOrdersQty] = useState<number>(0)
-    const localOrders = useSelector(
-        (state: StoreState) => state.localOrdersDataState
-    )
-
-    useEffect(() => {
-        console.log(localOrders)
-        if (localOrders) {
-            setOrdersQty(localOrders.length)
-        }
-    }, [localOrders])
-
+    // Display settings
     const location = useLocation()
     const currentPath = location.pathname
     const isAdmin = currentPath.startsWith('/admin/editing')
@@ -70,20 +56,7 @@ export const Header: FC = () => {
                         </div>
                     </div>
                 </div>
-                <button className={styles.login} style={{ display: 'none' }}>
-                    <img className={styles.login} src={LoginImg} />
-                    <p className={styles.login}>{`Войти`}</p>
-                </button>
-                {ordersQty > 0 ? (
-                    <Link to="/my-orders">
-                        <button className={styles.myOrders}>
-                            <img className={styles.myOrders} src={MyOrders} />
-                            <p
-                                className={styles.login}
-                            >{`Мои заказы (${ordersQty})`}</p>
-                        </button>
-                    </Link>
-                ) : null}
+                <ProfileButton />
                 <CartButton />
             </div>
         </header>

@@ -129,7 +129,6 @@ export const HomeCarousel: FC<Props> = ({
                                     <img
                                         className={styles.item}
                                         src={`${domain}${image}`}
-                                        // src={Image0}
                                     />
                                 </div>
                                 {isAdmin ? (

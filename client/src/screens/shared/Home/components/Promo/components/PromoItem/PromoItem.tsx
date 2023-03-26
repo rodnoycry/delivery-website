@@ -44,7 +44,7 @@ export const PromoItem: FC<Props> = ({
                 className={styles.promo}
                 style={style}
                 onClick={() => {
-                    goToSnapItem(id)
+                    goToSnapItem(id - 1)
                 }}
                 onMouseEnter={() => {
                     setIsHovered(true)

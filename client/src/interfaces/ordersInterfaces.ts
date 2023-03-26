@@ -1,0 +1,33 @@
+import { CartItem } from '@/redux/slices/cartSlice'
+import { Zone } from '@/redux/slices/orderSlice'
+
+// Orders related
+export interface ServerOrder {
+    id: string
+    // Main data
+    time: string
+    date: string
+    zone: string | Zone['zone']
+    cart: CartItem[]
+    sum: number
+    // Inputs and selects data
+    phone: string
+    name: string
+    deliveryType: string
+    locality: string
+    street: string
+    house: string
+    apartment: string
+    entrance: string
+    intercom: string
+    // Part 2
+    personQty: string
+    deliveryTimeType: string
+    deliveryDay: string
+    deliveryTime: string
+    paymentMethod: string
+    hasChange: string
+    comment: string
+
+    isActive: boolean
+}

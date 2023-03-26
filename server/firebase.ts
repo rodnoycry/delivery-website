@@ -1,11 +1,18 @@
 import { initializeApp, cert } from 'firebase-admin/app'
 import type { ServiceAccount } from 'firebase-admin'
-import { getFirestore, Timestamp, FieldValue } from 'firebase-admin/firestore'
+import { getFirestore } from 'firebase-admin/firestore'
 import { getAuth } from 'firebase-admin/auth'
-import * as serviceAccount from './config/serviceAccountKeyReserve.json'
+import { config } from './config'
+import * as serviceAccountReserve from './config/serviceAccountKeyReserve.json'
+import * as serviceAccountMain from './config/serviceAccountKey.json'
+
+const serviceAccountDict = {
+    main: serviceAccountMain,
+    reserve: serviceAccountReserve,
+}
 
 export const app = initializeApp({
-    credential: cert(serviceAccount as ServiceAccount),
+    credential: cert(serviceAccountDict[config.db] as ServiceAccount),
     // databaseURL: 'https://san-sei.firebaseio.com',
 })
 

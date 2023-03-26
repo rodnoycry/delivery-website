@@ -78,7 +78,6 @@ export const Promo: FC<Props> = ({
                             setCurrentPromoData={
                                 isAdmin ? setCurrentPromoData : undefined
                             }
-                            // style={itemStyle}
                         />
                     )
                 })}

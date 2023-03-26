@@ -43,8 +43,8 @@ export const Admin: FC = () => {
             }
         })
         if (isIntruder) {
-            // history.push('/') // CHANGE ON PROD
-            console.log()
+            history.push('/') // CHANGE ON PROD
+            // console.log()
         }
     }, [])
 

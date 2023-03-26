@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 import cors from 'cors'
 import path from 'path'
+import { config } from './config'
 import {
     handleGetPromos,
     handleAddPromo,
@@ -19,13 +20,17 @@ import {
     handleEditCarousel,
     handleDeleteCarousel,
 } from './api/carousels'
+import { handleGetUserData } from './api/users'
 import { handleNewOrder, handleGetOrders, handleEditOrder } from './api/orders'
 import { getUploader } from './functions'
 import { checkAdmin } from './utils'
-import { cacheItemsDb, cacheOrdersDb } from './functions/cacheDb'
+import { cacheItemsDb, cacheOrdersDb, cacheUsersDb } from './functions/cacheDb'
 
-cacheItemsDb().catch(console.error) // Initial items caching
-cacheOrdersDb().catch(console.error) // Initial orders caching
+if (config.shouldCache) {
+    cacheItemsDb().catch(console.error) // Initial items caching
+    cacheOrdersDb().catch(console.error) // Initial orders caching
+    cacheUsersDb().catch(console.error) // Initial users caching
+}
 
 const app = express()
 const port = 3000
@@ -33,13 +38,16 @@ const port = 3000
 // Serve static files from the 'dist' directory
 app.use(express.static(path.join(__dirname, '../client/dist')))
 app.use(express.json())
-// FOR TESTS ONLY
-app.use(
-    cors({
-        origin: 'http://localhost:8080',
-    })
-)
-//
+
+// Adding client-side port for dev requestss
+if (config.allowDevClient) {
+    app.use(
+        cors({
+            origin: 'http://localhost:8080',
+        })
+    )
+}
+
 // Static handling
 app.use('/images/items', express.static('public/images/items'))
 app.use('/images/promos', express.static('public/images/promos'))
@@ -117,6 +125,9 @@ app.post('/api/orders/add', handleNewOrder)
 app.post('/api/orders/get', checkAdmin, handleGetOrders)
 
 app.post('/api/orders/edit', checkAdmin, handleEditOrder)
+
+// Users handling
+app.post('/api/users/get', handleGetUserData)
 
 // Start the server
 app.listen(port, () => {
