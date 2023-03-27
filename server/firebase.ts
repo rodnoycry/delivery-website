@@ -6,13 +6,13 @@ import { config } from './config'
 import * as serviceAccountReserve from './config/serviceAccountKeyReserve.json'
 import * as serviceAccountMain from './config/serviceAccountKey.json'
 
-const serviceAccountDict = {
+const serviceAccountsDict = {
     main: serviceAccountMain,
     reserve: serviceAccountReserve,
 }
 
 export const app = initializeApp({
-    credential: cert(serviceAccountDict[config.db] as ServiceAccount),
+    credential: cert(serviceAccountsDict[config.db] as ServiceAccount),
     // databaseURL: 'https://san-sei.firebaseio.com',
 })
 

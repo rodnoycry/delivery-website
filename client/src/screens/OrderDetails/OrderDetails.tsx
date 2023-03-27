@@ -2,11 +2,14 @@ import React, { useState, CSSProperties, useEffect } from 'react'
 import type { FC } from 'react'
 import { Link } from 'react-router-dom'
 import { RootState as StoreState, updateOrder } from '@/redux/store'
-import { Order, InputState } from '@redux/slices/orderSlice'
+import { Order } from '@redux/slices/orderSlice'
 import { useSelector, useDispatch } from 'react-redux'
+import { onAuthStateChanged } from 'firebase/auth'
+import type { User } from 'firebase/auth'
+import { auth } from '@/firebase'
 import { checkErrors } from './functions'
 import { getItemsData, getSumWithDelivery } from '@/functions'
-import { ItemData, DetailedInputData } from '@/interfaces'
+import { ItemData, DetailedInputData, InputState } from '@/interfaces'
 
 import styles from './OrderDetails.module.css'
 
@@ -73,6 +76,22 @@ export const OrderDetails: FC<Props> = ({ style }) => {
             )
         }
     }, [itemsData, storeInputStates])
+
+    // Getting User info
+    const [user, setUser] = useState<User | null>(null)
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUser(user)
+            } else {
+                setUser(null)
+            }
+        })
+        return () => {
+            unsubscribe()
+        }
+    }, [])
 
     // When Redux input states has changed - we update our local input states
     useEffect(() => {
@@ -264,6 +283,7 @@ export const OrderDetails: FC<Props> = ({ style }) => {
             </div>
             <Confirmation
                 sum={sum}
+                user={user}
                 inputStates={inputStates}
                 setInputStates={setInputStates}
                 requiredInputs={requiredInputs}

@@ -1,3 +1,5 @@
+export { zoneDeliveryInfo } from '@/config'
+
 export const adminEmails = ['vkhk99@gmail.com', 'kubmad.kg@gmail.com']
 
 type DbSelect = 'main' | 'reserve'
@@ -10,7 +12,7 @@ interface ServerConfig {
 
 // MAIN CONFIG
 export const config: ServerConfig = {
-    db: 'reserve', // DB SELECTION
+    db: 'main', // DB SELECTION
     shouldCache: true,
     allowDevClient: true,
 }

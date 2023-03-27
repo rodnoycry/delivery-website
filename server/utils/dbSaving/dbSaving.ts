@@ -59,7 +59,7 @@ export const store = (dbProvider: Firestore, dbKey: string): void => {
                     if (err) {
                         console.error(err)
                     } else {
-                        console.log('Data written to file')
+                        console.log(`Collection ${dbKey} written to file`)
                     }
                 }
             )
@@ -87,7 +87,6 @@ export const fetchFromDb = (
     dbKeys?.forEach((dbKey) => {
         store(dbProvider, dbKey)
     })
-    console.log(`Finished fetching from $${dbProviderName}$`)
 }
 
 // store('counters')
@@ -115,7 +114,6 @@ export const sendToDb = (
         const dbValue = JSON.parse(JSON.stringify(storedJSONDict[dbKey]))
         sendSingle(dbProvider, dbKey, dbValue)
     })
-    console.log(`Finished sending to $${dbProviderName}$`)
 }
 
 const sendSingle = (
@@ -129,10 +127,10 @@ const sendSingle = (
             .doc(value.id)
             .set(value)
             .then(() => {
-                console.log('Collection successfully created!')
+                console.log(`Collection ${dbKey} successfully created!`)
             })
             .catch((error) => {
-                console.error('Error creating collection: ', error)
+                console.error(`Error creating collection ${dbKey}: `, error)
             })
     })
 }

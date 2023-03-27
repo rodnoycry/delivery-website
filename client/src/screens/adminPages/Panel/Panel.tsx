@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { onAuthStateChanged, User } from 'firebase/auth'
+import { useHistory } from 'react-router-dom'
 import { auth } from '@/firebase'
 import { getIsAdmin, getItems, getOrders } from '@/services/apiService'
 import { domain } from '@/services/apiService/config'
@@ -58,6 +59,7 @@ export const Panel: FC = () => {
     }, [orders, timeToNextRequest])
 
     // Admin auth check
+    const history = useHistory()
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -73,7 +75,7 @@ export const Panel: FC = () => {
             }
         })
         if (isIntruder) {
-            // history.push('/') // CHANGE ON PROD
+            history.push('/') // CHANGE ON PROD
             console.error()
         }
         return () => {
@@ -134,6 +136,7 @@ export const Panel: FC = () => {
         signOut(setUser, () => {})
             .then(() => {
                 setIsAdmin(false)
+                history.push('/admin')
             })
             .catch((error) => {
                 console.error(error)

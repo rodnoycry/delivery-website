@@ -3,13 +3,13 @@ import type { FC } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useCookies } from 'react-cookie'
+import axios from 'axios'
 
 import { onAuthStateChanged } from 'firebase/auth'
 import type { User } from 'firebase/auth'
 import { auth } from '@/firebase'
 
 import { CarouselData } from './interfaces'
-import axios from 'axios'
 import { getUserData } from './services/apiService'
 import { domain } from './services/apiService/config'
 
@@ -70,6 +70,12 @@ export const App: FC = () => {
                                         phone: userData?.phone,
                                     })
                                 )
+                                // Update local input states with user input states
+                                if (userData?.inputStates) {
+                                    dispatch(
+                                        updateReduxOrder(userData.inputStates)
+                                    )
+                                }
                             })
                             .catch(console.error)
                     })
@@ -87,7 +93,7 @@ export const App: FC = () => {
             unsubscribe()
         }
     }, [])
-
+    // Create cookie sessionId if not exists
     const [cookies, setCookie] = useCookies(['sessionId'])
 
     useEffect(() => {
@@ -118,9 +124,11 @@ export const App: FC = () => {
                 setCarouselsData([])
             })
     }
+
     useEffect(() => {
         reloadCarouselData()
     }, [])
+
     useEffect(() => {
         if (localStorageStore.cart && !isCartStoreLoaded) {
             dispatch(setReduxCart(JSON.parse(localStorageStore.cart)))
@@ -155,7 +163,12 @@ export const App: FC = () => {
                         appearancePaths={topItemsAppearancePaths}
                     />
                 ) : null}
-                <NavBar style={{ marginTop: '10px' }} />
+                <NavBar
+                    resetSearch={() => {
+                        setSearch('')
+                    }}
+                    style={{ marginTop: '10px' }}
+                />
                 <Search
                     search={search}
                     setSearch={setSearch}
@@ -165,6 +178,9 @@ export const App: FC = () => {
                     <Route exact path="/">
                         <UserHome
                             style={{ marginTop: '30px' }}
+                            resetSearch={() => {
+                                setSearch('')
+                            }}
                             search={search.trim()}
                         />
                         {search.trim() ? (

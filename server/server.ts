@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 import cors from 'cors'
 import path from 'path'
+import cookieParser from 'cookie-parser'
 import { config } from './config'
 import {
     handleGetPromos,
@@ -20,8 +21,13 @@ import {
     handleEditCarousel,
     handleDeleteCarousel,
 } from './api/carousels'
-import { handleGetUserData } from './api/users'
-import { handleNewOrder, handleGetOrders, handleEditOrder } from './api/orders'
+import {
+    handleNewOrder,
+    handleGetOrders,
+    handleEditOrder,
+    handleGetUserOrders,
+} from './api/orders'
+import { handleGetUserData, handleUpdateUserInputs } from './api/users'
 import { getUploader } from './functions'
 import { checkAdmin } from './utils'
 import { cacheItemsDb, cacheOrdersDb, cacheUsersDb } from './functions/cacheDb'
@@ -35,6 +41,8 @@ if (config.shouldCache) {
 const app = express()
 const port = 3000
 
+app.use(cookieParser())
+
 // Serve static files from the 'dist' directory
 app.use(express.static(path.join(__dirname, '../client/dist')))
 app.use(express.json())
@@ -44,6 +52,7 @@ if (config.allowDevClient) {
     app.use(
         cors({
             origin: 'http://localhost:8080',
+            credentials: true,
         })
     )
 }
@@ -126,8 +135,11 @@ app.post('/api/orders/get', checkAdmin, handleGetOrders)
 
 app.post('/api/orders/edit', checkAdmin, handleEditOrder)
 
+app.post('/api/orders/get-user-orders', checkAdmin, handleGetUserOrders)
+
 // Users handling
 app.post('/api/users/get', handleGetUserData)
+app.post('/api/users/update-input-states', handleUpdateUserInputs)
 
 // Start the server
 app.listen(port, () => {

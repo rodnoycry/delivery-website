@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
+import { dbSelect } from '@/config/settings'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -24,7 +25,12 @@ const firebaseConfig = {
     appId: '1:545611652850:web:4e4852a9f3e8a2e8fd7a6b',
     measurementId: 'G-2DYJF0YY9F',
 }
+
+const firebaseConfigsDict = {
+    main: firebaseConfig,
+    reserve: firebaseConfigReserve,
+}
 // Initialize Firebase
-export const app = initializeApp(firebaseConfigReserve)
+export const app = initializeApp(firebaseConfigsDict[dbSelect])
 export const auth = getAuth()
 auth.languageCode = 'RU'

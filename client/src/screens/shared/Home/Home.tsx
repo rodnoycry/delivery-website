@@ -13,13 +13,14 @@ import styles from './Home.module.css'
 interface Props {
     isAdmin: boolean
     search: string
+    resetSearch: () => void
     style?: object
 }
 
 export const IsAdminContext = createContext<boolean>(false)
 export const UserContext = createContext<User | null>(null)
 
-export const Home: FC<Props> = ({ isAdmin, search, style }) => {
+export const Home: FC<Props> = ({ isAdmin, search, resetSearch, style }) => {
     const [user, setUser] = useState<User | null>(null)
     const [promosData, setPromosData] = useState<PromoData[]>([])
     const appearanceStyle = search ? { display: 'none' } : {}
@@ -61,7 +62,10 @@ export const Home: FC<Props> = ({ isAdmin, search, style }) => {
                     style={{ ...style, ...appearanceStyle }}
                 >
                     <Promo promosData={promosData} reloadData={reloadData} />
-                    <Categories style={{ marginTop: '30px' }} />
+                    <Categories
+                        resetSearch={resetSearch}
+                        style={{ marginTop: '30px' }}
+                    />
                 </div>
             </IsAdminContext.Provider>
         </UserContext.Provider>
