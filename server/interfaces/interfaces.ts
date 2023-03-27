@@ -1,1 +1,1 @@
-export { ServerItemData } from '@/interfaces'
+export * from '@/interfaces'

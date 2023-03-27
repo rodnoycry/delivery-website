@@ -5,6 +5,7 @@ import { createUser } from './functions'
 
 export const handleGetUserData = (req: Request, res: Response): void => {
     const idToken = req.body.idToken
+    const sessionId = req.cookies.sessionId
     const displayNameFromRequest = req.body?.displayName
     auth.verifyIdToken(idToken)
         .then((decodedToken) => {
@@ -13,18 +14,23 @@ export const handleGetUserData = (req: Request, res: Response): void => {
                 .then((users) => {
                     let userData
                     users.forEach((user) => {
-                        if (user?.uid === uid) {
+                        if (user?.id === uid) {
                             userData = {
                                 displayName: user?.displayName,
                                 email: user?.email,
                                 phone: user?.phone,
+                                inputStates: user?.inputStates,
                             }
                         }
                     })
                     if (userData) {
                         res.status(200).send(userData)
                     } else {
-                        createUser(decodedToken, displayNameFromRequest)
+                        createUser(
+                            decodedToken,
+                            sessionId,
+                            displayNameFromRequest
+                        )
                             .then(() => {
                                 res.status(201).send({
                                     displayName: displayNameFromRequest,

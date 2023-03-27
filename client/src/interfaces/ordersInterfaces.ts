@@ -31,3 +31,15 @@ export interface ServerOrder {
 
     isActive: boolean
 }
+
+export interface ErrorData {
+    hasError?: boolean
+    isRed?: boolean
+}
+
+export type OrderError = Record<keyof ServerOrder, ErrorData>
+
+export interface OrderErrorData {
+    errorMessage: string
+    errorObject?: OrderError
+}

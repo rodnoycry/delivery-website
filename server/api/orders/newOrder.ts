@@ -1,20 +1,24 @@
 import { FieldPath } from 'firebase-admin/firestore'
 import type { Request, Response } from 'express'
-import { db } from '../../firebase'
-import { ItemData, ServerOrder } from '@/interfaces'
-import { getSum } from '@/functions'
-import { zoneDeliveryInfo } from '@/config'
+import { auth, db } from '../../firebase'
+import { ItemData, ServerOrder } from '../../interfaces'
+import { getSum } from '../../functions'
+import { zoneDeliveryInfo } from '../../config'
 import { cacheOrdersDb } from '../../functions/cacheDb'
 
 export const handleNewOrder = (req: Request, res: Response): void => {
-    const order: ServerOrder = req.body
+    const order: ServerOrder = req.body.order
+    const idToken = req.body?.idToken
+    const sessionId = req.cookies.sessionId
+    console.log(req)
+    console.log(sessionId)
     getOrderErrorsObject(order)
         .then((errorData) => {
             if (errorData) {
                 res.status(400).send(errorData)
                 return
             }
-            createOrder(order)
+            createOrder(order, idToken, sessionId)
                 .then(() => {
                     cacheOrdersDb()
                         .then(() => {
@@ -36,7 +40,11 @@ export const handleNewOrder = (req: Request, res: Response): void => {
         })
 }
 
-const createOrder = async (order: ServerOrder): Promise<void> => {
+const createOrder = async (
+    order: ServerOrder,
+    idToken: string | undefined,
+    sessionId: string | undefined
+): Promise<void> => {
     const counterDocRef = db.collection('counters').doc('orders')
     try {
         const id = await db.runTransaction(async (t) => {
@@ -47,7 +55,17 @@ const createOrder = async (order: ServerOrder): Promise<void> => {
             return id
         })
         const stringId = id.toString().padStart(6, '0')
-        const serverOrder: ServerOrder = { ...order, id: stringId }
+        const serverOrder: ServerOrder & Record<string, any> = {
+            ...order,
+            id: stringId,
+        }
+        if (sessionId) {
+            serverOrder.sessionId = sessionId
+        }
+        if (idToken) {
+            const decodedToken = await auth.verifyIdToken(idToken)
+            serverOrder.uid = decodedToken.uid
+        }
         const docRef = db.collection('orders').doc(stringId)
         await docRef.set(serverOrder)
         return

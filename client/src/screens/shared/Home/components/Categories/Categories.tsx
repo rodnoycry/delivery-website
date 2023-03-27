@@ -6,10 +6,11 @@ import styles from './Categories.module.css'
 import { categoriesData } from './categoriesData'
 
 interface Props {
+    resetSearch: () => void
     style?: object
 }
 
-export const Categories: FC<Props> = ({ style }) => {
+export const Categories: FC<Props> = ({ resetSearch, style }) => {
     const isAdmin = useContext(IsAdminContext)
     const pathPrefix = isAdmin ? '/admin/editing' : ''
     return (
@@ -24,6 +25,7 @@ export const Categories: FC<Props> = ({ style }) => {
                                 style={{
                                     backgroundImage: `linear-gradient(180deg, rgba(0, 0, 0, 0) 21.35%, rgba(0, 0, 0, 0.8) 100%), url(${image})`,
                                 }}
+                                onClick={resetSearch}
                             >
                                 <h1 className={styles.categories}>{name}</h1>
                             </li>

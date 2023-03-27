@@ -1,17 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { getCurrentDayRussian } from '@/functions'
-
-export interface InputState {
-    value?: string
-    selected?: {
-        label: string
-        value: string
-    }
-    hasError?: boolean
-    isRed?: boolean
-    onFocus?: boolean
-}
+import { InputState } from '@/interfaces'
 
 export interface Zone {
     zone: 'Талдом' | 'Северный/Юркино' | 'До 15 км'

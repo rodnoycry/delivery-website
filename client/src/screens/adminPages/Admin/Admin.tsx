@@ -49,15 +49,17 @@ export const Admin: FC = () => {
     }, [])
 
     useEffect(() => {
-        if (user) {
+        if (user && isAdmin !== undefined) {
+            console.log(isAdmin)
             if (isAdmin) {
                 history.push('/admin/panel')
             } else {
                 setIsIntruder(true)
+                console.log(`pushing to home`)
                 history.push('/')
             }
         }
-    }, [isAdmin])
+    }, [isAdmin, user])
 
     const handleSignInGoogle = (): void => {
         setIsLoading(true)

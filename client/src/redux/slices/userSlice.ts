@@ -17,6 +17,8 @@ export const userStateSlice = createSlice({
             payloadKeys.forEach((key) => {
                 if (key === 'isLoggedIn') {
                     state[key] = !!action.payload[key]
+                } else if (key !== 'ordersData' && key !== 'inputStates') {
+                    state[key] = action.payload[key]
                 } else if (key !== 'ordersData') {
                     state[key] = action.payload[key]
                 } else {
