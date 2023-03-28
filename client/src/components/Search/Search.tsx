@@ -1,6 +1,7 @@
 import React from 'react'
 import type { FC } from 'react'
 import { useLocation } from 'react-router-dom'
+import { topItemsAppearancePaths } from '@/config'
 import styles from './Search.module.css'
 import SearchImage from './images/Search.png'
 
@@ -10,7 +11,7 @@ interface Props {
     appearancePaths: string[]
 }
 
-const notAppearPaths = ['/my-orders', '/cart', '/order-details']
+const diplayPaths = [...topItemsAppearancePaths, '/']
 
 export const Search: FC<Props> = ({ search, setSearch, appearancePaths }) => {
     const location = useLocation()
@@ -27,7 +28,7 @@ export const Search: FC<Props> = ({ search, setSearch, appearancePaths }) => {
             )
         }
     } else {
-        shouldShow = !notAppearPaths.includes(currentPath)
+        shouldShow = diplayPaths.includes(currentPath)
     }
 
     const handleInputChange = (

@@ -16,3 +16,8 @@ export interface UserData {
     ordersData?: UserOrderData[]
     inputStates?: Order
 }
+
+export interface CartItem {
+    id: string
+    selected: number | boolean
+}

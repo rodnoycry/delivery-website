@@ -1,5 +1,4 @@
-import { CartItemData, ItemData } from '@/interfaces'
-import { CartItem } from '@/redux/slices/cartSlice'
+import { CartItemData, ItemData, CartItem } from '@/interfaces'
 
 export const getCartItemsData = (
     itemsData: ItemData[],
@@ -11,9 +10,9 @@ export const getCartItemsData = (
             (itemData) => itemData.id === cartItem.id
         )
         if (itemData === undefined) {
-            console.error(
-                `Item is in the cart but there is no item whith such id in database: ${cartItem.id}`
-            )
+            // console.error(
+            //     `Item is in the cart but there is no item whith such id in database: ${cartItem.id}`
+            // )
         } else {
             const cartItemIndex = cartItemsData.findIndex(
                 (cartItemData) =>

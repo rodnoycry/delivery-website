@@ -1,4 +1,4 @@
-import { CartItem } from '@/redux/slices/cartSlice'
+import { CartItem } from '@/interfaces'
 
 export const getPrice = (
     type: string,

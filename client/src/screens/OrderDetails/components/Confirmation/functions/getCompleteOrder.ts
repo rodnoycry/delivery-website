@@ -1,5 +1,4 @@
-import { ServerOrder } from '@/interfaces'
-import { CartItem } from '@/redux/slices/cartSlice'
+import { ServerOrder, CartItem } from '@/interfaces'
 import { getCurrentDayRussian } from '@/functions'
 
 export const getServerOrder = (

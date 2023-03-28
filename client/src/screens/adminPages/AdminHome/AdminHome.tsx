@@ -8,5 +8,12 @@ interface Props {
 }
 
 export const AdminHome: FC<Props> = ({ search = '', style }) => {
-    return <Home isAdmin={true} search={search} style={style} />
+    return (
+        <Home
+            resetSearch={() => {}}
+            isAdmin={true}
+            search={search}
+            style={style}
+        />
+    )
 }

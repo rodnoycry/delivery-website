@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { CartItem, cartSlice } from './slices/cartSlice'
+import { cartSlice } from './slices/cartSlice'
+import { CartItem, ItemData, ServerOrder, UserData } from '@/interfaces'
 import { itemDataSlice } from './slices/itemsDataSlice'
-import { ItemData, ServerOrder, UserData } from '@/interfaces'
 import { itemsStatesSlice, ItemState } from './slices/itemsStatesSlice'
 import { orderSlice, Order } from './slices/orderSlice'
 import { localOrdersDataSlice } from './slices/localOrdersDataSlice'
@@ -16,7 +16,7 @@ export interface RootState {
     itemsStates: Record<string, ItemState>
     orderState: Order
     localOrdersDataState: ServerOrder[]
-    windowsStatesSlice: Record<WindowName, boolean>
+    windowsStates: Record<WindowName, boolean>
     userState: UserData
 }
 
@@ -41,8 +41,8 @@ export const store = configureStore({
         itemsStates: itemsStatesSlice.reducer,
         orderState: orderSlice.reducer,
         localOrdersDataState: localOrdersDataSlice.reducer,
-        windowsStatesSlice: windowsStatesSlice.reducer,
-        userStateSlice: userStateSlice.reducer,
+        windowsStates: windowsStatesSlice.reducer,
+        userState: userStateSlice.reducer,
     },
     middleware: (gDM) => gDM().concat(syncCookieMiddleware),
 })

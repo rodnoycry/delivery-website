@@ -8,12 +8,12 @@ import {
 } from '@/redux/store'
 import { getPrice, getQty } from './functions'
 import styles from './Item.module.css'
-import { ItemData, CartItemData } from '@/interfaces'
+import { ItemData, CartItemData, CartItem } from '@/interfaces'
 import { IsAdminContext } from '@/screens/shared/ItemsList/ItemsList'
+import { UserContext } from '@/App'
 import { Selector } from './components/Selector'
 import { Button } from './components/Button'
 import { Counter } from './components/Counter'
-import { CartItem } from '@/redux/slices/cartSlice'
 import EditImage from './images/Edit.png'
 import { domain } from '@/services/apiService/config'
 
@@ -50,22 +50,56 @@ export const Item: FC<Props> = ({
         setQty(getQty(cart, id, selected as number))
     }, [selected, cart])
 
+    // Authentification related
+    const user = useContext(UserContext)
+
     // Methods for buttons to add or remove item
-    const addItem = (): void => {
-        dispatch(addCartItem({ id, selected }))
+    const addItem = async (): Promise<void> => {
+        let idToken
+        try {
+            if (user) {
+                idToken = await user.getIdToken()
+            }
+        } catch (error) {
+            console.error(error)
+            throw new Error(`Item.tsx: retrieving idToken failed`)
+        }
+        dispatch(addCartItem({ item: { id, selected }, idToken }))
         setQty(qty + 1)
     }
-    const removeItem = (): void => {
-        dispatch(removeCartItem({ id, selected }))
+
+    const removeItem = async (): Promise<void> => {
+        let idToken
+        try {
+            if (user) {
+                idToken = await user.getIdToken()
+            }
+        } catch (error) {
+            console.error(error)
+            throw new Error(`Item.tsx: retrieving idToken failed`)
+        }
+        dispatch(removeCartItem({ item: { id, selected }, idToken }))
         setQty(qty - 1)
     }
 
     // Button or counter depends if item was already added
     const getButton = (qty: number): JSX.Element => {
         return qty > 0 ? (
-            <Counter qty={qty} addItem={addItem} removeItem={removeItem} />
+            <Counter
+                qty={qty}
+                addItem={() => {
+                    addItem().catch(console.error)
+                }}
+                removeItem={() => {
+                    removeItem().catch(console.error)
+                }}
+            />
         ) : (
-            <Button addItem={addItem} />
+            <Button
+                addItem={() => {
+                    addItem().catch(console.error)
+                }}
+            />
         )
     }
 

@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import type { FC } from 'react'
 import { useHistory } from 'react-router-dom'
 import { RootState as StoreState, updateLoginWindowState } from '@/redux/store'
 import { UserData } from '@/interfaces'
+import { UserContext } from '@/App'
 import { useSelector, useDispatch } from 'react-redux'
 import LoginImg from './images/Login.png'
 import styles from './ProfileButton.module.css'
 
 export const ProfileButton: FC = () => {
     // Get user data
-    const [userData, setUserData] = useState<UserData>({ user: null })
+    const user = useContext(UserContext)
+    const [userData, setUserData] = useState<UserData>({ isLoggedIn: false })
     const reduxUserData = useSelector((state: StoreState) => state.userState)
 
     useEffect(() => {
@@ -22,7 +24,6 @@ export const ProfileButton: FC = () => {
     const dispatch = useDispatch()
 
     const handleOpenLogInWindow = (): void => {
-        window.scrollTo(0, 0)
         dispatch(updateLoginWindowState(true))
     }
 
@@ -36,22 +37,20 @@ export const ProfileButton: FC = () => {
     return (
         <button
             className={styles.profile}
-            onClick={userData.user ? handleOpenProfile : handleOpenLogInWindow}
+            onClick={
+                userData.isLoggedIn ? handleOpenProfile : handleOpenLogInWindow
+            }
         >
             <div className={styles.profileImage}>
                 <img
                     className={styles.profile}
                     // style={userData.user?.photoURL ? { border: '2px solid #FFF' } : {}}
-                    src={
-                        userData.user?.photoURL
-                            ? userData.user.photoURL
-                            : LoginImg
-                    }
+                    src={user?.photoURL ? user.photoURL : LoginImg}
                 />
             </div>
             <p className={styles.profile}>
                 <span>
-                    {userData.user
+                    {user
                         ? userData?.displayName
                             ? userData.displayName.split(' ')[0]
                             : 'Профиль'

@@ -1,6 +1,7 @@
 import React, { CSSProperties } from 'react'
 import type { FC } from 'react'
-import { InputState, Order } from '@/redux/slices/orderSlice'
+import { Order } from '@/redux/slices/orderSlice'
+import { InputState } from '@/interfaces'
 import { DetailsSelect } from '../shared/DetailsSelect'
 import { options as timeSelectOptions } from '../11.TimeSelect'
 

@@ -4,7 +4,7 @@ import { getOrdersFromCache } from '../../functions/cacheDb'
 
 export const handleGetOrders = (req: Request, res: Response): void => {
     getOrdersFromCache()
-        .then((orders) => res.status(200).send(orders))
+        .then((orders) => res.status(200).send(orders.slice(-30)))
         .catch((error) => {
             console.error(error)
             res.status(500).send(error)

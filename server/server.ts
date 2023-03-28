@@ -27,7 +27,12 @@ import {
     handleEditOrder,
     handleGetUserOrders,
 } from './api/orders'
-import { handleGetUserData, handleUpdateUserInputs } from './api/users'
+import {
+    handleGetUserData,
+    handleUpdateUserInputs,
+    handleUpdateUserCart,
+    handleGetUserCart,
+} from './api/users'
 import { getUploader } from './functions'
 import { checkAdmin } from './utils'
 import { cacheItemsDb, cacheOrdersDb, cacheUsersDb } from './functions/cacheDb'
@@ -130,16 +135,15 @@ app.post('/api/carousels/delete', checkAdmin, handleDeleteCarousel)
 
 // Orders handling
 app.post('/api/orders/add', handleNewOrder)
-
 app.post('/api/orders/get', checkAdmin, handleGetOrders)
-
 app.post('/api/orders/edit', checkAdmin, handleEditOrder)
-
-app.post('/api/orders/get-user-orders', checkAdmin, handleGetUserOrders)
 
 // Users handling
 app.post('/api/users/get', handleGetUserData)
+app.post('/api/orders/get-orders', checkAdmin, handleGetUserOrders)
 app.post('/api/users/update-input-states', handleUpdateUserInputs)
+app.post('/api/users/get-cart', handleGetUserCart)
+app.post('/api/users/update-cart', checkAdmin, handleUpdateUserCart)
 
 // Start the server
 app.listen(port, () => {

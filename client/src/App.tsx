@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, createContext } from 'react'
 import type { FC } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -10,7 +10,7 @@ import type { User } from 'firebase/auth'
 import { auth } from '@/firebase'
 
 import { CarouselData } from './interfaces'
-import { getUserData } from './services/apiService'
+import { getUserCart, getUserData } from './services/apiService'
 import { domain } from './services/apiService/config'
 
 import './reset.module.css'
@@ -47,39 +47,52 @@ import { Offer } from './screens/legal/Offer'
 import { Terms } from './screens/legal/Terms'
 import { DataPolicy } from './screens/legal/DataPolicy'
 
+// Windows
+import { AuthWindow } from './screens/_windows/AuthWindow'
+
+export const UserContext = createContext<User | null>(null)
+
 export const App: FC = () => {
     const [user, setUser] = useState<User | null>(null)
 
     const dispatch = useDispatch()
+
     useEffect(() => {
-        // Getting user data from server, create user in db if not exists
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user)
-                user.getIdToken()
-                    .then((token) => {
+
+                // Getting user data from server, create user in db if not exists
+                const getUserDataFromServer = async (
+                    user: User
+                ): Promise<void> => {
+                    try {
+                        const token = await user.getIdToken()
                         const displayName = user?.displayName
                             ? user.displayName
                             : undefined
-                        getUserData(token, displayName)
-                            .then((userData) => {
-                                dispatch(
-                                    updateUserState({
-                                        isLoggedIn: true,
-                                        displayName: userData?.displayName,
-                                        phone: userData?.phone,
-                                    })
-                                )
-                                // Update local input states with user input states
-                                if (userData?.inputStates) {
-                                    dispatch(
-                                        updateReduxOrder(userData.inputStates)
-                                    )
-                                }
+                        const userData = await getUserData(token, displayName)
+                        dispatch(
+                            updateUserState({
+                                isLoggedIn: true,
+                                displayName: userData?.displayName,
+                                phone: userData?.phone,
+                                email: userData?.email,
                             })
-                            .catch(console.error)
-                    })
-                    .catch(console.error)
+                        )
+                        // Update local input states with user input states
+                        if (userData?.inputStates) {
+                            dispatch(updateReduxOrder(userData.inputStates))
+                        }
+                        // Update local cart with db user data
+                        const cart = await getUserCart(token)
+                        dispatch(setReduxCart(cart))
+                    } catch (error) {
+                        console.error(error)
+                        throw new Error(`App.tsx: getUserDataFromServer error`)
+                    }
+                }
+                getUserDataFromServer(user).catch(console.error)
             } else {
                 dispatch(
                     updateUserState({
@@ -93,6 +106,7 @@ export const App: FC = () => {
             unsubscribe()
         }
     }, [])
+
     // Create cookie sessionId if not exists
     const [cookies, setCookie] = useCookies(['sessionId'])
 
@@ -149,116 +163,121 @@ export const App: FC = () => {
     }, [localStorageStore])
     return (
         <Router>
-            <div className={styles.main}>
-                <Header />
-                <hr className={styles.hr} />
-                {/* <h1 className={styles.dontAcceptOrders}>
+            <UserContext.Provider value={user}>
+                {/* Windows */}
+                <AuthWindow />
+                {/* Main */}
+                <div className={styles.main}>
+                    <Header />
+                    <hr className={styles.hr} />
+                    {/* <h1 className={styles.dontAcceptOrders}>
                     {`Извините, сегодня (8 марта), мы больше не принимаем заказы, приносим извинения за предоставленные неудобства!`}
                 </h1> */}
-                {carouselsData.length > 0 ? (
-                    <HomeCarousel
-                        user={user}
-                        carouselsData={carouselsData}
-                        reloadData={reloadCarouselData}
+                    {carouselsData.length > 0 ? (
+                        <HomeCarousel
+                            user={user}
+                            carouselsData={carouselsData}
+                            reloadData={reloadCarouselData}
+                            appearancePaths={topItemsAppearancePaths}
+                        />
+                    ) : null}
+                    <NavBar
+                        resetSearch={() => {
+                            setSearch('')
+                        }}
+                        style={{ marginTop: '10px' }}
+                    />
+                    <Search
+                        search={search}
+                        setSearch={setSearch}
                         appearancePaths={topItemsAppearancePaths}
                     />
-                ) : null}
-                <NavBar
-                    resetSearch={() => {
-                        setSearch('')
-                    }}
-                    style={{ marginTop: '10px' }}
-                />
-                <Search
-                    search={search}
-                    setSearch={setSearch}
-                    appearancePaths={topItemsAppearancePaths}
-                />
-                <Switch>
-                    <Route exact path="/">
-                        <UserHome
-                            style={{ marginTop: '30px' }}
-                            resetSearch={() => {
-                                setSearch('')
-                            }}
-                            search={search.trim()}
-                        />
-                        {search.trim() ? (
-                            <UserItemsList search={search} />
-                        ) : null}
-                    </Route>
-
-                    <Route exact path="/my-orders">
-                        <MyOrders />
-                    </Route>
-
-                    {/* TEST */}
-                    <Route exact path="/test">
-                        <Test />
-                    </Route>
-
-                    <Route exact path="/promo">
-                        <span>1</span>
-                    </Route>
-
-                    {/* Categories of items */}
-                    {categoriesPaths.map((path) => {
-                        return (
-                            <Route exact path={`${path}`} key={path}>
+                    <Switch>
+                        <Route exact path="/">
+                            <UserHome
+                                style={{ marginTop: '30px' }}
+                                resetSearch={() => {
+                                    setSearch('')
+                                }}
+                                search={search.trim()}
+                            />
+                            {search.trim() ? (
                                 <UserItemsList search={search} />
-                            </Route>
-                        )
-                    })}
+                            ) : null}
+                        </Route>
 
-                    {/* Cart */}
-                    <Route exact path="/cart">
-                        <Cart />
-                    </Route>
+                        <Route exact path="/my-orders">
+                            <MyOrders />
+                        </Route>
 
-                    {/* Order related */}
-                    <Route exact path="/order-details">
-                        <OrderDetails />
-                    </Route>
+                        {/* TEST */}
+                        <Route exact path="/test">
+                            <Test />
+                        </Route>
 
-                    {/* Admin */}
-                    <Route exact path="/admin">
-                        <Admin />
-                    </Route>
-                    <Route exact path="/admin/panel">
-                        <AdminPanel />
-                    </Route>
-                    <Route exact path="/admin/editing">
-                        <AdminHome
-                            style={{ marginTop: '30px' }}
-                            search={search.trim()}
-                        />
-                    </Route>
+                        <Route exact path="/promo">
+                            <span>1</span>
+                        </Route>
 
-                    {categoriesPaths.map((path) => {
-                        return (
-                            <Route
-                                exact
-                                path={`/admin/editing${path}`}
-                                key={path}
-                            >
-                                <AdminItemsList />
-                            </Route>
-                        )
-                    })}
+                        {/* Categories of items */}
+                        {categoriesPaths.map((path) => {
+                            return (
+                                <Route exact path={`${path}`} key={path}>
+                                    <UserItemsList search={search} />
+                                </Route>
+                            )
+                        })}
 
-                    {/* Legal links */}
-                    <Route exact path="/offer">
-                        <Offer />
-                    </Route>
-                    <Route exact path="/terms">
-                        <Terms />
-                    </Route>
-                    <Route exact path="/policy">
-                        <DataPolicy />
-                    </Route>
-                </Switch>
-            </div>
-            <Footer />
+                        {/* Cart */}
+                        <Route exact path="/cart">
+                            <Cart />
+                        </Route>
+
+                        {/* Order related */}
+                        <Route exact path="/order-details">
+                            <OrderDetails />
+                        </Route>
+
+                        {/* Admin */}
+                        <Route exact path="/admin">
+                            <Admin />
+                        </Route>
+                        <Route exact path="/admin/panel">
+                            <AdminPanel />
+                        </Route>
+                        <Route exact path="/admin/editing">
+                            <AdminHome
+                                style={{ marginTop: '30px' }}
+                                search={search.trim()}
+                            />
+                        </Route>
+
+                        {categoriesPaths.map((path) => {
+                            return (
+                                <Route
+                                    exact
+                                    path={`/admin/editing${path}`}
+                                    key={path}
+                                >
+                                    <AdminItemsList />
+                                </Route>
+                            )
+                        })}
+
+                        {/* Legal links */}
+                        <Route exact path="/offer">
+                            <Offer />
+                        </Route>
+                        <Route exact path="/terms">
+                            <Terms />
+                        </Route>
+                        <Route exact path="/policy">
+                            <DataPolicy />
+                        </Route>
+                    </Switch>
+                </div>
+                <Footer />
+            </UserContext.Provider>
         </Router>
     )
 }

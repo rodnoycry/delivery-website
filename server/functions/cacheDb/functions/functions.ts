@@ -9,7 +9,7 @@ export const cacheDb = async (dbName: string): Promise<void> => {
         const data = dataRaw.map((doc) => doc.data())
         const jsonData = JSON.stringify(data)
         fs.writeFileSync(`./server/db-cache/${dbName}.json`, jsonData)
-        console.log('Data written to file')
+        console.log(`Collection "${dbName}" written to file`)
     } catch (error) {
         console.error(error)
     }

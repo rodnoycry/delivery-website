@@ -1,7 +1,7 @@
 import React, { CSSProperties } from 'react'
 import type { FC } from 'react'
 import { isValidPhoneNumber } from 'libphonenumber-js'
-import { InputState } from '@/redux/slices/orderSlice'
+import { InputState } from '@/interfaces'
 import { DetailsInput } from '../shared/DetailsInput'
 import { formatPhoneNumber } from './functions'
 

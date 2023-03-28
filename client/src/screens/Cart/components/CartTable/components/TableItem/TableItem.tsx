@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import type { FC } from 'react'
+import { UserContext } from '@/App'
 import { CartItemData } from '@/interfaces'
 import styles from './TableItem.module.css'
 import { useDispatch } from 'react-redux'
@@ -19,14 +20,45 @@ export const TableItem: FC<CartItemData> = ({
     price: price_,
     selected,
 }) => {
+    const user = useContext(UserContext)
     const dispatch = useDispatch()
     const price = getPrice(type, price_, selected)
     // Methods for buttons to add or remove item
-    const addItem = (): void => {
-        dispatch(addCartItem({ id, selected }))
+    const addItem = async (): Promise<void> => {
+        let idToken
+        try {
+            if (user) {
+                idToken = await user.getIdToken()
+            }
+        } catch (error) {
+            console.error(error)
+            throw new Error(`TableItem.tsx: id token retrieve error`)
+        }
+        dispatch(addCartItem({ item: { id, selected }, idToken }))
     }
-    const removeItem = (): void => {
-        dispatch(removeCartItem({ id, selected }))
+    const removeItem = async (): Promise<void> => {
+        let idToken
+        try {
+            if (user) {
+                idToken = await user.getIdToken()
+            }
+        } catch (error) {
+            console.error(error)
+            throw new Error(`TableItem.tsx: id token retrieve error`)
+        }
+        dispatch(removeCartItem({ item: { id, selected }, idToken }))
+    }
+    const deleteItem = async (): Promise<void> => {
+        let idToken
+        try {
+            if (user) {
+                idToken = await user.getIdToken()
+            }
+        } catch (error) {
+            console.error(error)
+            throw new Error(`TableItem.tsx: id token retrieve error`)
+        }
+        dispatch(deleteCartItem({ item: { id, selected }, idToken }))
     }
     return (
         <li className={styles.item}>
@@ -50,8 +82,12 @@ export const TableItem: FC<CartItemData> = ({
             <div className={styles.counterContainer}>
                 <Counter
                     qty={qtyInCart}
-                    addItem={addItem}
-                    removeItem={removeItem}
+                    addItem={() => {
+                        addItem().catch(console.error)
+                    }}
+                    removeItem={() => {
+                        removeItem().catch(console.error)
+                    }}
                     nonZero
                     style={
                         {
@@ -66,7 +102,9 @@ export const TableItem: FC<CartItemData> = ({
             <img
                 className={styles.x}
                 src={XImage}
-                onClick={() => dispatch(deleteCartItem({ id, selected }))}
+                onClick={() => {
+                    deleteItem().catch(console.error)
+                }}
             />
         </li>
     )

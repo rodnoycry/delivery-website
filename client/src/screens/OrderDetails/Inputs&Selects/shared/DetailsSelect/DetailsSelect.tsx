@@ -1,7 +1,7 @@
 import React, { useState, useEffect, CSSProperties } from 'react'
 import type { FC } from 'react'
 import styles from './DetailsSelect.module.css'
-import { InputState } from '@/redux/slices/orderSlice'
+import { InputState } from '@/interfaces'
 import Select, { StylesConfig } from 'react-select'
 
 interface Props {

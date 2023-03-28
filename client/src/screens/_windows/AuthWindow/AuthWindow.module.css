@@ -1,0 +1,15 @@
+div.authWindow {
+    font-family: 'Montserrat', open-sans;
+    color: #fff;
+
+    width: 430px;
+    height: 500px;
+
+    background: #000000;
+    border: 1px solid #7E7E7E;
+    border-radius: 17px;
+
+    z-index: 150;
+
+    cursor: default;
+}

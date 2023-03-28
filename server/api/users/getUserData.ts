@@ -20,6 +20,7 @@ export const handleGetUserData = (req: Request, res: Response): void => {
                                 email: user?.email,
                                 phone: user?.phone,
                                 inputStates: user?.inputStates,
+                                cart: user?.cart,
                             }
                         }
                     })
