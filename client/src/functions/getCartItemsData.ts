@@ -1,5 +1,4 @@
-import { CartItemData, ItemData } from '@/interfaces'
-import { CartItem } from '@/redux/slices/cartSlice'
+import { CartItemData, ItemData, CartItem } from '@/interfaces'
 
 export const getCartItemsData = (
     itemsData: ItemData[],

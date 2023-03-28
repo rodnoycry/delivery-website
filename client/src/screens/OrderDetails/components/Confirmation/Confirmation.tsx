@@ -5,10 +5,14 @@ import { useDispatch } from 'react-redux'
 import type { User } from 'firebase/auth'
 import { AxiosError } from 'axios'
 import { zoneDeliveryInfo } from '@/config'
-import { ServerOrder, DetailedInputData, OrderErrorData } from '@/interfaces'
+import {
+    ServerOrder,
+    DetailedInputData,
+    OrderErrorData,
+    CartItem,
+} from '@/interfaces'
 import { resetCart } from '@redux/store'
 import { Order } from '@/redux/slices/orderSlice'
-import { CartItem } from '@/redux/slices/cartSlice'
 import { sendOrderToServer, updateUserInputs } from '@/services/apiService'
 import styles from './Confirmation.module.css'
 import { getServerOrder, getTime } from './functions'
@@ -99,7 +103,18 @@ export const Confirmation: FC<Props> = ({
         const successCallback = (): void => {
             setIsLoading(false)
             setIsSuccess(true)
-            dispatch(resetCart())
+            if (user) {
+                user.getIdToken()
+                    .then((token) => {
+                        dispatch(resetCart({ idToken: token }))
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                        resetCart({})
+                    })
+            } else {
+                resetCart({})
+            }
         }
 
         // Error handling if there is error in inputs or server error on sending

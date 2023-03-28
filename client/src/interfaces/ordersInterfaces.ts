@@ -1,4 +1,4 @@
-import { CartItem } from '@/redux/slices/cartSlice'
+import { CartItem } from '@/interfaces'
 import { Zone } from '@/redux/slices/orderSlice'
 
 // Orders related
