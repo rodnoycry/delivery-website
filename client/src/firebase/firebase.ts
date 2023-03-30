@@ -25,6 +25,6 @@ const firebaseConfig = {
     measurementId: 'G-2DYJF0YY9F',
 }
 // Initialize Firebase
-export const app = initializeApp(firebaseConfigReserve)
+export const app = initializeApp(firebaseConfig)
 export const auth = getAuth()
 auth.languageCode = 'RU'

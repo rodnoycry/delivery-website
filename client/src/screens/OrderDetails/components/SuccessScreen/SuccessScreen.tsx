@@ -2,7 +2,7 @@ import React from 'react'
 import type { FC } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './SuccessScreen.module.css'
-import SuccessImg from './images/success.png'
+import SuccessImg from './images/Success.png'
 
 interface Props {
     isSuccess: boolean
