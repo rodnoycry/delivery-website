@@ -27,7 +27,7 @@ exports.db = exports.auth = exports.app = void 0;
 const app_1 = require("firebase-admin/app");
 const firestore_1 = require("firebase-admin/firestore");
 const auth_1 = require("firebase-admin/auth");
-const serviceAccount = __importStar(require("./config/serviceAccountKeyReserve.json"));
+const serviceAccount = __importStar(require("./config/serviceAccountKey.json"));
 exports.app = (0, app_1.initializeApp)({
     credential: (0, app_1.cert)(serviceAccount),
     // databaseURL: 'https://san-sei.firebaseio.com',

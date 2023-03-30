@@ -54,7 +54,7 @@ export const Admin: FC = () => {
                 history.push('/admin/panel')
             } else {
                 setIsIntruder(true)
-                history.push('/')
+                // history.push('/')
             }
         }
     }, [isAdmin])
