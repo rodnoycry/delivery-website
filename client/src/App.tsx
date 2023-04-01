@@ -36,10 +36,10 @@ import { OrderDetails } from './screens/OrderDetails'
 
 import { Footer } from './components/Footer'
 
-import { Admin } from './screens/adminPages/Admin'
-import { Panel as AdminPanel } from './screens/adminPages/Panel/Panel'
-import { AdminHome } from './screens/adminPages/AdminHome'
-import { AdminItemsList } from './screens/adminPages/AdminItemsList'
+import { Admin } from './screens/_adminPages/Admin'
+import { Panel as AdminPanel } from './screens/_adminPages/Panel/Panel'
+import { AdminHome } from './screens/_adminPages/AdminHome'
+import { AdminItemsList } from './screens/_adminPages/AdminItemsList'
 import { Test } from './screens/Test'
 
 // Legal pages
@@ -48,7 +48,7 @@ import { Terms } from './screens/legal/Terms'
 import { DataPolicy } from './screens/legal/DataPolicy'
 
 // Windows
-import { AuthWindow } from './screens/_windows/AuthWindow'
+import { AuthWindow } from './components/_windows/AuthWindow'
 
 export const UserContext = createContext<User | null>(null)
 

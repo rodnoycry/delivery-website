@@ -1,3 +1,3 @@
 type DbSelect = 'main' | 'reserve'
 
-export const dbSelect: DbSelect = 'main'
+export const dbSelect: DbSelect = 'reserve'

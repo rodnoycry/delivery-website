@@ -42,7 +42,7 @@ const storedJSONDict = {
     items: itemsJSON,
     orders: ordersJSON,
     promos: promosJSON,
-    users: usersJSON,
+    // users: usersJSON,
 }
 
 export const store = (dbProvider: Firestore, dbKey: string): void => {

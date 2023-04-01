@@ -1,6 +1,6 @@
 import React from 'react'
 import type { FC } from 'react'
-import { ItemsList } from '@/screens/shared/ItemsList'
+import { ItemsList } from '@/screens/_shared/ItemsList'
 
 interface Props {
     search: string

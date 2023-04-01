@@ -1,0 +1,129 @@
+form.authWindow {
+    font-family: 'Montserrat', open-sans;
+    font-size: 16px;
+    color: #fff;
+
+    padding: 25px 0;
+    width: 100%;
+    max-width: 430px;
+
+    background: #000000;
+    border: 1px solid #7E7E7E;
+    border-radius: 17px;
+
+    z-index: 150;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 14px;
+    align-items: center;
+
+    cursor: default;
+}
+
+/* Buttons */
+button.redButton,
+button.blackButton,
+input.input {
+    width: 80vw;
+    max-width: 350px;
+    height: 45px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+
+    border-radius: 9px;
+}
+
+button.blackButton {
+    background-color: #000;
+    border: 2px solid #FFFFFF;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+button.blackButton:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+button.redButton {
+    background-color: #ff000a;
+    border: 2px solid #ff000a;
+    transition: border 0.2s ease-in-out;
+}
+
+button.redButton:hover {
+    border: 2px solid #FFFFFF;
+}
+
+button.resetPasswordButton {
+    text-decoration: underline;
+    color: #d5d5d5;
+}
+
+img.googleImage {
+    width: 20px;
+    height: auto;
+}
+
+/* Inputs */
+input.input {
+    padding: 0 13px;
+    color: #fff;
+    border: 2px solid #3D3D3D;
+}
+
+div.password {
+    position: relative;
+}
+
+input.password {
+    padding-right: calc(2% + 24px + 5px);
+}
+
+div.showPassword {
+    position: absolute;
+    margin-right: 3%;
+    top: 55%;
+    transform: translateY(-50%);
+
+    width: 24px;
+    right: 0;
+
+    cursor: pointer;
+}
+
+img.showPassword {
+    width: 100%;
+    height: auto;
+}
+
+/* Text */
+h1.label {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+div.lowerText {
+    height: 60px;
+    width: 80vw;
+    max-width: 350px;
+
+    display: grid;
+    flex-direction: column;
+    align-content: space-between;
+    justify-items: center;
+
+    color: #d5d5d5;
+}
+
+h4.message {
+    max-width: 350px;
+    font-size: 14px;
+}
+
+span.error {
+    color: #ff000a;
+}
