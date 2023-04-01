@@ -9,6 +9,7 @@ export const getOrdersFromCache = async (): Promise<any[]> => {
         const orders = await getDataFromCache('orders')
         return orders
     } catch (error) {
+        console.log(error)
         throw new Error(`getOrdersFromCache error`)
     }
 }
