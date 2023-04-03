@@ -5,13 +5,14 @@ import {
     signInWithPopup,
     createUserWithEmailAndPassword,
 } from 'firebase/auth'
+import { useHistory, Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { updateLoginWindowState } from '@/redux/store'
 import { auth } from '@/firebase'
 import { DisplayTab } from '../../AuthWindow'
 import parentStyles from '../../AuthWindow.module.css'
 import styles from './SignUpWindow.module.css'
+import XImg from '../../images/X.png'
 import GoogleImg from '../../images/Google.png'
 import ShowPasswordImg from '../../images/ShowPassword.png'
 import LoadingImg from '@images/Load.png'
@@ -45,11 +46,11 @@ export const SignUpWindow: FC<Props> = ({
     const [googleLoading, setGoogleLoading] = useState<boolean>(false)
 
     const [hasError, setHasError] = useState<boolean>(false)
-    const [hasMessage, setHasMessage] = useState<boolean>(false)
     const [message, setMessage] = useState<string>('')
 
     const [showPassword, setShowPassword] = useState<boolean>(false)
 
+    const history = useHistory()
     const dispatch = useDispatch()
 
     const onSignUpGoogle = (): void => {
@@ -59,11 +60,12 @@ export const SignUpWindow: FC<Props> = ({
             .then(() => {
                 setGoogleLoading(false)
                 dispatch(updateLoginWindowState(false))
+                history.push('/profile')
             })
             .catch((error) => {
                 console.error(error)
                 setGoogleLoading(false)
-                setMessage(`Ошибка авторизации`)
+                setMessage(`Ошибка регистрации`)
             })
     }
 
@@ -73,6 +75,7 @@ export const SignUpWindow: FC<Props> = ({
             .then(() => {
                 setSignUpLoading(false)
                 dispatch(updateLoginWindowState(false))
+                history.push('/profile')
             })
             .catch((error) => {
                 console.log(error.code)
@@ -98,6 +101,13 @@ export const SignUpWindow: FC<Props> = ({
                 onSignUpWithEmail()
             }}
         >
+            <img
+                src={XImg}
+                className={parentStyles.X}
+                onClick={() => {
+                    dispatch(updateLoginWindowState(false))
+                }}
+            />
             <h1 className={parentStyles.label}>Регистрация</h1>
             {/* Google auth button */}
             <button
@@ -168,8 +178,6 @@ export const SignUpWindow: FC<Props> = ({
                 <h4 className={parentStyles.message}>
                     {hasError ? (
                         <span className={parentStyles.error}>{message}</span>
-                    ) : hasMessage ? (
-                        <span>{message}</span>
                     ) : (
                         '\u00a0'
                     )}
@@ -187,7 +195,11 @@ export const SignUpWindow: FC<Props> = ({
                 <h4 className={styles.legalInfo}>
                     Нажимая “Зарегистрироваться” или “Войти с Google” вы
                     принимаете{' '}
-                    <Link to="/privacy-policy">
+                    <Link
+                        to="/privacy-policy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         <span className={styles.link}>
                             Политику конфиденциальности
                         </span>

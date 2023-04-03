@@ -52,6 +52,7 @@ export const OrderDetails: FC<Props> = ({ style }) => {
     const [sum, setSum] = useState<number>(0)
     const [isSuccess, setIsSuccess] = useState<boolean>(false)
     const [itemsData, setItemsData] = useState<ItemData[]>([])
+
     const dispatch = useDispatch()
     // Store Input States - states of inputs that retrieved from the Redux Store
     const storeInputStates = useSelector(

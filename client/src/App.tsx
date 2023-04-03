@@ -29,6 +29,7 @@ import { NavBar } from './components/NavBar'
 import { Search } from './components/Search'
 import { UserHome } from './screens/UserHome'
 import { UserItemsList } from './screens/UserItemsList'
+import { Profile } from './screens/Profile'
 import { MyOrders } from './screens/MyOrders'
 
 import { Cart } from './screens/Cart'
@@ -40,7 +41,6 @@ import { Admin } from './screens/_adminPages/Admin'
 import { Panel as AdminPanel } from './screens/_adminPages/Panel/Panel'
 import { AdminHome } from './screens/_adminPages/AdminHome'
 import { AdminItemsList } from './screens/_adminPages/AdminItemsList'
-import { Test } from './screens/Test'
 
 // Legal pages
 import { Offer } from './screens/legal/Offer'
@@ -71,7 +71,9 @@ export const App: FC = () => {
                         const displayName = user?.displayName
                             ? user.displayName
                             : undefined
-                        const userData = await getUserData(token, displayName)
+                        const userData = await getUserData(token, {
+                            displayName,
+                        })
                         dispatch(
                             updateUserState({
                                 isLoggedIn: true,
@@ -206,17 +208,9 @@ export const App: FC = () => {
                             ) : null}
                         </Route>
 
+                        <Route exact path="/profile" component={Profile} />
                         <Route exact path="/my-orders">
                             <MyOrders />
-                        </Route>
-
-                        {/* TEST */}
-                        <Route exact path="/test">
-                            <Test />
-                        </Route>
-
-                        <Route exact path="/promo">
-                            <span>1</span>
                         </Route>
 
                         {/* Categories of items */}

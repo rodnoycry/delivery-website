@@ -1,10 +1,11 @@
 import axios from 'axios'
 import { domain } from './config'
 import { Order } from '@/redux/slices/orderSlice'
-import { DetailedInputData, CartItem } from '@/interfaces'
+import { UserData, DetailedInputData, CartItem } from '@/interfaces'
 
 const links = {
     getUserDataLink: `${domain}/api/users/get`,
+    updateUserData: `${domain}/api/users/update`,
     updateUserInputStates: `${domain}/api/users/update-input-states`,
     getUserCart: `${domain}/api/users/get-cart`,
     updateUserCart: `${domain}/api/users/update-cart`,
@@ -12,14 +13,14 @@ const links = {
 
 export const getUserData = async (
     idToken: string,
-    displayName?: string
+    userData: Partial<UserData>
 ): Promise<any> => {
     try {
         const response = await axios.post(
             links.getUserDataLink,
             {
                 idToken,
-                displayName,
+                userData,
             },
             { withCredentials: true }
         )
@@ -27,6 +28,18 @@ export const getUserData = async (
     } catch (error) {
         console.error(error)
         throw new Error(`getUserData error`)
+    }
+}
+
+export const updateUserData = async (
+    idToken: string,
+    userData: Partial<UserData>
+): Promise<void> => {
+    try {
+        await axios.post(links.updateUserData, { idToken, userData })
+    } catch (error) {
+        console.error(error)
+        throw new Error(`updateUserData error`)
     }
 }
 
