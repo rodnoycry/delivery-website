@@ -32,6 +32,7 @@ import {
     handleUpdateUserInputs,
     handleUpdateUserCart,
     handleGetUserCart,
+    handleUpdateUserData,
 } from './api/users'
 import { getUploader } from './functions'
 import { checkAdmin } from './utils'
@@ -140,6 +141,7 @@ app.post('/api/orders/edit', checkAdmin, handleEditOrder)
 
 // Users handling
 app.post('/api/users/get', handleGetUserData)
+app.post('/api/users/update', handleUpdateUserData)
 app.post('/api/orders/get-orders', checkAdmin, handleGetUserOrders)
 app.post('/api/users/update-input-states', handleUpdateUserInputs)
 app.post('/api/users/get-cart', handleGetUserCart)

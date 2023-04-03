@@ -5,7 +5,7 @@ export type userOrderStatus = 'new' | 'inProcess' | 'done'
 export interface UserOrderData {
     id: string
     status: userOrderStatus
-    isViewed: boolean
+    isNewStatus: boolean
 }
 
 export interface UserData {

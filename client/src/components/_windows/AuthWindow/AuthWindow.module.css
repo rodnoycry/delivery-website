@@ -18,7 +18,17 @@ form.authWindow {
     row-gap: 14px;
     align-items: center;
 
+    position: relative;
     cursor: default;
+}
+
+img.X {
+    position: absolute;
+    width: 14px;
+    height: auto;
+    top: 18px;
+    right: 18px;
+    cursor: pointer;
 }
 
 /* Buttons */

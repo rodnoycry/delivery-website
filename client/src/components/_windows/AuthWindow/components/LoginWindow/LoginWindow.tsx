@@ -6,12 +6,14 @@ import {
     signInWithEmailAndPassword,
     sendPasswordResetEmail,
 } from 'firebase/auth'
+import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { updateLoginWindowState } from '@/redux/store'
 import { auth } from '@/firebase'
 import { DisplayTab } from '../../AuthWindow'
 import parentStyles from '../../AuthWindow.module.css'
 import styles from './LoginWindow.module.css'
+import XImg from '../../images/X.png'
 import GoogleImg from '../../images/Google.png'
 import ShowPasswordImg from '../../images/ShowPassword.png'
 import LoadingImg from '@images/Load.png'
@@ -50,6 +52,7 @@ export const LoginWindow: FC<Props> = ({
 
     const [showPassword, setShowPassword] = useState<boolean>(false)
 
+    const history = useHistory()
     const dispatch = useDispatch()
 
     const onSignInGoogle = (): void => {
@@ -59,6 +62,7 @@ export const LoginWindow: FC<Props> = ({
             .then(() => {
                 setGoogleLoading(false)
                 dispatch(updateLoginWindowState(false))
+                history.push('/profile')
             })
             .catch((error) => {
                 console.error(error)
@@ -73,6 +77,7 @@ export const LoginWindow: FC<Props> = ({
             .then(() => {
                 setSignInLoading(false)
                 dispatch(updateLoginWindowState(false))
+                history.push('/profile')
             })
             .catch((error) => {
                 console.log(error.code)
@@ -98,6 +103,13 @@ export const LoginWindow: FC<Props> = ({
                 onLoginWithEmail()
             }}
         >
+            <img
+                src={XImg}
+                className={parentStyles.X}
+                onClick={() => {
+                    dispatch(updateLoginWindowState(false))
+                }}
+            />
             <h1 className={parentStyles.label}>Авторизация</h1>
             {/* Google auth button */}
             <button

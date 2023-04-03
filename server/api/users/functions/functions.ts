@@ -1,22 +1,20 @@
 import { DecodedIdToken } from 'firebase-admin/auth'
 import { cacheUsersDb, getOrdersFromCache } from '../../../functions/cacheDb'
 import { getCurrentDayRussian } from '../../../functions'
-import { UserOrderData, userOrderStatus } from '../../../interfaces'
+import { UserData, UserOrderData, userOrderStatus } from '../../../interfaces'
 
 import { db } from '../../../firebase'
 
 export const createUser = async (
     decodedToken: DecodedIdToken,
     sessionId: string | undefined,
-    displayName: string | undefined
+    userDataFromRequest: UserData
 ): Promise<void> => {
     try {
         const uid = decodedToken.uid
         const userData: Record<string, any> = {
             id: uid,
-        }
-        if (displayName) {
-            userData.displayName = displayName
+            ...userDataFromRequest,
         }
         if (decodedToken?.email) {
             userData.email = decodedToken.email
@@ -50,11 +48,11 @@ const getAndUpdateRecentOrders = async (
         const result = filteredOrders.map((order) => {
             orderIds.push(order.id)
             const status = order?.status || 'done'
-            const isViewed = order?.isViewed || false
+            const isNewStatus = order?.isNewStatus || false
             const result: UserOrderData = {
                 id: order.id as string,
                 status: status as userOrderStatus,
-                isViewed,
+                isNewStatus,
             }
             return result
         })
