@@ -23,9 +23,17 @@ export const createUser = async (
             userData.orders = await getAndUpdateRecentOrders(uid, sessionId)
         }
         const docRef = db.collection('users').doc(uid)
-        await docRef.set(userData)
+        await docRef.create(userData)
         await cacheUsersDb()
-    } catch (error) {
+    } catch (error: any) {
+        if (error?.code) {
+            if (error.code === 6) {
+                throw new Error('already-exists')
+            } else {
+                console.error(error)
+                throw new Error()
+            }
+        }
         console.error(error)
         throw new Error()
     }

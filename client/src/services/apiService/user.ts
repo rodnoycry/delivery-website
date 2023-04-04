@@ -5,6 +5,7 @@ import { UserData, DetailedInputData, CartItem } from '@/interfaces'
 
 const links = {
     getUserDataLink: `${domain}/api/users/get`,
+    createUserDataLink: `${domain}/api/users/create`,
     updateUserData: `${domain}/api/users/update`,
     updateUserInputStates: `${domain}/api/users/update-input-states`,
     getUserCart: `${domain}/api/users/get-cart`,
@@ -28,6 +29,27 @@ export const getUserData = async (
     } catch (error) {
         console.error(error)
         throw new Error(`getUserData error`)
+    }
+}
+
+export const createUserData = async (
+    idToken: string,
+    userData: UserData,
+    allowDuplicate: boolean = false
+): Promise<void> => {
+    try {
+        await axios.post(
+            links.createUserDataLink,
+            {
+                idToken,
+                userData,
+                allowDuplicate,
+            },
+            { withCredentials: true }
+        )
+    } catch (error) {
+        console.error(error)
+        throw new Error(`api/user.ts: createUserData error`)
     }
 }
 

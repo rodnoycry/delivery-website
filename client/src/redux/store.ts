@@ -8,7 +8,7 @@ import { localOrdersDataSlice } from './slices/localOrdersDataSlice'
 import { windowsStatesSlice } from './slices/windowsSlice'
 import type { WindowName } from './slices/windowsSlice'
 import { userStateSlice } from './slices/userSlice'
-import { syncCookieMiddleware } from './middleware'
+import { syncLocalStorageMiddleware } from './middleware'
 
 export interface RootState {
     cartState: CartItem[]
@@ -32,7 +32,8 @@ export const { updateOrder } = orderSlice.actions
 export const { setLocalOrdersData, addLocalOrderData } =
     localOrdersDataSlice.actions
 export const { updateLoginWindowState } = windowsStatesSlice.actions
-export const { updateUserState } = userStateSlice.actions
+export const { updateUserState, updateUserName, clearUserData } =
+    userStateSlice.actions
 
 export const store = configureStore({
     reducer: {
@@ -44,5 +45,5 @@ export const store = configureStore({
         windowsStates: windowsStatesSlice.reducer,
         userState: userStateSlice.reducer,
     },
-    middleware: (gDM) => gDM().concat(syncCookieMiddleware),
+    middleware: (gDM) => gDM().concat(syncLocalStorageMiddleware),
 })

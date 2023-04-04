@@ -1,6 +1,6 @@
 import { Middleware } from 'redux'
 
-export const syncCookieMiddleware: Middleware =
+export const syncLocalStorageMiddleware: Middleware =
     (store) => (next) => (action) => {
         const result = next(action)
         const storeState = store.getState()

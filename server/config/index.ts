@@ -13,6 +13,6 @@ interface ServerConfig {
 // MAIN CONFIG
 export const config: ServerConfig = {
     db: 'reserve', // DB SELECTION
-    shouldCache: false,
+    shouldCache: true,
     allowDevClient: true,
 }

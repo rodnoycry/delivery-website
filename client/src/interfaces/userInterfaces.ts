@@ -10,8 +10,8 @@ export interface UserOrderData {
 
 export interface UserData {
     isLoggedIn: boolean
-    email?: string
     displayName?: string
+    email?: string
     phone?: string
     ordersData?: UserOrderData[]
     inputStates?: Order

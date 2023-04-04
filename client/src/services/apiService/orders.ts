@@ -16,15 +16,22 @@ export const sendOrderToServer = async (
     newOrderData: NewOrderData,
     successCallback: () => void,
     errorCallback: (error: AxiosError<OrderErrorData | null>) => void
-): Promise<void> => {
+): Promise<string | undefined> => {
     try {
-        await axios.post(`${domain}/api/orders/add`, newOrderData, {
-            withCredentials: true,
-        })
+        const response = await axios.post(
+            `${domain}/api/orders/add`,
+            newOrderData,
+            {
+                withCredentials: true,
+            }
+        )
+        const orderId = response.data.orderId
         successCallback()
+        return orderId
     } catch (error) {
         if (axios.isAxiosError(error)) {
             const axiosError = error as AxiosError<OrderErrorData | null>
+            console.error(error)
             errorCallback(axiosError)
         } else {
             console.error(error)
