@@ -10,8 +10,8 @@ import type { User } from 'firebase/auth'
 import { auth } from '@/firebase'
 
 import { CarouselData } from './interfaces'
-import { getUserCart, getUserData } from './services/apiService'
 import { domain } from './services/apiService/config'
+import { getUserDataFromServerCSI } from './services/crossStoragesIntegration'
 
 import './reset.module.css'
 import {
@@ -57,44 +57,31 @@ export const App: FC = () => {
 
     const dispatch = useDispatch()
 
+    // Local storage loading
+    const [isCartStoreLoaded, setIsCartStoreLoaded] = useState<boolean>(false)
+    const [isOrderStoreLoaded, setIsOrderStoreLoaded] = useState<boolean>(false)
+    const localStorageStore = {
+        cart: window.localStorage.getItem('cart'),
+        order: window.localStorage.getItem('order'),
+        localOrdersData: window.localStorage.getItem('localOrdersData'),
+    }
+
     useEffect(() => {
+        if (localStorageStore.order === undefined) {
+            return
+        }
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user)
-
+                const inputStates = localStorageStore.order
+                const cart = localStorageStore.cart
                 // Getting user data from server, create user in db if not exists
-                const getUserDataFromServer = async (
-                    user: User
-                ): Promise<void> => {
-                    try {
-                        const token = await user.getIdToken()
-                        const displayName = user?.displayName
-                            ? user.displayName
-                            : undefined
-                        const userData = await getUserData(token, {
-                            displayName,
-                        })
-                        dispatch(
-                            updateUserState({
-                                isLoggedIn: true,
-                                displayName: userData?.displayName,
-                                phone: userData?.phone,
-                                email: userData?.email,
-                            })
-                        )
-                        // Update local input states with user input states
-                        if (userData?.inputStates) {
-                            dispatch(updateReduxOrder(userData.inputStates))
-                        }
-                        // Update local cart with db user data
-                        const cart = await getUserCart(token)
-                        dispatch(setReduxCart(cart))
-                    } catch (error) {
-                        console.error(error)
-                        throw new Error(`App.tsx: getUserDataFromServer error`)
-                    }
-                }
-                getUserDataFromServer(user).catch(console.error)
+                getUserDataFromServerCSI(
+                    user,
+                    inputStates,
+                    cart,
+                    dispatch
+                ).catch(console.error)
             } else {
                 dispatch(
                     updateUserState({
@@ -107,7 +94,7 @@ export const App: FC = () => {
         return () => {
             unsubscribe()
         }
-    }, [])
+    }, [localStorageStore])
 
     // Create cookie sessionId if not exists
     const [cookies, setCookie] = useCookies(['sessionId'])
@@ -120,13 +107,6 @@ export const App: FC = () => {
     }, [cookies])
 
     const [search, setSearch] = useState<string>('')
-    const [isCartStoreLoaded, setIsCartStoreLoaded] = useState<boolean>(false)
-    const [isOrderStoreLoaded, setIsOrderStoreLoaded] = useState<boolean>(false)
-    const localStorageStore = {
-        cart: window.localStorage.getItem('cart'),
-        order: window.localStorage.getItem('order'),
-        localOrdersData: window.localStorage.getItem('localOrdersData'),
-    }
     const [carouselsData, setCarouselsData] = useState<CarouselData[]>([])
 
     const reloadCarouselData = (): void => {

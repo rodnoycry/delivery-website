@@ -19,10 +19,10 @@ export const handleNewOrder = (req: Request, res: Response): void => {
                 return
             }
             createOrder(order, idToken, sessionId)
-                .then(() => {
+                .then((orderId) => {
                     cacheOrdersDb()
                         .then(() => {
-                            res.status(201).send()
+                            res.status(201).send({ orderId })
                         })
                         .catch((error) => {
                             console.error(error)
@@ -44,7 +44,7 @@ const createOrder = async (
     order: ServerOrder,
     idToken: string | undefined,
     sessionId: string | undefined
-): Promise<void> => {
+): Promise<string> => {
     const counterDocRef = db.collection('counters').doc('orders')
     try {
         const id = await db.runTransaction(async (t) => {
@@ -68,7 +68,7 @@ const createOrder = async (
         }
         const docRef = db.collection('orders').doc(stringId)
         await docRef.set(serverOrder)
-        return
+        return stringId
     } catch (error) {
         console.error(error)
         throw new Error()

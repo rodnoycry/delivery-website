@@ -29,6 +29,7 @@ import {
 } from './api/orders'
 import {
     handleGetUserData,
+    handleCreateUserData,
     handleUpdateUserInputs,
     handleUpdateUserCart,
     handleGetUserCart,
@@ -141,6 +142,7 @@ app.post('/api/orders/edit', checkAdmin, handleEditOrder)
 
 // Users handling
 app.post('/api/users/get', handleGetUserData)
+app.post('/api/users/create', handleCreateUserData)
 app.post('/api/users/update', handleUpdateUserData)
 app.post('/api/orders/get-orders', checkAdmin, handleGetUserOrders)
 app.post('/api/users/update-input-states', handleUpdateUserInputs)

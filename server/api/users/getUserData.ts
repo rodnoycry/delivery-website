@@ -6,7 +6,7 @@ import { createUser } from './functions'
 export const handleGetUserData = (req: Request, res: Response): void => {
     const idToken = req.body.idToken
     const sessionId = req.cookies.sessionId
-    const dataFromRequest = req.body
+    const dataFromRequest = req.body.userData
     auth.verifyIdToken(idToken)
         .then((decodedToken) => {
             const uid = decodedToken.uid
@@ -45,7 +45,7 @@ export const handleGetUserData = (req: Request, res: Response): void => {
                 })
         })
         .catch((error) => {
-            console.log(error)
+            console.error(error)
             res.status(500).send({ error })
         })
 }

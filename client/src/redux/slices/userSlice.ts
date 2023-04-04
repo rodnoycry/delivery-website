@@ -26,5 +26,17 @@ export const userStateSlice = createSlice({
                 }
             })
         },
+        updateUserName: (state, action: PayloadAction<string>) => {
+            if (state.inputStates) {
+                state.inputStates.NameInput.value = action.payload
+            }
+        },
+        clearUserData: (state) => {
+            state.displayName = undefined
+            state.inputStates = undefined
+            state.email = undefined
+            state.ordersData = undefined
+            state.phone = undefined
+        },
     },
 })
