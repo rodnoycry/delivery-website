@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useContext, CSSProperties } from 'react'
 import type { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-    RootState as StoreState,
-    addCartItem,
-    removeCartItem,
-} from '@/redux/store'
+import { ReduxStore, addCartItem, removeCartItem } from '@/redux/store'
 import { getPrice, getQty } from './functions'
 import styles from './Item.module.css'
 import { ItemData, CartItemData, CartItem } from '@/interfaces'
@@ -43,7 +39,7 @@ export const Item: FC<Props> = ({
     const isAdmin = useContext(IsAdminContext)
     const defaultCart: CartItem[] = []
     const cart =
-        useSelector((state: StoreState) => state.cartState) || defaultCart
+        useSelector((state: ReduxStore) => state.cartStore) || defaultCart
     const [qty, setQty] = useState(getQty(cart, id, selected as number))
     const dispatch = useDispatch()
     useEffect(() => {

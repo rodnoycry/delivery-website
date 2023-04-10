@@ -1,10 +1,12 @@
 import { FieldPath } from 'firebase-admin/firestore'
 import type { Request, Response } from 'express'
+import { io } from '../../server'
 import { auth, db } from '../../firebase'
 import { ItemData, ServerOrder } from '../../interfaces'
 import { getSum } from '../../functions'
 import { zoneDeliveryInfo } from '../../config'
 import { cacheOrdersDb } from '../../functions/cacheDb'
+import { sendOrdersToUserWithSocket } from './functions'
 
 export const handleNewOrder = (req: Request, res: Response): void => {
     const order: ServerOrder = req.body.order
@@ -19,10 +21,13 @@ export const handleNewOrder = (req: Request, res: Response): void => {
                 return
             }
             createOrder(order, idToken, sessionId)
-                .then((orderId) => {
+                .then(({ orderId, uid }) => {
                     cacheOrdersDb()
                         .then(() => {
                             res.status(201).send({ orderId })
+                            if (uid) {
+                                sendOrdersToUserWithSocket(uid)
+                            }
                         })
                         .catch((error) => {
                             console.error(error)
@@ -44,7 +49,7 @@ const createOrder = async (
     order: ServerOrder,
     idToken: string | undefined,
     sessionId: string | undefined
-): Promise<string> => {
+): Promise<{ orderId: string; uid?: string }> => {
     const counterDocRef = db.collection('counters').doc('orders')
     try {
         const id = await db.runTransaction(async (t) => {
@@ -58,17 +63,21 @@ const createOrder = async (
         const serverOrder: ServerOrder & Record<string, any> = {
             ...order,
             id: stringId,
+            status: 'new',
+            isNewStatus: true,
         }
         if (sessionId) {
             serverOrder.sessionId = sessionId
         }
+        let uid
         if (idToken) {
             const decodedToken = await auth.verifyIdToken(idToken)
-            serverOrder.uid = decodedToken.uid
+            uid = decodedToken.uid
+            serverOrder.uid = uid
         }
         const docRef = db.collection('orders').doc(stringId)
         await docRef.set(serverOrder)
-        return stringId
+        return { orderId: stringId, uid }
     } catch (error) {
         console.error(error)
         throw new Error()

@@ -1,5 +1,5 @@
 import { CartItem } from '@/interfaces'
-import { Zone } from '@/redux/slices/orderSlice'
+import { Zone } from '@/redux/slices/inputStatesSlice'
 
 // Orders related
 export interface ServerOrder {
@@ -30,6 +30,10 @@ export interface ServerOrder {
     comment: string
 
     isActive: boolean
+    status?: string
+    uid?: string
+    sessionId?: string
+    isNewStatus?: boolean
 }
 
 export interface ErrorData {

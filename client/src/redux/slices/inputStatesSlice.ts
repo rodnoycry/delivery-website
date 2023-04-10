@@ -7,9 +7,7 @@ export interface Zone {
     zone: 'Талдом' | 'Северный/Юркино' | 'До 15 км'
 }
 
-type InputStates = Record<string, InputState>
-
-export type Order = Zone & InputStates
+export type InputStates = Zone & Record<string, InputState>
 
 const createDefaultInputStates = (
     inputNames: string[]
@@ -63,22 +61,22 @@ const defaultSelectorStates = createDefaultSelectStates({
     ChangeSelect: 'Со сдачей',
 })
 
-const ordersInitialState: Order | Record<string, any> = {
+const ordersInitialState: InputStates | Record<string, any> = {
     zone: 'Талдом',
     ...defaultInputStates,
     ...defaultSelectorStates,
 }
 
-export const orderSlice = createSlice({
-    name: 'orderState',
+export const inputStatesSlice = createSlice({
+    name: 'inputStatesStore',
     initialState: ordersInitialState,
     reducers: {
-        updateOrder: (
+        updateInputStates: (
             state,
-            action: PayloadAction<Order | Record<string, any>>
+            action: PayloadAction<InputStates | Record<string, any>>
         ) => {
-            const newOrderData = action.payload
-            Object.entries(newOrderData).forEach(([key, value]) => {
+            const newInputStates = action.payload
+            Object.entries(newInputStates).forEach(([key, value]) => {
                 state[key] = value
             })
         },

@@ -6,7 +6,7 @@ import { updateUserCart } from '@/services/apiService'
 const cartInitialState: CartItem[] = []
 
 export const cartSlice = createSlice({
-    name: 'cartState',
+    name: 'cartStore',
     initialState: cartInitialState,
     reducers: {
         resetCart: (state, action: PayloadAction<{ idToken?: string }>) => {

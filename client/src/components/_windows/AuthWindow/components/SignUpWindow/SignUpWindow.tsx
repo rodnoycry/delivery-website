@@ -5,7 +5,7 @@ import {
     signInWithPopup,
     createUserWithEmailAndPassword,
 } from 'firebase/auth'
-import { useHistory, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { updateLoginWindowState } from '@/redux/store'
 import { auth } from '@/firebase'
@@ -50,7 +50,6 @@ export const SignUpWindow: FC<Props> = ({
 
     const [showPassword, setShowPassword] = useState<boolean>(false)
 
-    const history = useHistory()
     const dispatch = useDispatch()
 
     const onSignUpGoogle = (): void => {
@@ -60,7 +59,6 @@ export const SignUpWindow: FC<Props> = ({
             .then(() => {
                 setGoogleLoading(false)
                 dispatch(updateLoginWindowState(false))
-                history.push('/profile')
             })
             .catch((error) => {
                 console.error(error)
@@ -75,7 +73,6 @@ export const SignUpWindow: FC<Props> = ({
             .then(() => {
                 setSignUpLoading(false)
                 dispatch(updateLoginWindowState(false))
-                history.push('/profile')
             })
             .catch((error) => {
                 console.log(error.code)

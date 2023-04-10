@@ -1,7 +1,5 @@
 import React, { CSSProperties } from 'react'
 import type { FC } from 'react'
-import { CartItemData } from '@/interfaces'
-import { Zone } from '@/redux/slices/orderSlice'
 import styles from './Item.module.css'
 
 interface Props {

@@ -11,9 +11,9 @@ interface Props {
 
 export const EmptyInfo: FC<Props> = ({ name, image, onClick, style }) => {
     return (
-        <button className={styles.button} onClick={onClick} style={style}>
-            <h4 className={styles.name}>{name}</h4>
-            <img className={styles.image} src={image} />
+        <button className={styles.emptyInfo} onClick={onClick} style={style}>
+            <h4 className={styles.name}>Добавить {name.toLowerCase()}</h4>
+            <img className={styles.icon} src={image} />
         </button>
     )
 }

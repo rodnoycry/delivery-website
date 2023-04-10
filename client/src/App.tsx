@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useCookies } from 'react-cookie'
 import axios from 'axios'
+import io from 'socket.io-client'
 
 import { onAuthStateChanged } from 'firebase/auth'
 import type { User } from 'firebase/auth'
@@ -11,14 +12,18 @@ import { auth } from '@/firebase'
 
 import { CarouselData } from './interfaces'
 import { domain } from './services/apiService/config'
+import { getItems } from './services/apiService'
 import { getUserDataFromServerCSI } from './services/crossStoragesIntegration'
 
 import './reset.module.css'
 import {
     setCart as setReduxCart,
-    updateOrder as updateReduxOrder,
+    updateInputStates as updateReduxInputStates,
     setLocalOrdersData,
     updateUserState,
+    clearUserData,
+    setUserOrders,
+    setItemsData,
 } from './redux/store'
 import styles from './App.module.css'
 import { topItemsAppearancePaths, categoriesPaths } from './config'
@@ -57,12 +62,13 @@ export const App: FC = () => {
 
     const dispatch = useDispatch()
 
+    const [isAuthTracking, setIsAuthTracking] = useState<boolean>(false)
     // Local storage loading
     const [isCartStoreLoaded, setIsCartStoreLoaded] = useState<boolean>(false)
     const [isOrderStoreLoaded, setIsOrderStoreLoaded] = useState<boolean>(false)
     const localStorageStore = {
         cart: window.localStorage.getItem('cart'),
-        order: window.localStorage.getItem('order'),
+        order: window.localStorage.getItem('inputStates'),
         localOrdersData: window.localStorage.getItem('localOrdersData'),
     }
 
@@ -70,19 +76,48 @@ export const App: FC = () => {
         if (localStorageStore.order === undefined) {
             return
         }
+        let timerId: NodeJS.Timer | null = null
+        if (isAuthTracking) {
+            return
+        }
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setUser(user)
                 const inputStates = localStorageStore.order
                 const cart = localStorageStore.cart
+                const socket = io('http://localhost:3000', {
+                    withCredentials: true,
+                })
+                user.getIdToken(true)
+                    .then((token) => {
+                        // Connect to the Socket.io server
+                        const sendIdTokenToServer = (): void => {
+                            socket.send(
+                                JSON.stringify({
+                                    type: 'getUserOrders',
+                                    idToken: token,
+                                })
+                            )
+                        }
+                        sendIdTokenToServer()
+                        timerId = setInterval(() => {
+                            sendIdTokenToServer()
+                        }, 55 * 60 * 1000)
+                        setIsAuthTracking(true)
+                    })
+                    .catch(console.error)
+                // Listen for the orders data message from the server and save it in redux
+                socket.on('userOrders', (orders) => {
+                    dispatch(setUserOrders(orders))
+                })
                 // Getting user data from server, create user in db if not exists
-                getUserDataFromServerCSI(
-                    user,
-                    inputStates,
-                    cart,
-                    dispatch
-                ).catch(console.error)
+                getUserDataFromServerCSI(user, inputStates, cart, dispatch)
+                    .then(() => {
+                        setIsAuthTracking(true)
+                    })
+                    .catch(console.error)
             } else {
+                dispatch(clearUserData())
                 dispatch(
                     updateUserState({
                         isLoggedIn: false,
@@ -93,8 +128,21 @@ export const App: FC = () => {
         })
         return () => {
             unsubscribe()
+            if (timerId) {
+                clearInterval(timerId)
+            }
         }
-    }, [localStorageStore])
+    }, [])
+
+    // We need to store items data to use it on items pages and to
+    // calculate sums of orders
+    useEffect(() => {
+        getItems()
+            .then((items) => {
+                dispatch(setItemsData(items))
+            })
+            .catch(console.error)
+    }, [])
 
     // Create cookie sessionId if not exists
     const [cookies, setCookie] = useCookies(['sessionId'])
@@ -131,7 +179,9 @@ export const App: FC = () => {
             setIsCartStoreLoaded(true)
         }
         if (localStorageStore.order && !isOrderStoreLoaded) {
-            dispatch(updateReduxOrder(JSON.parse(localStorageStore.order)))
+            dispatch(
+                updateReduxInputStates(JSON.parse(localStorageStore.order))
+            )
             setIsOrderStoreLoaded(true)
         }
         if (localStorageStore.localOrdersData && !isOrderStoreLoaded) {

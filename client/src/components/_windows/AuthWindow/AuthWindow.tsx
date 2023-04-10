@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { RootState as StoreState, updateLoginWindowState } from '@/redux/store'
+import { ReduxStore, updateLoginWindowState } from '@/redux/store'
 import styles from './LoginWindow.module.css'
 import { WindowWrapper } from '../components/WindowWrapper'
 import { LoginWindow, SignUpWindow } from './components'
@@ -14,7 +14,9 @@ export enum DisplayTab {
 export const AuthWindow: FC = () => {
     const [shouldShow, setShouldShow] = useState<boolean>(false)
     const [displayTab, setDisplayTab] = useState<DisplayTab>(DisplayTab.Login)
-    const windowsStore = useSelector((state: StoreState) => state.windowsStates)
+    const windowsStore = useSelector(
+        (state: ReduxStore) => state.windowsStatesStore
+    )
 
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')

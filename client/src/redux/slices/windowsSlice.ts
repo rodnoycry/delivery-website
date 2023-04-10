@@ -8,7 +8,7 @@ const windowsStatesInitialState = {
 }
 
 export const windowsStatesSlice = createSlice({
-    name: 'windowsStates',
+    name: 'windowsStatesStore',
     initialState: windowsStatesInitialState,
     reducers: {
         updateLoginWindowState: (state, action: PayloadAction<boolean>) => {

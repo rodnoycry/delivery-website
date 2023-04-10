@@ -12,7 +12,7 @@ import {
     CartItem,
 } from '@/interfaces'
 import { resetCart } from '@redux/store'
-import { Order } from '@/redux/slices/orderSlice'
+import { InputStates } from '@/redux/slices/inputStatesSlice'
 import { sendOrderToServer, updateUserInputs } from '@/services/apiService'
 import styles from './Confirmation.module.css'
 import { getServerOrder, getTime } from './functions'
@@ -21,16 +21,16 @@ import LoadImage from '@images/Load.png'
 interface Props {
     sum: number
     user: User | null
-    inputStates: Order | Record<keyof Order, DetailedInputData>
+    inputStates: InputStates | Record<keyof InputStates, DetailedInputData>
     setInputStates: (
-        inputStates: Order | Record<keyof Order, DetailedInputData>
+        inputStates: InputStates | Record<keyof InputStates, DetailedInputData>
     ) => void
     requiredInputs: string[]
     hasError: boolean
     setParentHasError: (hasError: boolean) => void
     setIsSuccess: (isSuccess: boolean) => void
     cart: CartItem[]
-    storeInputStates: Order
+    storeInputStates: InputStates
 }
 
 const errorMeassageObj = {

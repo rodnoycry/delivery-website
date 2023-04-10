@@ -1,8 +1,8 @@
 import React, { useState, CSSProperties, useEffect } from 'react'
 import type { FC } from 'react'
 import { Link } from 'react-router-dom'
-import { RootState as StoreState, updateOrder } from '@/redux/store'
-import { Order } from '@redux/slices/orderSlice'
+import { ReduxStore, updateInputStates } from '@/redux/store'
+import { InputStates } from '@redux/slices/inputStatesSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { onAuthStateChanged } from 'firebase/auth'
 import type { User } from 'firebase/auth'
@@ -41,7 +41,7 @@ interface Props {
 export const OrderDetails: FC<Props> = ({ style }) => {
     // States definition
     const [inputStates, setInputStates] = useState<
-        Order | Record<keyof Order, DetailedInputData>
+        InputStates | Record<keyof InputStates, DetailedInputData>
     >({})
     const [requiredInputs, setRequiredInputs] = useState<string[]>([
         'PhoneInput',
@@ -56,9 +56,9 @@ export const OrderDetails: FC<Props> = ({ style }) => {
     const dispatch = useDispatch()
     // Store Input States - states of inputs that retrieved from the Redux Store
     const storeInputStates = useSelector(
-        (state: StoreState) => state.orderState
+        (state: ReduxStore) => state.inputStatesStore
     )
-    const cart = useSelector((state: StoreState) => state.cartState)
+    const cart = useSelector((state: ReduxStore) => state.cartStore)
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -105,8 +105,8 @@ export const OrderDetails: FC<Props> = ({ style }) => {
     // and delete/add some inputs from 'requiredInputs' array if specific selects changed
     useEffect(() => {
         if (inputStates) {
-            dispatch(updateOrder(inputStates as Order))
-            setHasError(checkErrors(inputStates as Order, requiredInputs))
+            dispatch(updateInputStates(inputStates as InputStates))
+            setHasError(checkErrors(inputStates as InputStates, requiredInputs))
             if (
                 inputStates?.DeliveryTypeSelect?.selected?.label ===
                 'На указанный адрес'
@@ -135,14 +135,17 @@ export const OrderDetails: FC<Props> = ({ style }) => {
     }, [inputStates])
     // Function that will merge our local input states with passed data,
     // this function will be passed to all our inputs and selects childs
-    const setInputState = (input: keyof Order, newState: InputState): void => {
+    const setInputState = (
+        input: keyof InputStates,
+        newState: InputState
+    ): void => {
         const newInputStates = { ...inputStates }
         newInputStates[input] = { ...newInputStates[input], ...newState }
         setInputStates(newInputStates)
     }
     // If change in antoher input/select states needed, there is this function
     const setInputStateWithAffect = (
-        newStatePart: Record<keyof Order, InputState>
+        newStatePart: Record<keyof InputStates, InputState>
     ): void => {
         const newInputStates = { ...inputStates }
         Object.entries(newStatePart).forEach(([key, value]) => {

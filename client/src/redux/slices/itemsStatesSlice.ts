@@ -9,7 +9,7 @@ export interface ItemState {
 const itemsStatesInitialState: Record<string, ItemState> = {}
 
 export const itemsStatesSlice = createSlice({
-    name: 'itemsStates',
+    name: 'itemsStatesStore',
     initialState: itemsStatesInitialState,
     reducers: {
         updateItemState: (state, action: PayloadAction<ItemState>) => {

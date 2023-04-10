@@ -1,4 +1,4 @@
-import { Order } from '@/redux/slices/orderSlice'
+import { InputStates } from '@/redux/slices/inputStatesSlice'
 
 export type userOrderStatus = 'new' | 'inProcess' | 'done'
 
@@ -14,7 +14,7 @@ export interface UserData {
     email?: string
     phone?: string
     ordersData?: UserOrderData[]
-    inputStates?: Order
+    inputStates?: InputStates
 }
 
 export interface CartItem {

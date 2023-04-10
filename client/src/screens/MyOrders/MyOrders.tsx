@@ -2,7 +2,7 @@ import React, { useState, useEffect, CSSProperties } from 'react'
 import { ServerOrder, ItemData } from '@/interfaces'
 import type { FC } from 'react'
 import { useSelector } from 'react-redux'
-import { RootState as StoreState } from '@/redux/store'
+import { ReduxStore } from '@/redux/store'
 import { Link } from 'react-router-dom'
 import { Order } from '@/components/shared/Order'
 import { getItems } from '@/services/apiService'
@@ -16,7 +16,7 @@ export const MyOrders: FC<Props> = ({ style }) => {
     const [orders, setOrders] = useState<ServerOrder[]>([])
     const [itemsData, setItemsData] = useState<ItemData[]>([])
     const localOrders = useSelector(
-        (state: StoreState) => state.localOrdersDataState
+        (state: ReduxStore) => state.localOrdersDataStore
     )
 
     useEffect(() => {

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
-import { Order } from '@/redux/slices/orderSlice'
+import { InputStates } from '@/redux/slices/inputStatesSlice'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { RootState as StoreState } from '@/redux/store'
+import { ReduxStore } from '@/redux/store'
 import { getCartItemsData } from './functions'
 import { getItemsData, getSumWithDelivery } from '@/functions'
 import { ItemData, CartItemData } from '@/interfaces'
@@ -18,9 +18,9 @@ export const Cart: FC = () => {
     const [cartItemsData, setCartItemsData] = useState<CartItemData[]>([])
     const [itemsData, setItemsData] = useState<ItemData[]>([])
     const [isError, setIsError] = useState<boolean>(false)
-    const [zone, setZone] = useState<Order['zone']>('Талдом')
-    const cart = useSelector((state: StoreState) => state.cartState)
-    const order = useSelector((state: StoreState) => state.orderState)
+    const [zone, setZone] = useState<InputStates['zone']>('Талдом')
+    const cart = useSelector((state: ReduxStore) => state.cartStore)
+    const order = useSelector((state: ReduxStore) => state.inputStatesStore)
 
     useEffect(() => {
         if (cart) {
