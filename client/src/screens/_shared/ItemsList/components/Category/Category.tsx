@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import type { FC } from 'react'
 import styles from './Category.module.css'
 import { useSelector } from 'react-redux'
-import { RootState as StoreState } from '@/redux/store'
+import { ReduxStore } from '@/redux/store'
 import { ItemData } from '@/interfaces'
 import { categoryNamesDecode } from '@/config'
 import { IsAdminContext, itemSizeStyle } from '../../ItemsList'
@@ -51,7 +51,9 @@ export const Category: FC<Props> = ({ type, itemsData, reloadData, style }) => {
     }, [isAddingItem])
 
     const isAdmin = useContext(IsAdminContext)
-    const itemsStates = useSelector((state: StoreState) => state.itemsStates)
+    const itemsStates = useSelector(
+        (state: ReduxStore) => state.itemsStatesStore
+    )
     const title = categoryNamesDecode[type as keyof typeof categoryNamesDecode]
     let handleAddItem = (): void => {}
     if (isAdmin) {

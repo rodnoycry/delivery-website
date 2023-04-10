@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { RootState as StoreState } from '@/redux/store'
+import { ReduxStore } from '@/redux/store'
 import { ItemData } from '@/interfaces'
 import CartImg from './images/Cart.png'
 import styles from './CartButton.module.css'
@@ -12,7 +12,7 @@ export const CartButton: FC = () => {
     const [itemsQty, setItemsQty] = useState(0)
     const [itemsData, setItemsData] = useState<ItemData[]>([])
     const [sum, setSum] = useState(0)
-    const cart = useSelector((state: StoreState) => state.cartState)
+    const cart = useSelector((state: ReduxStore) => state.cartStore)
 
     useEffect(() => {
         if (cart) {

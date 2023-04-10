@@ -1,9 +1,8 @@
 import React, { CSSProperties } from 'react'
 import type { FC } from 'react'
-import { isValidPhoneNumber } from 'libphonenumber-js'
 import { InputState } from '@/interfaces'
 import { DetailsInput } from '../shared/DetailsInput'
-import { formatPhoneNumber } from './functions'
+import { formatPhoneNumber, validatePhoneNumber } from '@/functions'
 
 interface Props {
     inputState: InputState
@@ -18,9 +17,7 @@ export const PhoneInput: FC<Props> = ({ inputState, setInputState, style }) => {
             inputType={'PhoneInput'}
             label={`Ваш телефон *`}
             description={`Для связи`}
-            validator={(value: string) =>
-                isValidPhoneNumber(value) && value.length > 2
-            }
+            validator={validatePhoneNumber}
             formatter={formatPhoneNumber}
             inputState={inputState}
             setInputState={setInputState}

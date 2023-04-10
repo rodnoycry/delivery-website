@@ -1,4 +1,4 @@
-import { AsYouType } from 'libphonenumber-js'
+import { AsYouType, isValidPhoneNumber } from 'libphonenumber-js'
 
 export const formatPhoneNumber = (inputNumber: string): string => {
     inputNumber = '+7' + inputNumber.substring(2)
@@ -9,3 +9,6 @@ export const formatPhoneNumber = (inputNumber: string): string => {
     }
     return new AsYouType().input(inputNumber)
 }
+
+export const validatePhoneNumber = (value: string): boolean =>
+    isValidPhoneNumber(value) && value.length > 2

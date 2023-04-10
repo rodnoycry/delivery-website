@@ -7,7 +7,7 @@ const userStateInitialState: UserData = {
 }
 
 export const userStateSlice = createSlice({
-    name: 'userState',
+    name: 'userStateStore',
     initialState: userStateInitialState,
     reducers: {
         updateUserState: (state, action: PayloadAction<Partial<UserData>>) => {
@@ -28,7 +28,12 @@ export const userStateSlice = createSlice({
         },
         updateUserName: (state, action: PayloadAction<string>) => {
             if (state.inputStates) {
-                state.inputStates.NameInput.value = action.payload
+                state.displayName = action.payload
+            }
+        },
+        updateUserPhone: (state, action: PayloadAction<string>) => {
+            if (state.inputStates) {
+                state.phone = action.payload
             }
         },
         clearUserData: (state) => {

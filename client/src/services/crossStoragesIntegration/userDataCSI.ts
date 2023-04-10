@@ -1,7 +1,7 @@
 import { User } from 'firebase/auth'
 import {
     updateUserState,
-    updateOrder as updateReduxOrder,
+    updateInputStates,
     setCart as setReduxCart,
 } from '@/redux/store'
 import { Dispatch } from '@reduxjs/toolkit'
@@ -32,16 +32,30 @@ export const getUserDataFromServerCSI = async (
                 ...fetchedUserData,
             })
         )
+        // Prepare for redux input states sending with user phone and name
+        // if phone input state is empty or name input is empty
+        if (
+            !fetchedUserData.inputStates?.PhoneInput?.value &&
+            fetchedUserData.phone
+        ) {
+            fetchedUserData.inputStates.PhoneInput.value = fetchedUserData.phone
+        }
+        if (
+            !fetchedUserData.inputStates?.NameInput?.value &&
+            fetchedUserData.displayName
+        ) {
+            fetchedUserData.inputStates.NameInput.value =
+                fetchedUserData.displayName
+        }
         // Update local input states with user input states
-        console.log(`inputStates:`, !!inputStates)
-        console.log(fetchedUserData.inputStates)
-        if (!inputStates) {
-            dispatch(updateReduxOrder(fetchedUserData.inputStates))
+        if (!inputStatesParsed) {
+            dispatch(updateInputStates(fetchedUserData.inputStates))
         }
         if (!cart) {
             const cart = await getUserCart(token)
             dispatch(setReduxCart(cart))
         }
+
         // Update local cart with db user data
     } catch (error) {
         console.error(error)

@@ -6,7 +6,6 @@ import {
     signInWithEmailAndPassword,
     sendPasswordResetEmail,
 } from 'firebase/auth'
-import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { updateLoginWindowState } from '@/redux/store'
 import { auth } from '@/firebase'
@@ -51,8 +50,6 @@ export const LoginWindow: FC<Props> = ({
     const [message, setMessage] = useState<string>('')
 
     const [showPassword, setShowPassword] = useState<boolean>(false)
-
-    const history = useHistory()
     const dispatch = useDispatch()
 
     const onSignInGoogle = (): void => {
@@ -62,7 +59,6 @@ export const LoginWindow: FC<Props> = ({
             .then(() => {
                 setGoogleLoading(false)
                 dispatch(updateLoginWindowState(false))
-                history.push('/profile')
             })
             .catch((error) => {
                 console.error(error)
@@ -77,7 +73,6 @@ export const LoginWindow: FC<Props> = ({
             .then(() => {
                 setSignInLoading(false)
                 dispatch(updateLoginWindowState(false))
-                history.push('/profile')
             })
             .catch((error) => {
                 console.log(error.code)
@@ -139,8 +134,9 @@ export const LoginWindow: FC<Props> = ({
                     setHasError(false)
                 }}
                 type="email"
+                autoComplete="email"
                 placeholder="E-mail"
-                value={email}
+                // value={email}
                 onChange={(e) => {
                     setEmail(e.target.value)
                 }}

@@ -10,7 +10,7 @@ export const handleUpdateUserData = (req: Request, res: Response): void => {
     ): Promise<void> => {
         try {
             const decodedToken = await auth.verifyIdToken(idToken)
-            const id = decodedToken.id
+            const id = decodedToken.uid
             const docRef = db.collection(`users`).doc(id)
             await docRef.update(userData)
             await cacheUsersDb()

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { domain } from './config'
-import { Order } from '@/redux/slices/orderSlice'
+import { InputStates } from '@/redux/slices/inputStatesSlice'
 import { UserData, DetailedInputData, CartItem } from '@/interfaces'
 
 const links = {
@@ -67,7 +67,7 @@ export const updateUserData = async (
 
 export const updateUserInputs = async (
     idToken: string,
-    inputStates: Order | Record<string, DetailedInputData>
+    inputStates: InputStates | Record<string, DetailedInputData>
 ): Promise<void> => {
     try {
         await axios.post(links.updateUserInputStates, { idToken, inputStates })

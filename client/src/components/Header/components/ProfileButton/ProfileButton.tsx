@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import type { FC } from 'react'
 import { useHistory } from 'react-router-dom'
-import { RootState as StoreState, updateLoginWindowState } from '@/redux/store'
+import { ReduxStore, updateLoginWindowState } from '@/redux/store'
 import { UserData } from '@/interfaces'
 import { UserContext } from '@/App'
 import { useSelector, useDispatch } from 'react-redux'
@@ -12,7 +12,9 @@ export const ProfileButton: FC = () => {
     // Get user data
     const user = useContext(UserContext)
     const [userData, setUserData] = useState<UserData>({ isLoggedIn: false })
-    const reduxUserData = useSelector((state: StoreState) => state.userState)
+    const reduxUserData = useSelector(
+        (state: ReduxStore) => state.userStateStore
+    )
 
     useEffect(() => {
         if (reduxUserData) {

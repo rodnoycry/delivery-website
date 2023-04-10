@@ -1,4 +1,6 @@
 import express, { Request, Response } from 'express'
+import http from 'http'
+import { Server } from 'socket.io'
 import cors from 'cors'
 import path from 'path'
 import cookieParser from 'cookie-parser'
@@ -35,6 +37,7 @@ import {
     handleGetUserCart,
     handleUpdateUserData,
 } from './api/users'
+import { onSocketMessage } from './socket/onConnection'
 import { getUploader } from './functions'
 import { checkAdmin } from './utils'
 import { cacheItemsDb, cacheOrdersDb, cacheUsersDb } from './functions/cacheDb'
@@ -46,7 +49,23 @@ if (config.shouldCache) {
 }
 
 const app = express()
+const server = http.createServer(app)
 const port = 3000
+export const io = new Server(server, {
+    cors: {
+        origin: 'http://localhost:8080',
+        methods: ['GET', 'POST'],
+        credentials: true,
+    },
+})
+
+export const socketAuthMap = new Map<string, string>()
+
+io.on('connection', (socket) => {
+    socket.on('message', (message) => {
+        onSocketMessage(socket, message)
+    })
+})
 
 app.use(cookieParser())
 
@@ -150,6 +169,6 @@ app.post('/api/users/get-cart', handleGetUserCart)
 app.post('/api/users/update-cart', checkAdmin, handleUpdateUserCart)
 
 // Start the server
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`)
 })

@@ -1,0 +1,22 @@
+button.emptyInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: black;
+
+    width: 85%;
+    height: 45px;
+    padding: 0 10px;
+
+    transition: background-color ease-in-out 0.2s;
+}
+
+button.emptyInfo:hover {
+    background-color: #1d1d1d;
+}
+
+img.icon {
+    width: 24px;
+    height: auto;
+}

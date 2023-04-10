@@ -1,7 +1,12 @@
 import { cacheDb, getDataFromCache } from './functions'
 
 export const cacheOrdersDb = async (): Promise<void> => {
-    cacheDb('orders').catch(console.error)
+    try {
+        await cacheDb('orders')
+    } catch (error) {
+        console.error(error)
+        throw new Error()
+    }
 }
 
 export const getOrdersFromCache = async (): Promise<any[]> => {

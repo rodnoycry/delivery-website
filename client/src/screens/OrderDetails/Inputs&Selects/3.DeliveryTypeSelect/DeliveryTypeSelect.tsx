@@ -1,6 +1,6 @@
 import React, { CSSProperties } from 'react'
 import type { FC } from 'react'
-import { Order } from '@/redux/slices/orderSlice'
+import { InputStates } from '@/redux/slices/inputStatesSlice'
 import { InputState } from '@/interfaces'
 import { DetailsSelect } from '../shared/DetailsSelect'
 import { options as timeSelectOptions } from '../11.TimeSelect'
@@ -9,7 +9,7 @@ interface Props {
     inputState: InputState
     setInputState: (input: string, value: InputState) => void
     setInputStateWithAffect: (
-        newStatePart: Record<keyof Order, InputState>
+        newStatePart: Record<keyof InputStates, InputState>
     ) => void
     style?: CSSProperties
 }

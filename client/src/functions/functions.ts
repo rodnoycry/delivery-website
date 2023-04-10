@@ -1,7 +1,7 @@
 import { CartItem, ItemData } from '@/interfaces'
 
 import { zoneDeliveryInfo } from '@/config'
-import { Order } from '@/redux/slices/orderSlice'
+import { InputStates } from '@/redux/slices/inputStatesSlice'
 import { getItems } from '@/services/apiService/items'
 
 export const getItemsData = async (
@@ -35,7 +35,7 @@ export const getSum = (cart: CartItem[], itemsData: ItemData[]): number => {
 }
 
 export const getSumWithDelivery = (
-    zone: Order['zone'],
+    zone: InputStates['zone'],
     itemsData: ItemData[],
     cart: CartItem[]
 ): number | false => {
