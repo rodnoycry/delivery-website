@@ -42,11 +42,30 @@ div.sectionsContainer {
     width: 100%;
     margin-top: 26px;
     display: grid;
-    grid-template-columns: auto auto 1fr;
+    grid-template-columns: 350px auto 1fr;
 }
+
+@media screen and (max-width: 1200px) {
+    div.sectionsContainer {
+        grid-template-columns: 29% auto 1fr;
+    }
+}
+
 
 div.verticalLine {
     height: auto;
     border-left: 1px solid #878787;
     min-height: 200px
+}
+
+@media screen and (max-width: 950px) {
+    div.sectionsContainer {
+        display: flex;
+        flex-direction: column;
+        row-gap: 30px;
+    }
+
+    div.verticalLine {
+        display: none;
+    }
 }

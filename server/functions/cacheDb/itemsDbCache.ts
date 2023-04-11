@@ -2,7 +2,12 @@ import { ServerItemData } from '../../interfaces'
 import { cacheDb, getDataFromCache } from './functions'
 
 export const cacheItemsDb = async (): Promise<void> => {
-    cacheDb('items').catch(console.error)
+    try {
+        await cacheDb('items')
+    } catch (error) {
+        console.error(error)
+        throw new Error()
+    }
 }
 
 export const getItemsFromCache = async (): Promise<ServerItemData[]> => {

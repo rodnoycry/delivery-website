@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react'
 import type { FC } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import { ReduxStore, updateLoginWindowState } from '@/redux/store'
 import { UserData } from '@/interfaces'
 import { UserContext } from '@/App'
-import { useSelector, useDispatch } from 'react-redux'
+import { getOrdersHasNewStatuses } from '@/functions'
 import LoginImg from './images/Login.png'
 import styles from './ProfileButton.module.css'
 
@@ -21,6 +22,16 @@ export const ProfileButton: FC = () => {
             setUserData(reduxUserData)
         }
     }, [reduxUserData])
+
+    // Get user orders to understand do we need to show notify icon
+    const [shouldNotify, setShouldNotify] = useState<boolean>(false)
+    const userOrders = useSelector((state: ReduxStore) => state.userOrdersStore)
+    useEffect(() => {
+        if (userOrders) {
+            const shouldNotify = getOrdersHasNewStatuses(userOrders)
+            setShouldNotify(shouldNotify)
+        }
+    }, [userOrders])
 
     // On submit if user is not logged in
     const dispatch = useDispatch()
@@ -49,6 +60,7 @@ export const ProfileButton: FC = () => {
                     // style={userData.user?.photoURL ? { border: '2px solid #FFF' } : {}}
                     src={user?.photoURL ? user.photoURL : LoginImg}
                 />
+                {shouldNotify ? <span className={styles.notification} /> : null}
             </div>
             <p className={styles.profile}>
                 <span>

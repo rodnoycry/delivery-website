@@ -52,6 +52,8 @@ export const Order: FC<Props> = ({
         comment,
 
         isActive: parentIsActive,
+        status,
+        isNewStatus,
     } = order
     const [isActive, setIsActive] = useState<boolean>(parentIsActive)
     const [hide, setHide] = useState<boolean>(false)
@@ -150,15 +152,26 @@ export const Order: FC<Props> = ({
             })
             .catch(console.error)
     }
-
     return hide ? null : (
         <div className={styles.order}>
+            {isNewStatus ? <span className={styles.newStatusFlag} /> : null}
             <h3 style={{ opacity: 0.5 }}>#{id}</h3>
             {isAdminMode ? (
                 <h1 className={styles.order}>
                     {isActive ? `Новый заказ ✅` : `Заказ #${id}`}
                 </h1>
-            ) : null}
+            ) : status ? (
+                <h1 className={styles.order}>
+                    {status === 'new' ? `Заказ создан ✅` : null}
+                    {status === 'inProgress' ? `Заказ готовится ⏳` : null}
+                    {status === 'done' ? `Заказ завершён ☑️` : null}
+                    {status === 'canceled' ? `Заказ отменён ❌` : null}
+                </h1>
+            ) : (
+                <h1 className={styles.order}>
+                    {isActive ? `Заказ завершён ☑️` : null}
+                </h1>
+            )}
 
             <h3 className={styles.order} style={{ marginTop: 5 }}>
                 Время заказа: {time}

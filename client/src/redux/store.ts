@@ -41,7 +41,7 @@ export const {
     updateUserPhone,
     clearUserData,
 } = userStateSlice.actions
-export const { setUserOrders } = userOrdersSlice.actions
+export const { setUserOrders, setViewedToOrders } = userOrdersSlice.actions
 
 export const store = configureStore({
     reducer: {

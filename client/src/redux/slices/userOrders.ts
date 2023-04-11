@@ -14,5 +14,12 @@ export const userOrdersSlice = createSlice({
                 state.push(order)
             })
         },
+        setViewedToOrders: (state) => {
+            state.forEach((order) => {
+                if (order.isNewStatus) {
+                    order.isNewStatus = false
+                }
+            })
+        },
     },
 })

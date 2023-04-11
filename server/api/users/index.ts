@@ -5,3 +5,4 @@ export * from './updateUserInputs'
 
 export * from './getUserCart'
 export * from './updateUserCart'
+export * from './setUserOrdersViewed'

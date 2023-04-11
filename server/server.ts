@@ -36,16 +36,23 @@ import {
     handleUpdateUserCart,
     handleGetUserCart,
     handleUpdateUserData,
+    handleSetUserOrdersViewed,
 } from './api/users'
 import { onSocketMessage } from './socket/onConnection'
 import { getUploader } from './functions'
 import { checkAdmin } from './utils'
-import { cacheItemsDb, cacheOrdersDb, cacheUsersDb } from './functions/cacheDb'
+import {
+    cacheItemsDb,
+    cacheOrdersDb,
+    cacheUsersDb,
+    cacheBonusesDb,
+} from './functions/cacheDb'
 
 if (config.shouldCache) {
     cacheItemsDb().catch(console.error) // Initial items caching
     cacheOrdersDb().catch(console.error) // Initial orders caching
     cacheUsersDb().catch(console.error) // Initial users caching
+    cacheBonusesDb().catch(console.error) // Initial bonuses caching
 }
 
 const app = express()
@@ -167,6 +174,7 @@ app.post('/api/orders/get-orders', checkAdmin, handleGetUserOrders)
 app.post('/api/users/update-input-states', handleUpdateUserInputs)
 app.post('/api/users/get-cart', handleGetUserCart)
 app.post('/api/users/update-cart', checkAdmin, handleUpdateUserCart)
+app.post('/api/users/orders-set-viewed', handleSetUserOrdersViewed)
 
 // Start the server
 server.listen(port, () => {

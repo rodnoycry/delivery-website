@@ -30,7 +30,7 @@ export interface ServerOrder {
     comment: string
 
     isActive: boolean
-    status?: string
+    status?: 'new' | 'inProgress' | 'done' | 'canceled'
     uid?: string
     sessionId?: string
     isNewStatus?: boolean

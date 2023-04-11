@@ -1,4 +1,4 @@
-import React, { useState, useEffect, CSSProperties } from 'react'
+import React, { CSSProperties } from 'react'
 import type { FC } from 'react'
 import { useSelector } from 'react-redux'
 import { ReduxStore } from '@/redux/store'
@@ -7,26 +7,22 @@ import { Order } from '@/components/shared/Order'
 import styles from './OrdersSection.module.css'
 
 interface Props {
+    orders: ServerOrder[]
+    onHover: () => void
     style?: CSSProperties
 }
 
-export const OrdersSection: FC<Props> = ({ style }) => {
-    const [orders, setOrders] = useState<ServerOrder[]>([])
+export const OrdersSection: FC<Props> = ({ orders, onHover, style }) => {
     const itemsData = useSelector((state: ReduxStore) => state.itemsDataStore)
-    const ordersLocalStorage = useSelector(
-        (state: ReduxStore) => state.localOrdersDataStore
-    )
-    const ordersUser = useSelector((state: ReduxStore) => state.userOrdersStore)
-
-    useEffect(() => {
-        if (ordersLocalStorage && ordersUser) {
-            setOrders(ordersUser)
-        }
-    }, [ordersLocalStorage, ordersUser])
     return (
         <section className={styles.orders}>
             <h2 className={styles.sectionLabel}>Заказы</h2>
-            <div className={styles.orders}>
+            <div
+                className={styles.orders}
+                onMouseEnter={() => {
+                    onHover()
+                }}
+            >
                 {orders.map((order) => {
                     return (
                         <Order

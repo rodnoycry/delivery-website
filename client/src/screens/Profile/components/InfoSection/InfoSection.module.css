@@ -1,12 +1,17 @@
 /* Info section */
 section.info {
-    width: 350px;
     font-size: 16px;
 }
 
 h2.sectionLabel {
     font-size: 24px;
     font-weight: bold;
+}
+
+@media screen and (max-width: 950px) {
+    h2.sectionLabel {
+        text-align: center;
+    }
 }
 
 div.infoContainer {

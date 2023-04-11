@@ -10,6 +10,7 @@ const links = {
     updateUserInputStates: `${domain}/api/users/update-input-states`,
     getUserCart: `${domain}/api/users/get-cart`,
     updateUserCart: `${domain}/api/users/update-cart`,
+    updateUserOrdersSetViewed: `${domain}/api/users/orders-set-viewed`,
 }
 
 export const getUserData = async (
@@ -98,5 +99,14 @@ export const updateUserCart = async (
     } catch (error) {
         console.error(error)
         throw new Error(`updateUserCart error`)
+    }
+}
+
+export const setUserOrdersViewed = async (idToken: string): Promise<void> => {
+    try {
+        await axios.post(links.updateUserOrdersSetViewed, { idToken })
+    } catch (error) {
+        console.error()
+        throw new Error()
     }
 }
