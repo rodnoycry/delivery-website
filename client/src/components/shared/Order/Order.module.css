@@ -13,6 +13,8 @@ div.order {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    position: relative;
 }
 
 @media screen and (max-width: 586px) {
@@ -20,6 +22,16 @@ div.order {
         width: 100%;
         padding: 20px 10px 36px 10px;
     }
+}
+
+span.newStatusFlag {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #FF000A;
 }
 
 h1.order {

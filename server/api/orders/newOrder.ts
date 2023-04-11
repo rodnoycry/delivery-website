@@ -1,6 +1,5 @@
 import { FieldPath } from 'firebase-admin/firestore'
 import type { Request, Response } from 'express'
-import { io } from '../../server'
 import { auth, db } from '../../firebase'
 import { ItemData, ServerOrder } from '../../interfaces'
 import { getSum } from '../../functions'

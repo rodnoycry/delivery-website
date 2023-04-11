@@ -17,6 +17,10 @@ button.profile:hover {
 }
 
 /* profile button */
+div.profileImage {
+    position: relative;
+}
+
 img.profile {
     display: inline-block;
     max-width: 25px;
@@ -37,4 +41,15 @@ p.profile {
     p.profile {
         display: none;
     }
+}
+
+/* Notification */
+span.notification {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 15px;
+    height: 15px;
+    background-color: #FF000A;
+    border-radius: 50%;
 }

@@ -8,7 +8,6 @@ export const syncLocalStorageMiddleware: Middleware =
         const cartState = storeState.cartStore
         const inputStates = storeState.inputStatesStore
         const localOrdersDataState = storeState.localOrdersDataStore
-        console.log(action.type)
 
         if (action.type.startsWith('cartStore/')) {
             window.localStorage.setItem('cart', JSON.stringify(cartState))
