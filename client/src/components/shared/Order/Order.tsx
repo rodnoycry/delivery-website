@@ -154,7 +154,9 @@ export const Order: FC<Props> = ({
     }
     return hide ? null : (
         <div className={styles.order}>
-            {isNewStatus ? <span className={styles.newStatusFlag} /> : null}
+            {isNewStatus && !isAdminMode ? (
+                <span className={styles.newStatusFlag} />
+            ) : null}
             <h3 style={{ opacity: 0.5 }}>#{id}</h3>
             {isAdminMode ? (
                 <h1 className={styles.order}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from 'react'
+import React, { useState, useEffect, createContext, Suspense } from 'react'
 import type { FC } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -32,8 +32,8 @@ import { Header } from './components/Header'
 import { HomeCarousel } from './components/Carousel'
 import { NavBar } from './components/NavBar'
 import { Search } from './components/Search'
-import { UserHome } from './screens/UserHome'
-import { UserItemsList } from './screens/UserItemsList'
+import { UserHome } from './screens/_HOCs/UserHome'
+import { UserItemsList } from './screens/_HOCs/UserItemsList'
 import { Profile } from './screens/Profile'
 import { MyOrders } from './screens/MyOrders'
 
@@ -61,8 +61,6 @@ export const App: FC = () => {
     const [user, setUser] = useState<User | null>(null)
 
     const dispatch = useDispatch()
-
-    const [isAuthTracking, setIsAuthTracking] = useState<boolean>(false)
     // Local storage loading
     const [isCartStoreLoaded, setIsCartStoreLoaded] = useState<boolean>(false)
     const [isOrderStoreLoaded, setIsOrderStoreLoaded] = useState<boolean>(false)
@@ -72,15 +70,41 @@ export const App: FC = () => {
         localOrdersData: window.localStorage.getItem('localOrdersData'),
     }
 
+    // Update redux cart data, order inputs data, saved orders data
+    // from localStorage
     useEffect(() => {
-        if (localStorageStore.order === undefined) {
-            return
+        if (localStorageStore.cart && !isCartStoreLoaded) {
+            dispatch(setReduxCart(JSON.parse(localStorageStore.cart)))
+            setIsCartStoreLoaded(true)
         }
+        if (localStorageStore.order && !isOrderStoreLoaded) {
+            dispatch(
+                updateReduxInputStates(JSON.parse(localStorageStore.order))
+            )
+            setIsOrderStoreLoaded(true)
+        }
+        if (localStorageStore.localOrdersData && !isOrderStoreLoaded) {
+            dispatch(
+                setLocalOrdersData(
+                    JSON.parse(localStorageStore.localOrdersData)
+                )
+            )
+            setIsOrderStoreLoaded(true)
+        }
+    }, [localStorageStore])
+
+    // On login user, updating local data in redux to current user info
+    const [isAuthTracking, setIsAuthTracking] = useState<boolean>(false)
+
+    useEffect(() => {
         let timerId: NodeJS.Timer | null = null
-        if (isAuthTracking) {
-            return
-        }
         const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (localStorageStore.order === undefined) {
+                return
+            }
+            if (isAuthTracking) {
+                return
+            }
             if (user) {
                 setUser(user)
                 const inputStates = localStorageStore.order
@@ -113,6 +137,7 @@ export const App: FC = () => {
                 // Getting user data from server, create user in db if not exists
                 getUserDataFromServerCSI(user, inputStates, cart, dispatch)
                     .then(() => {
+                        // To not duplicate user listener
                         setIsAuthTracking(true)
                     })
                     .catch(console.error)
@@ -154,7 +179,10 @@ export const App: FC = () => {
         }
     }, [cookies])
 
+    // Initialize search input
     const [search, setSearch] = useState<string>('')
+
+    // Control over main page carousel
     const [carouselsData, setCarouselsData] = useState<CarouselData[]>([])
 
     const reloadCarouselData = (): void => {
@@ -173,26 +201,6 @@ export const App: FC = () => {
         reloadCarouselData()
     }, [])
 
-    useEffect(() => {
-        if (localStorageStore.cart && !isCartStoreLoaded) {
-            dispatch(setReduxCart(JSON.parse(localStorageStore.cart)))
-            setIsCartStoreLoaded(true)
-        }
-        if (localStorageStore.order && !isOrderStoreLoaded) {
-            dispatch(
-                updateReduxInputStates(JSON.parse(localStorageStore.order))
-            )
-            setIsOrderStoreLoaded(true)
-        }
-        if (localStorageStore.localOrdersData && !isOrderStoreLoaded) {
-            dispatch(
-                setLocalOrdersData(
-                    JSON.parse(localStorageStore.localOrdersData)
-                )
-            )
-            setIsOrderStoreLoaded(true)
-        }
-    }, [localStorageStore])
     return (
         <Router>
             <UserContext.Provider value={user}>
@@ -202,9 +210,6 @@ export const App: FC = () => {
                 <div className={styles.main}>
                     <Header />
                     <hr className={styles.hr} />
-                    {/* <h1 className={styles.dontAcceptOrders}>
-                    {`Извините, сегодня (8 марта), мы больше не принимаем заказы, приносим извинения за предоставленные неудобства!`}
-                </h1> */}
                     {carouselsData.length > 0 ? (
                         <HomeCarousel
                             user={user}
@@ -238,7 +243,13 @@ export const App: FC = () => {
                             ) : null}
                         </Route>
 
-                        <Route exact path="/profile" component={Profile} />
+                        <Route exact path="/profile">
+                            <Suspense>
+                                <Profile />
+                            </Suspense>
+                        </Route>
+
+                        {/* Saved in localStorage orders, currently unsupported */}
                         <Route exact path="/my-orders">
                             <MyOrders />
                         </Route>
@@ -259,21 +270,31 @@ export const App: FC = () => {
 
                         {/* Order related */}
                         <Route exact path="/order-details">
-                            <OrderDetails />
+                            <Suspense>
+                                <OrderDetails />
+                            </Suspense>
                         </Route>
 
                         {/* Admin */}
                         <Route exact path="/admin">
-                            <Admin />
+                            <Suspense>
+                                <Admin />
+                            </Suspense>
                         </Route>
+
                         <Route exact path="/admin/panel">
-                            <AdminPanel />
+                            <Suspense>
+                                <AdminPanel />
+                            </Suspense>
                         </Route>
+
                         <Route exact path="/admin/editing">
-                            <AdminHome
-                                style={{ marginTop: '30px' }}
-                                search={search.trim()}
-                            />
+                            <Suspense>
+                                <AdminHome
+                                    style={{ marginTop: '30px' }}
+                                    search={search.trim()}
+                                />
+                            </Suspense>
                         </Route>
 
                         {categoriesPaths.map((path) => {
@@ -283,20 +304,28 @@ export const App: FC = () => {
                                     path={`/admin/editing${path}`}
                                     key={path}
                                 >
-                                    <AdminItemsList />
+                                    <Suspense>
+                                        <AdminItemsList />
+                                    </Suspense>
                                 </Route>
                             )
                         })}
 
                         {/* Legal links */}
                         <Route exact path="/offer">
-                            <Offer />
+                            <Suspense>
+                                <Offer />
+                            </Suspense>
                         </Route>
                         <Route exact path="/terms">
-                            <Terms />
+                            <Suspense>
+                                <Terms />
+                            </Suspense>
                         </Route>
                         <Route exact path="/policy">
-                            <DataPolicy />
+                            <Suspense>
+                                <DataPolicy />
+                            </Suspense>
                         </Route>
                     </Switch>
                 </div>

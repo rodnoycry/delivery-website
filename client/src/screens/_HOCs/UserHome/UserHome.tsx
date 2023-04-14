@@ -1,6 +1,6 @@
 import React, { CSSProperties, FC } from 'react'
 
-import { Home } from '../_shared/Home'
+import { Home } from '../../Home'
 
 interface Props {
     search: string

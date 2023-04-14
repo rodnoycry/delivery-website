@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import axios from 'axios'
 import { domain } from '@/services/apiService/config'
 import { PromoData } from '@/interfaces'
-import { UserContext } from '@/screens/_shared/Home'
+import { UserContext } from '@/screens/Home'
 import styles from './UpdatePromoWindow.module.css'
 import LoadImg from '@images/Load.png'
 
