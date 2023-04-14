@@ -50,6 +50,7 @@ export const Profile: FC<Props> = ({ style }) => {
             }
         }
     }
+
     return (
         <main className={styles.profile} style={style}>
             <div className={styles.firstLine}>

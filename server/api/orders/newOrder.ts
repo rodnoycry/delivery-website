@@ -11,8 +11,6 @@ export const handleNewOrder = (req: Request, res: Response): void => {
     const order: ServerOrder = req.body.order
     const idToken = req.body?.idToken
     const sessionId = req.cookies.sessionId
-    console.log(req)
-    console.log(sessionId)
     getOrderErrorsObject(order)
         .then((errorData) => {
             if (errorData) {

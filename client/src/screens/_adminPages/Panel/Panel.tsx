@@ -31,7 +31,8 @@ export const Panel: FC = () => {
     const [itemsData, setItemsData] = useState<ItemData[]>([])
 
     const notification = new Audio(`${domain}/audio/notification.mp3`)
-    const icebreaker = new Audio(`${domain}/audio/icebreaker.mp3`)
+    const welcome = new Audio(`${domain}/audio/welcome.mp3`)
+    const errorSound = new Audio(`${domain}/audio/error.mp3`)
 
     useEffect(() => {
         getItems().then(setItemsData).catch(console.error)
@@ -98,7 +99,7 @@ export const Panel: FC = () => {
 
     useEffect(() => {
         if (!showPopup) {
-            icebreaker.play().catch(console.error)
+            welcome.play().catch(console.error)
         }
     }, [showPopup])
 
@@ -125,6 +126,7 @@ export const Panel: FC = () => {
                 }
             })
             .catch((error) => {
+                errorSound.play().catch(console.error)
                 console.error(error)
                 setErrorMessage(
                     'Произошла ошибка запроса к серверу, пытаемся подключиться ещё раз'

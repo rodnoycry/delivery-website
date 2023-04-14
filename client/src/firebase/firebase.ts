@@ -1,11 +1,8 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 import { dbSelect } from '@/config/settings'
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Credentials for test firebase DB
 const firebaseConfigReserve = {
     apiKey: 'AIzaSyAprhJBeNPhuHFUJETb1H-1S5AJgZ6Ri5k',
     authDomain: 'san-sei-reserve-00.firebaseapp.com',
@@ -16,6 +13,7 @@ const firebaseConfigReserve = {
     measurementId: 'G-EZL61QWLS2',
 }
 
+// Production firebase DB config
 const firebaseConfig = {
     apiKey: 'AIzaSyCLaFLTH8CXbz6ZMPF39rx7NH_dViDo_EE',
     authDomain: 'san-sei.firebaseapp.com',
@@ -26,10 +24,12 @@ const firebaseConfig = {
     measurementId: 'G-2DYJF0YY9F',
 }
 
+// Object to easily select needed firebase
 const firebaseConfigsDict = {
     main: firebaseConfig,
     reserve: firebaseConfigReserve,
 }
+
 // Initialize Firebase
 export const app = initializeApp(firebaseConfigsDict[dbSelect])
 export const auth = getAuth()

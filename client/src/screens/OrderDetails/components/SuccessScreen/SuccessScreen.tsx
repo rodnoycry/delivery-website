@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import type { FC } from 'react'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { updateLoginWindowState } from '@/redux/store'
+import { UserContext } from '@/App'
 import styles from './SuccessScreen.module.css'
 import SuccessImg from './images/success.png'
 
@@ -10,6 +13,10 @@ interface Props {
 }
 
 export const SuccessScreen: FC<Props> = ({ isSuccess, setIsSuccess }) => {
+    const user = useContext(UserContext)
+    const history = useHistory()
+    const dispatch = useDispatch()
+
     return (
         <div
             className={styles.successScreen}
@@ -22,19 +29,46 @@ export const SuccessScreen: FC<Props> = ({ isSuccess, setIsSuccess }) => {
                 <img className={styles.successWindow} src={SuccessImg} />
                 <h1 className={styles.successWindow}>Заказ принят!</h1>
                 <h3 className={styles.successWindow}>
-                    Ожидайте, скоро мы свяжемся с вами
+                    {user
+                        ? `Ожидайте, скоро мы свяжемся с вами`
+                        : `Авторизуйтесь чтобы отслеживать заказ`}
                 </h3>
-                <Link
-                    to="/"
-                    onClick={() => {
-                        setIsSuccess(false)
-                        window.scrollTo(0, 0)
-                    }}
-                >
-                    <button className={styles.button}>
+                {user ? (
+                    <button
+                        className={styles.redButton}
+                        onClick={() => {
+                            setIsSuccess(false)
+                            history.push('/')
+                            window.scrollTo(0, 0)
+                        }}
+                    >
                         <p className={styles.button}>Вернуться на главную</p>
                     </button>
-                </Link>
+                ) : (
+                    <>
+                        <button
+                            className={styles.redButton}
+                            onClick={() => {
+                                setIsSuccess(false)
+                                history.push('/')
+                                dispatch(updateLoginWindowState(true))
+                                window.scrollTo(0, 0)
+                            }}
+                        >
+                            Войти
+                        </button>
+                        <button
+                            className={styles.blackButton}
+                            onClick={() => {
+                                setIsSuccess(false)
+                                history.push('/')
+                                window.scrollTo(0, 0)
+                            }}
+                        >
+                            Вернуться на главную
+                        </button>
+                    </>
+                )}
             </div>
         </div>
     )
