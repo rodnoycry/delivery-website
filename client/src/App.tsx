@@ -97,14 +97,14 @@ export const App: FC = () => {
     const [isAuthTracking, setIsAuthTracking] = useState<boolean>(false)
 
     useEffect(() => {
+        if (localStorageStore.order === undefined) {
+            return
+        }
+        if (isAuthTracking) {
+            return
+        }
         let timerId: NodeJS.Timer | null = null
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (localStorageStore.order === undefined) {
-                return
-            }
-            if (isAuthTracking) {
-                return
-            }
             if (user) {
                 setUser(user)
                 const inputStates = localStorageStore.order
@@ -114,7 +114,7 @@ export const App: FC = () => {
                 })
                 user.getIdToken(true)
                     .then((token) => {
-                        // Connect to the Socket.io server
+                        // Connect to the Socket.io of server
                         const sendIdTokenToServer = (): void => {
                             socket.send(
                                 JSON.stringify({
