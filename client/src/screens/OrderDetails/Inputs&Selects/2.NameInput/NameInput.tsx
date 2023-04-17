@@ -1,6 +1,6 @@
 import React, { CSSProperties } from 'react'
 import type { FC } from 'react'
-import { InputState } from '@/redux/slices/orderSlice'
+import { InputState } from '@/interfaces'
 import { DetailsInput } from '../shared/DetailsInput'
 
 interface Props {

@@ -1,6 +1,10 @@
 import express, { Request, Response } from 'express'
+import http from 'http'
+import { Server } from 'socket.io'
 import cors from 'cors'
 import path from 'path'
+import cookieParser from 'cookie-parser'
+import { config } from './config'
 import {
     handleGetPromos,
     handleAddPromo,
@@ -19,27 +23,73 @@ import {
     handleEditCarousel,
     handleDeleteCarousel,
 } from './api/carousels'
-import { handleNewOrder, handleGetOrders, handleEditOrder } from './api/orders'
+import {
+    handleNewOrder,
+    handleGetOrders,
+    handleEditOrder,
+    handleGetUserOrders,
+} from './api/orders'
+import {
+    handleGetUserData,
+    handleCreateUserData,
+    handleUpdateUserInputs,
+    handleUpdateUserCart,
+    handleGetUserCart,
+    handleUpdateUserData,
+    handleSetUserOrdersViewed,
+} from './api/users'
+import { onSocketMessage } from './socket/onConnection'
 import { getUploader } from './functions'
 import { checkAdmin } from './utils'
-import { cacheItemsDb, cacheOrdersDb } from './functions/cacheDb'
+import {
+    cacheItemsDb,
+    cacheOrdersDb,
+    cacheUsersDb,
+    cacheBonusesDb,
+} from './functions/cacheDb'
 
-cacheItemsDb().catch(console.error) // Initial items caching
-cacheOrdersDb().catch(console.error) // Initial orders caching
+if (config.shouldCache) {
+    cacheItemsDb().catch(console.error) // Initial items caching
+    cacheOrdersDb().catch(console.error) // Initial orders caching
+    cacheUsersDb().catch(console.error) // Initial users caching
+    cacheBonusesDb().catch(console.error) // Initial bonuses caching
+}
 
 const app = express()
+const server = http.createServer(app)
 const port = 3000
+export const io = new Server(server, {
+    cors: {
+        origin: 'http://localhost:8080',
+        methods: ['GET', 'POST'],
+        credentials: true,
+    },
+})
+
+export const socketAuthMap = new Map<string, string>()
+
+io.on('connection', (socket) => {
+    socket.on('message', (message) => {
+        onSocketMessage(socket, message)
+    })
+})
+
+app.use(cookieParser())
 
 // Serve static files from the 'dist' directory
 app.use(express.static(path.join(__dirname, '../client/dist')))
 app.use(express.json())
-// FOR TESTS ONLY
-app.use(
-    cors({
-        origin: 'http://localhost:8080',
-    })
-)
-//
+
+// Adding client-side port for dev requestss
+if (config.allowDevClient) {
+    app.use(
+        cors({
+            origin: 'http://localhost:8080',
+            credentials: true,
+        })
+    )
+}
+
 // Static handling
 app.use('/images/items', express.static('public/images/items'))
 app.use('/images/promos', express.static('public/images/promos'))
@@ -113,12 +163,20 @@ app.post('/api/carousels/delete', checkAdmin, handleDeleteCarousel)
 
 // Orders handling
 app.post('/api/orders/add', handleNewOrder)
-
 app.post('/api/orders/get', checkAdmin, handleGetOrders)
-
 app.post('/api/orders/edit', checkAdmin, handleEditOrder)
 
+// Users handling
+app.post('/api/users/get', handleGetUserData)
+app.post('/api/users/create', handleCreateUserData)
+app.post('/api/users/update', handleUpdateUserData)
+app.post('/api/orders/get-orders', checkAdmin, handleGetUserOrders)
+app.post('/api/users/update-input-states', handleUpdateUserInputs)
+app.post('/api/users/get-cart', handleGetUserCart)
+app.post('/api/users/update-cart', checkAdmin, handleUpdateUserCart)
+app.post('/api/users/orders-set-viewed', handleSetUserOrdersViewed)
+
 // Start the server
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`)
 })

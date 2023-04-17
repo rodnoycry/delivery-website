@@ -5,7 +5,7 @@ import axios from 'axios'
 import { domain } from '@/services/apiService/config'
 import { CartItemData, ItemData, ServerOrder } from '@/interfaces'
 import { getCartItemsData, getSum, getSumWithDelivery } from '@/functions'
-import type { Zone } from '@/redux/slices/orderSlice'
+import type { Zone } from '@/redux/slices/inputStatesSlice'
 import styles from './Order.module.css'
 import { Item, DeliveryItem } from './components/Item'
 import { Detail } from './components/Detail'
@@ -52,6 +52,8 @@ export const Order: FC<Props> = ({
         comment,
 
         isActive: parentIsActive,
+        status,
+        isNewStatus,
     } = order
     const [isActive, setIsActive] = useState<boolean>(parentIsActive)
     const [hide, setHide] = useState<boolean>(false)
@@ -150,15 +152,28 @@ export const Order: FC<Props> = ({
             })
             .catch(console.error)
     }
-
     return hide ? null : (
         <div className={styles.order}>
+            {isNewStatus && !isAdminMode ? (
+                <span className={styles.newStatusFlag} />
+            ) : null}
             <h3 style={{ opacity: 0.5 }}>#{id}</h3>
             {isAdminMode ? (
                 <h1 className={styles.order}>
                     {isActive ? `Новый заказ ✅` : `Заказ #${id}`}
                 </h1>
-            ) : null}
+            ) : status ? (
+                <h1 className={styles.order}>
+                    {status === 'new' ? `Заказ создан ✅` : null}
+                    {status === 'inProgress' ? `Заказ готовится ⏳` : null}
+                    {status === 'done' ? `Заказ завершён ☑️` : null}
+                    {status === 'canceled' ? `Заказ отменён ❌` : null}
+                </h1>
+            ) : (
+                <h1 className={styles.order}>
+                    {isActive ? `Заказ завершён ☑️` : null}
+                </h1>
+            )}
 
             <h3 className={styles.order} style={{ marginTop: 5 }}>
                 Время заказа: {time}

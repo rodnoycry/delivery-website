@@ -1,0 +1,23 @@
+div.editingInfo {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input.input {
+    width: 70%;
+    height: 40px;
+
+    padding: 0 8px;
+
+    background: #000000;
+    border-radius: 9px;
+
+    color: white;
+}
+
+span.textButton {
+    font-size: 22px;
+    cursor: pointer;
+}

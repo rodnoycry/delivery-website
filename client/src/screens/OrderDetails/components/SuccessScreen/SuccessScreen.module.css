@@ -55,16 +55,27 @@ h3.successWindow {
     }
 }
 
-button.button {
+button.redButton,
+button.blackButton {
     font-size: 20px;
     font-weight: bold;
 
     width: 80vw;
     max-width: 385px;
     height: 60px;
-
-    background: #FF000A;
     border-radius: 12px;
+}
 
-    padding-bottom: 8px;
+button.redButton {
+    background: #FF000A;
+}
+
+button.blackButton {
+    background-color: #000000;
+    border: #424242 2px;
+    transition: background-color ease-in-out 0.2s;
+}
+
+button.blackButton:hover {
+    background-color: #282828;
 }

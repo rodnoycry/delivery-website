@@ -1,19 +1,25 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { CartItem, cartSlice } from './slices/cartSlice'
-import { itemDataSlice } from './slices/itemsDataSlice'
-import { ItemData, ServerOrder } from '@/interfaces'
+import { cartSlice } from './slices/cartSlice'
+import { CartItem, ServerItemData, ServerOrder, UserData } from '@/interfaces'
+import { itemsDataSlice } from './slices/itemsDataSlice'
 import { itemsStatesSlice, ItemState } from './slices/itemsStatesSlice'
-import { orderSlice, Order } from './slices/orderSlice'
-import { localOrdersDataSlice } from './slices/localOrdersDataSlice' // DEMO
-import { syncCookieMiddleware } from './middleware'
+import { inputStatesSlice, InputStates } from './slices/inputStatesSlice'
+import { localOrdersDataSlice } from './slices/localOrdersDataSlice'
+import { windowsStatesSlice } from './slices/windowsSlice'
+import type { WindowName } from './slices/windowsSlice'
+import { userStateSlice } from './slices/userSlice'
+import { userOrdersSlice } from './slices/userOrders'
+import { syncLocalStorageMiddleware } from './middleware'
 
-export interface RootState {
-    cartState: CartItem[]
-    itemDataState: ItemData[]
-    itemsStates: Record<string, ItemState>
-    orderState: Order
-    // DEMO ONLY
-    localOrdersDataState: ServerOrder[]
+export interface ReduxStore {
+    cartStore: CartItem[]
+    itemsDataStore: ServerItemData[]
+    itemsStatesStore: Record<string, ItemState>
+    inputStatesStore: InputStates
+    localOrdersDataStore: ServerOrder[]
+    windowsStatesStore: Record<WindowName, boolean>
+    userStateStore: UserData
+    userOrdersStore: ServerOrder[]
 }
 
 export const {
@@ -24,19 +30,29 @@ export const {
     resetCart,
 } = cartSlice.actions
 export const { updateItemState } = itemsStatesSlice.actions
-export const { updateOrder } = orderSlice.actions
-// DEMO ONLY
+export const { setItemsData } = itemsDataSlice.actions
+export const { updateInputStates } = inputStatesSlice.actions
 export const { setLocalOrdersData, addLocalOrderData } =
     localOrdersDataSlice.actions
+export const { updateLoginWindowState } = windowsStatesSlice.actions
+export const {
+    updateUserState,
+    updateUserName,
+    updateUserPhone,
+    clearUserData,
+} = userStateSlice.actions
+export const { setUserOrders, setViewedToOrders } = userOrdersSlice.actions
 
 export const store = configureStore({
     reducer: {
-        cartState: cartSlice.reducer,
-        itemDataState: itemDataSlice.reducer,
-        itemsStates: itemsStatesSlice.reducer,
-        orderState: orderSlice.reducer,
-        // DEMO ONLY
-        localOrdersDataState: localOrdersDataSlice.reducer,
+        cartStore: cartSlice.reducer,
+        itemsDataStore: itemsDataSlice.reducer,
+        itemsStatesStore: itemsStatesSlice.reducer,
+        inputStatesStore: inputStatesSlice.reducer,
+        localOrdersDataStore: localOrdersDataSlice.reducer,
+        windowsStatesStore: windowsStatesSlice.reducer,
+        userStateStore: userStateSlice.reducer,
+        userOrdersStore: userOrdersSlice.reducer,
     },
-    middleware: (gDM) => gDM().concat(syncCookieMiddleware),
+    middleware: (gDM) => gDM().concat(syncLocalStorageMiddleware),
 })

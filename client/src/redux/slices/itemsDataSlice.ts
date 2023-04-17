@@ -1,10 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { ItemData } from '@/interfaces'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { ServerItemData } from '@/interfaces'
 
-const itemDataInitialState: ItemData[] = []
+const itemStatesInitialState: ServerItemData[] = []
 
-export const itemDataSlice = createSlice({
-    name: 'itemDataState',
-    initialState: itemDataInitialState,
-    reducers: {},
+export const itemsDataSlice = createSlice({
+    name: 'itemsDataStore',
+    initialState: itemStatesInitialState,
+    reducers: {
+        setItemsData: (state, action: PayloadAction<ServerItemData[]>) => {
+            state.splice(0, state.length)
+            action.payload.forEach((item) => {
+                state.push(item)
+            })
+        },
+    },
 })

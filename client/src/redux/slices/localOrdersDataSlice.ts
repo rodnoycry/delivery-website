@@ -8,7 +8,7 @@ const localOrdersDataInitialState: ServerOrder[] = []
 
 // ONLY FOR DEMONSTRATION PURPOSES
 export const localOrdersDataSlice = createSlice({
-    name: 'localOrdersDataState',
+    name: 'localOrdersDataStore',
     initialState: localOrdersDataInitialState,
     reducers: {
         setLocalOrdersData: (state, action: PayloadAction<ServerOrder[]>) => {

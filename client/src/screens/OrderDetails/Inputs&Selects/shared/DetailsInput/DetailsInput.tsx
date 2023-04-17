@@ -1,7 +1,7 @@
 import React, { useState, CSSProperties, useEffect } from 'react'
 import type { FC } from 'react'
 import styles from './DetailsInput.module.css'
-import { InputState } from '@/redux/slices/orderSlice'
+import { InputState } from '@/interfaces'
 
 interface Props {
     required?: boolean
