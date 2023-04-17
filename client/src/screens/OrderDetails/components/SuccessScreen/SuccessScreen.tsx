@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { updateLoginWindowState } from '@/redux/store'
 import { UserContext } from '@/App'
 import styles from './SuccessScreen.module.css'
-import SuccessImg from './images/success.png'
+import SuccessImg from './images/Success.png'
 
 interface Props {
     isSuccess: boolean
