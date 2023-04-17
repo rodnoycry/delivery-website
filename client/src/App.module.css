@@ -67,6 +67,7 @@ h1.dontAcceptOrders {
     }
 }
 
+/* Categories */
 :global h1.category {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
@@ -81,4 +82,35 @@ h1.dontAcceptOrders {
 
 ul {
     list-style-type: none;
+}
+
+/* Loading image */
+
+
+@keyframes rotating {
+    from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+:global(img.loadingImage) {
+    width: 18px;
+    height: auto;
+    -webkit-animation: rotating 2s linear infinite;
+    -moz-animation: rotating 2s linear infinite;
+    -ms-animation: rotating 2s linear infinite;
+    -o-animation: rotating 2s linear infinite;
+    animation: rotating 2s linear infinite;
 }

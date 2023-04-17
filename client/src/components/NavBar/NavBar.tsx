@@ -5,10 +5,11 @@ import styles from './NavBar.module.css'
 import { linksObject } from './links'
 
 interface Props {
+    resetSearch: () => void
     style?: object
 }
 
-export const NavBar: FC<Props> = ({ style }) => {
+export const NavBar: FC<Props> = ({ resetSearch, style }) => {
     const location = useLocation()
     const currentPath = location.pathname
     const isAdmin = currentPath.startsWith('/admin/editing')
@@ -31,6 +32,7 @@ export const NavBar: FC<Props> = ({ style }) => {
                     <Link to={`${linkPrefix}${link}`} key={link}>
                         <button
                             className={styles.link}
+                            onClick={resetSearch}
                             style={
                                 currentPath === link
                                     ? {

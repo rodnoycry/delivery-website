@@ -2,29 +2,35 @@ import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import axios, { AxiosError } from 'axios'
+import type { User } from 'firebase/auth'
+import { AxiosError } from 'axios'
 import { zoneDeliveryInfo } from '@/config'
-import { ServerOrder, DetailedInputData } from '@/interfaces'
-import { resetCart, addLocalOrderData } from '@redux/store'
-import { Order } from '@/redux/slices/orderSlice'
-import { CartItem } from '@/redux/slices/cartSlice'
-import { domain } from '@/services/apiService/config'
+import {
+    ServerOrder,
+    DetailedInputData,
+    OrderErrorData,
+    CartItem,
+} from '@/interfaces'
+import { resetCart } from '@redux/store'
+import { InputStates } from '@/redux/slices/inputStatesSlice'
+import { sendOrderToServer, updateUserInputs } from '@/services/apiService'
 import styles from './Confirmation.module.css'
 import { getServerOrder, getTime } from './functions'
 import LoadImage from '@images/Load.png'
 
 interface Props {
     sum: number
-    inputStates: Order | Record<keyof Order, DetailedInputData>
+    user: User | null
+    inputStates: InputStates | Record<keyof InputStates, DetailedInputData>
     setInputStates: (
-        inputStates: Order | Record<keyof Order, DetailedInputData>
+        inputStates: InputStates | Record<keyof InputStates, DetailedInputData>
     ) => void
     requiredInputs: string[]
     hasError: boolean
     setParentHasError: (hasError: boolean) => void
     setIsSuccess: (isSuccess: boolean) => void
     cart: CartItem[]
-    storeInputStates: Order
+    storeInputStates: InputStates
 }
 
 const errorMeassageObj = {
@@ -33,19 +39,9 @@ const errorMeassageObj = {
     inputError: 'Необходимые для заказа поля не заполненны',
 }
 
-interface ErrorData {
-    hasError?: boolean
-    isRed?: boolean
-}
-
-type OrderError = Record<keyof ServerOrder, ErrorData>
-interface OrderErrorData {
-    errorMessage: string
-    errorObject?: OrderError
-}
-
 export const Confirmation: FC<Props> = ({
     sum: sum_,
+    user,
     inputStates,
     setInputStates,
     requiredInputs,
@@ -102,44 +98,78 @@ export const Confirmation: FC<Props> = ({
         const time = getTime()
         const orderInfo = getServerOrder(time, cart, sum, storeInputStates)
         const serverOrderInfo: ServerOrder = { ...orderInfo, isActive: true }
-        axios
-            .post(`${domain}/api/orders/add`, serverOrderInfo)
-            .then((res) => {
-                setIsLoading(false)
-                setIsSuccess(true)
-                dispatch(addLocalOrderData(serverOrderInfo))
-                dispatch(resetCart())
-            })
-            .catch((error: AxiosError<OrderErrorData | null>) => {
-                if (error.response?.status === 400) {
-                    if (
-                        error.response?.data?.errorObject &&
-                        typeof error.response?.data?.errorObject === 'object'
-                    ) {
-                        const inputStatesCopy = JSON.parse(
-                            JSON.stringify(inputStates)
-                        )
-                        Object.entries(
-                            error.response?.data?.errorObject
-                        ).forEach(([inputName, errorData]) => {
+
+        // Callback for success order sending
+        const successCallback = (): void => {
+            setIsLoading(false)
+            setIsSuccess(true)
+            if (user) {
+                user.getIdToken()
+                    .then((token) => {
+                        dispatch(resetCart({ idToken: token }))
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                        resetCart({})
+                    })
+            } else {
+                resetCart({})
+            }
+        }
+
+        // Error handling if there is error in inputs or server error on sending
+        const errorCallback = (
+            error: AxiosError<OrderErrorData | null>
+        ): void => {
+            if (error.response?.status === 400) {
+                if (
+                    error.response?.data?.errorObject &&
+                    typeof error.response?.data?.errorObject === 'object'
+                ) {
+                    const inputStatesCopy = JSON.parse(
+                        JSON.stringify(inputStates)
+                    )
+                    Object.entries(error.response?.data?.errorObject).forEach(
+                        ([inputName, errorData]) => {
                             inputStatesCopy[inputName] = {
                                 ...inputStatesCopy[inputName],
                                 ...errorData,
                             }
-                        })
-                        setInputStates(inputStatesCopy)
-                    }
-                    if (error.response?.data?.errorMessage) {
-                        setErrorMessage(error.response?.data?.errorMessage)
-                    }
-                } else {
-                    console.error(error)
-                    setErrorMessage(
-                        'Произошла ошибка, пожалуйста попробуйте отправить заказ повторно'
+                        }
                     )
+                    setInputStates(inputStatesCopy)
                 }
-                setIsLoading(false)
-            })
+                if (error.response?.data?.errorMessage) {
+                    setErrorMessage(error.response?.data?.errorMessage)
+                }
+            } else {
+                console.error(error)
+                setErrorMessage(
+                    'Произошла ошибка, пожалуйста попробуйте отправить заказ повторно'
+                )
+            }
+            setIsLoading(false)
+        }
+
+        if (user) {
+            // Sending order with user token to bind order to user id
+            user.getIdToken()
+                .then((token) => {
+                    sendOrderToServer(
+                        { order: serverOrderInfo, idToken: token },
+                        successCallback,
+                        errorCallback
+                    ).catch(console.error)
+                    updateUserInputs(token, inputStates).catch(console.error)
+                })
+                .catch(console.error)
+        } else {
+            sendOrderToServer(
+                { order: serverOrderInfo },
+                successCallback,
+                errorCallback
+            ).catch(console.error)
+        }
     }
     return (
         <>

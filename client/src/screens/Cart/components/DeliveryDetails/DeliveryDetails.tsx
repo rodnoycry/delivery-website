@@ -1,13 +1,13 @@
 import React, { CSSProperties } from 'react'
 import type { FC } from 'react'
-import { Order } from '@/redux/slices/orderSlice'
+import { InputStates } from '@/redux/slices/inputStatesSlice'
 import styles from './DeliveryDetails.module.css'
 import { Dropdown } from './components/Dropdown'
 import { zoneDeliveryInfo as zoneInfo } from '@/config'
 
 interface Props {
-    zone: Order['zone']
-    setZone: (zone: Order['zone']) => void
+    zone: InputStates['zone']
+    setZone: (zone: InputStates['zone']) => void
     isError: boolean
     style?: CSSProperties
 }

@@ -1,24 +1,30 @@
 import { FieldPath } from 'firebase-admin/firestore'
 import type { Request, Response } from 'express'
-import { db } from '../../firebase'
-import { ItemData, ServerOrder } from '@/interfaces'
-import { getSum } from '@/functions'
-import { zoneDeliveryInfo } from '@/config'
+import { auth, db } from '../../firebase'
+import { ItemData, ServerOrder } from '../../interfaces'
+import { getSum } from '../../functions'
+import { zoneDeliveryInfo } from '../../config'
 import { cacheOrdersDb } from '../../functions/cacheDb'
+import { sendOrdersToUserWithSocket } from './functions'
 
 export const handleNewOrder = (req: Request, res: Response): void => {
-    const order: ServerOrder = req.body
+    const order: ServerOrder = req.body.order
+    const idToken = req.body?.idToken
+    const sessionId = req.cookies.sessionId
     getOrderErrorsObject(order)
         .then((errorData) => {
             if (errorData) {
                 res.status(400).send(errorData)
                 return
             }
-            createOrder(order)
-                .then(() => {
+            createOrder(order, idToken, sessionId)
+                .then(({ orderId, uid }) => {
                     cacheOrdersDb()
                         .then(() => {
-                            res.status(201).send()
+                            res.status(201).send({ orderId })
+                            if (uid) {
+                                sendOrdersToUserWithSocket(uid)
+                            }
                         })
                         .catch((error) => {
                             console.error(error)
@@ -36,7 +42,11 @@ export const handleNewOrder = (req: Request, res: Response): void => {
         })
 }
 
-const createOrder = async (order: ServerOrder): Promise<void> => {
+const createOrder = async (
+    order: ServerOrder,
+    idToken: string | undefined,
+    sessionId: string | undefined
+): Promise<{ orderId: string; uid?: string }> => {
     const counterDocRef = db.collection('counters').doc('orders')
     try {
         const id = await db.runTransaction(async (t) => {
@@ -47,10 +57,24 @@ const createOrder = async (order: ServerOrder): Promise<void> => {
             return id
         })
         const stringId = id.toString().padStart(6, '0')
-        const serverOrder: ServerOrder = { ...order, id: stringId }
+        const serverOrder: ServerOrder & Record<string, any> = {
+            ...order,
+            id: stringId,
+            status: 'new',
+            isNewStatus: true,
+        }
+        if (sessionId) {
+            serverOrder.sessionId = sessionId
+        }
+        let uid
+        if (idToken) {
+            const decodedToken = await auth.verifyIdToken(idToken)
+            uid = decodedToken.uid
+            serverOrder.uid = uid
+        }
         const docRef = db.collection('orders').doc(stringId)
         await docRef.set(serverOrder)
-        return
+        return { orderId: stringId, uid }
     } catch (error) {
         console.error(error)
         throw new Error()

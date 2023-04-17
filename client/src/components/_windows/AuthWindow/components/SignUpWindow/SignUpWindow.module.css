@@ -1,0 +1,9 @@
+h4.legalInfo {
+    font-size: 12px;
+    text-align: center;
+}
+
+span.link {
+    text-decoration: underline;
+    cursor: pointer;
+}
