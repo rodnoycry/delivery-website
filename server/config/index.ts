@@ -5,6 +5,7 @@ export const adminEmails = ['vkhk99@gmail.com', 'kubmad.kg@gmail.com']
 type DbSelect = 'main' | 'reserve'
 
 interface ServerConfig {
+    isProduction: boolean
     db: DbSelect
     shouldCache: boolean
     allowDevClient: boolean
@@ -12,6 +13,7 @@ interface ServerConfig {
 
 // MAIN CONFIG
 export const config: ServerConfig = {
+    isProduction: false,
     db: 'reserve', // DB SELECTION
     shouldCache: true,
     allowDevClient: true,

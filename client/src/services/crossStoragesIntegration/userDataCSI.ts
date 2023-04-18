@@ -34,25 +34,30 @@ export const getUserDataFromServerCSI = async (
         )
         // Prepare for redux input states sending with user phone and name
         // if phone input state is empty or name input is empty
-        if (
-            !fetchedUserData.inputStates?.PhoneInput?.value &&
-            fetchedUserData.phone
-        ) {
-            fetchedUserData.inputStates.PhoneInput.value = fetchedUserData.phone
-        }
-        if (
-            !fetchedUserData.inputStates?.NameInput?.value &&
-            fetchedUserData.displayName
-        ) {
-            fetchedUserData.inputStates.NameInput.value =
+        if (fetchedUserData.inputStates) {
+            if (
+                !fetchedUserData.inputStates?.PhoneInput?.value &&
+                fetchedUserData.phone
+            ) {
+                fetchedUserData.inputStates.PhoneInput.value =
+                    fetchedUserData.phone
+            }
+            if (
+                !fetchedUserData.inputStates?.NameInput?.value &&
                 fetchedUserData.displayName
+            ) {
+                fetchedUserData.inputStates.NameInput.value =
+                    fetchedUserData.displayName
+            }
+            // Update local input states with user input states
+            if (!inputStatesParsed) {
+                dispatch(updateInputStates(fetchedUserData.inputStates))
+            }
         }
-        // Update local input states with user input states
-        if (!inputStatesParsed) {
-            dispatch(updateInputStates(fetchedUserData.inputStates))
-        }
-        if (!cart) {
+        console.log(cart)
+        if (!cart || cart === '[]') {
             const cart = await getUserCart(token)
+            console.log(cart)
             dispatch(setReduxCart(cart))
         }
 
