@@ -60,7 +60,7 @@ const server = http.createServer(app)
 const port = 3000
 export const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:8080', // Or your domain
+        origin: config.isProduction ? `http://your_domain` : 'http://localhost:8080',
         methods: ['GET', 'POST'],
         credentials: true,
     },
@@ -84,7 +84,7 @@ app.use(express.json())
 if (config.allowDevClient) {
     app.use(
         cors({
-            origin: 'http://localhost:8080',
+            origin: config.isProduction ? `http://your_domain` : 'http://localhost:8080',
             credentials: true,
         })
     )
