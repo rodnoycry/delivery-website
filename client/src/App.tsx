@@ -15,6 +15,8 @@ import { domain } from './services/apiService/config'
 import { getItems } from './services/apiService'
 import { getUserDataFromServerCSI } from './services/crossStoragesIntegration'
 
+import { isProd, topItemsAppearancePaths, categoriesPaths } from './config'
+
 import './reset.module.css'
 import {
     setCart as setReduxCart,
@@ -26,7 +28,6 @@ import {
     setItemsData,
 } from './redux/store'
 import styles from './App.module.css'
-import { topItemsAppearancePaths, categoriesPaths } from './config'
 
 import { Header } from './components/Header'
 import { HomeCarousel } from './components/Carousel'
@@ -109,9 +110,14 @@ export const App: FC = () => {
                 setUser(user)
                 const inputStates = localStorageStore.order
                 const cart = localStorageStore.cart
-                const socket = io('http://localhost:3000', {
-                    withCredentials: true,
-                })
+                const socket = io(
+                    isProd
+                        ? 'http://your_domain.com'
+                        : 'http://localhost:3000',
+                    {
+                        withCredentials: true,
+                    }
+                )
                 user.getIdToken(true)
                     .then((token) => {
                         // Connect to the Socket.io of server
