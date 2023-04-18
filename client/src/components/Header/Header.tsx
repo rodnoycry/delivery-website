@@ -43,7 +43,7 @@ export const Header: FC = () => {
                             >{`Телефон доставки`}</h4>
                             <p
                                 className={styles.phone}
-                            >{`+7 (985) 667-64-42`}</p>
+                            >{`+7 (999) 999-99-99`}</p>
                         </div>
                     </div>
                     <div className={styles.delivery}>
