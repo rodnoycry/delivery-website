@@ -60,7 +60,7 @@ const server = http.createServer(app)
 const port = 3000
 export const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:8080',
+        origin: 'http://localhost:8080', // Or your domain
         methods: ['GET', 'POST'],
         credentials: true,
     },
