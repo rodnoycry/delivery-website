@@ -11,8 +11,8 @@ export const checkAdmin = (
     if (!idToken) {
         return res.status(401).send({ message: 'Unauthorized' })
     }
-    next()
-    return
+    next() // Comment this when admin E-mails specified
+    return //
     auth.verifyIdToken(idToken)
         .then((decodedToken) => {
             if (!decodedToken.email) {
