@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import { auth } from '../../firebase'
-import { updateUserCarts } from 'server/functions/cacheDb'
+import { updateUserCarts } from '../../../server/functions/cacheDb'
 
 export const handleUpdateUserCart = (req: Request, res: Response): void => {
     const { idToken, cart } = req.body
