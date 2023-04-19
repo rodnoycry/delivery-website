@@ -5,6 +5,7 @@ This is a demonstration project of a production website developed using React.js
 ## Deployed Version
 
 Check out the deployed version of the website here: [https://rodnoycry.ru](https://rodnoycry.ru)
+
 To checkout the Admin panel with all it's features you can go to link and authentificate with any Google account: https://rodnoycry.ru/admin
 
 ## Features
@@ -25,9 +26,12 @@ To checkout the Admin panel with all it's features you can go to link and authen
 
 To deploy the frontend side and run the webpack dev server, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/rodnoycry/delivery-website.git`
-2. Navigate to the project folder and install dependencies: `cd delivery-website && npm install`
-3. Start the webpack dev server: `npm run dev`
+1. Clone the repository: 
+`git clone https://github.com/rodnoycry/delivery-website.git`
+3. Navigate to the project folder and install dependencies: 
+`cd delivery-website && npm install`
+5. Start the webpack dev server: 
+`npm run dev`
 
 To run and deploy the backend side and use its full functionality, you need to prepare and add the credentials of the Firebase project with prepared Firestore and Firebase Authentication with added Google and Email auth providers. Please contact me if you need help setting up the backend locally.
 
