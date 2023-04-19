@@ -26,12 +26,9 @@ To checkout the Admin panel with all it's features you can go to link and authen
 
 To deploy the frontend side and run the webpack dev server, follow these steps:
 
-1. Clone the repository: 
-`git clone https://github.com/rodnoycry/delivery-website.git`
-3. Navigate to the project folder and install dependencies: 
-`cd delivery-website && npm install`
-5. Start the webpack dev server: 
-`npm run dev`
+1. Clone the repository: <br/>`git clone https://github.com/rodnoycry/delivery-website.git`
+3. Navigate to the project folder and install dependencies: <br/>`cd delivery-website && npm install`
+5. Start the webpack dev server: <br/>`npm run dev`
 
 To run and deploy the backend side and use its full functionality, you need to prepare and add the credentials of the Firebase project with prepared Firestore and Firebase Authentication with added Google and Email auth providers. Please contact me if you need help setting up the backend locally.
 
