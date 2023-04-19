@@ -5,6 +5,7 @@ This is a demonstration project of a production website developed using React.js
 ## Deployed Version
 
 Check out the deployed version of the website here: [https://rodnoycry.ru](https://rodnoycry.ru)
+To checkout the Admin panel with all it's features you can go to link and authentificate with any Google account: https://rodnoycry.ru/admin
 
 ## Features
 
@@ -15,7 +16,6 @@ Check out the deployed version of the website here: [https://rodnoycry.ru](https
 - Proceed to order details and send the order
 - Authenticate and view your order status
 - Admin panel with the following features:
-  - Authentication to the admin panel with any Google account
   - View orders that users have sent
   - Mark orders as done or return orders to active state
   - Real-time editing of items, banners, and promos on the website
