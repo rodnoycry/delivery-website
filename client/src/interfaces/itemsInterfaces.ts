@@ -1,7 +1,19 @@
 // Items related
+
+export type CategoryName =
+    | 'promo'
+    | 'sets'
+    | 'pizza'
+    | 'cold-rolls'
+    | 'hot-rolls'
+    | 'wok'
+    | 'meals'
+    | 'burgers'
+    | 'extra'
+
 export interface ItemData {
     id: string
-    type: string
+    type: CategoryName
     image: string
     name: string
     description?: string

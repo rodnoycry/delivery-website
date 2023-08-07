@@ -1,115 +1,109 @@
-import React, { useState, useEffect, createContext, CSSProperties } from 'react'
+import React, {
+    useState,
+    useEffect,
+    createContext,
+    CSSProperties,
+    useCallback,
+} from 'react'
 import type { FC } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { ReduxStore } from '@/redux/store'
 import styles from './ItemsList.module.css'
-import { ItemData } from '@/interfaces'
-import { getItems } from '@/services/apiService/items'
-import { categoryNamesDecode } from '@/config'
+import { CategoryName, ItemData } from '@/interfaces'
 import { Category } from './components/Category'
 import { LoadingCategory } from './components/LoadingCategory'
 
 interface Props {
     isAdmin: boolean
     search: string
+    category: CategoryName | 'searchResults'
     style?: object
 }
 
-export const itemSizeStyle: CSSProperties = {
-    height: 450,
-    width: 270,
-    borderRadius: 28,
-}
-
-const getItemsFromServer = async (
-    type: string | undefined = undefined,
-    search: string | undefined = undefined,
-    setIsLoading: (isLoading: boolean) => void
-): Promise<ItemData[]> => {
-    setIsLoading(true)
-    const itemsData = await getItems(type, search)
-        .then((itemsData) => {
-            setIsLoading(false)
-            return itemsData
-        })
-        .catch((error) => {
-            console.error(error)
-            return []
-        })
-    return itemsData
-}
-
 export const IsAdminContext = createContext<boolean>(false)
+export const ItemStyleContext = createContext<{
+    itemStyle: CSSProperties
+    setItemStyle: React.Dispatch<React.SetStateAction<CSSProperties>>
+}>({
+    itemStyle: {
+        minHeight: 450,
+        height: 'auto',
+        borderRadius: 28,
+    },
+    setItemStyle: () => {},
+})
 
-export const ItemsList: FC<Props> = ({
-    isAdmin,
-    search: parentSearch,
-    style,
-}) => {
+export const ItemsList: FC<Props> = ({ isAdmin, search, category, style }) => {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [showLoading, setShowLoading] = useState<boolean>(true)
-    const [search, setSearch] = useState<string>(parentSearch)
     const [itemsData, setItemsData] = useState<ItemData[] | null>(null)
-    const [category, setCategory] = useState<string | undefined>()
-    const location = useLocation()
+    const itemsDataStore = useSelector(
+        (state: ReduxStore) => state.itemsDataStore
+    )
+    const [itemStyle, setItemStyle] = useState<CSSProperties>({
+        borderRadius: 28,
+    })
 
-    const reloadData = (): void => {
-        if (category !== undefined || search) {
-            getItemsFromServer(category, search, setIsLoading)
-                .then((items) => {
-                    setItemsData(items.reverse())
-                })
-                .catch((error) => {
-                    console.error(error)
-                    setItemsData([])
-                })
+    const reloadData = useCallback((): void => {
+        setIsLoading(true)
+        if (itemsDataStore) {
+            let filteredItemsData
+            if (search.trim()) {
+                filteredItemsData = itemsDataStore
+                    .filter(
+                        (itemData) =>
+                            itemData.isActive &&
+                            itemData.name
+                                .toLowerCase()
+                                .includes(search.toLowerCase())
+                    )
+                    .reverse()
+            } else {
+                filteredItemsData = itemsDataStore
+                    .filter(
+                        (itemData) =>
+                            itemData.isActive && itemData.type === category
+                    )
+                    .reverse()
+            }
+            setItemsData(filteredItemsData)
         }
-    }
+        setIsLoading(false)
+    }, [itemsDataStore, category, search])
+
     useEffect(() => {
         reloadData()
-    }, [search])
+    }, [itemsDataStore, search])
 
     useEffect(() => {
-        setSearch(parentSearch)
-    }, [parentSearch])
-
-    useEffect(() => {
-        const path = location.pathname
-        const category = path.split('/').pop()
-        setCategory(category)
-    }, [location])
-
-    useEffect(() => {
-        if (category !== 'init') {
-            setShowLoading(true)
-            reloadData()
-            setShowLoading(false)
-        }
+        setShowLoading(true)
+        reloadData()
+        setShowLoading(false)
     }, [category])
 
-    const title =
-        categoryNamesDecode[category as keyof typeof categoryNamesDecode]
-    const categoriesData = [{ [title]: itemsData }]
     return (
         <IsAdminContext.Provider value={isAdmin}>
-            <main className={styles.itemsList}>
-                {(isLoading && showLoading) || Object.is(itemsData, null) ? (
-                    <LoadingCategory />
-                ) : (
-                    <>
-                        {categoriesData.map((categoryData) => {
-                            const title = Object.keys(categoryData)[0]
-                            return (
-                                <Category
-                                    key={title}
-                                    type={category as string}
-                                    itemsData={itemsData as ItemData[]}
-                                    reloadData={reloadData}
-                                />
-                            )
-                        })}
-                    </>
-                )}
-            </main>
+            <ItemStyleContext.Provider value={{ itemStyle, setItemStyle }}>
+                <main className={styles.itemsList} style={style}>
+                    {(isLoading && showLoading) || !itemsData ? (
+                        <LoadingCategory />
+                    ) : itemsData.length !== 0 ? (
+                        <Category
+                            key={category}
+                            type={category}
+                            itemsData={itemsData}
+                            reloadData={reloadData}
+                        />
+                    ) : (
+                        <div>
+                            <h1 className={styles.failedSearch}>
+                                Мы не смогли найти результаты по вашему запросу
+                                😔
+                            </h1>
+                        </div>
+                    )}
+                </main>
+            </ItemStyleContext.Provider>
         </IsAdminContext.Provider>
     )
 }

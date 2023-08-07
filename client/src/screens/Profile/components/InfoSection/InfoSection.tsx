@@ -34,9 +34,7 @@ export const InfoSection: FC<Props> = ({ style }) => {
         if (userData) {
             if (isUserDataLoaded) {
                 user?.getIdToken()
-                    .then((token) => {
-                        console.log()
-                    })
+                    .then((token) => {})
                     .catch(console.error)
             } else {
                 setIsUserDataLoaded(true)

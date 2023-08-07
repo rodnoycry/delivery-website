@@ -11,7 +11,6 @@ export const sendDataToServer = (data: TestData): TestData | any => {
         .post(`${domain}/api/test`, data)
         .then((response) => {
             // handle success
-            console.log(response)
             return response
         })
         .catch((error) => {
@@ -24,7 +23,6 @@ export const sendDataToServer = (data: TestData): TestData | any => {
 export const createSampleUser = async (): Promise<void> => {
     try {
         const response = await axios.post(`${domain}/api/users/add`)
-        console.log(response.status)
     } catch (error) {
         console.error(error)
     }

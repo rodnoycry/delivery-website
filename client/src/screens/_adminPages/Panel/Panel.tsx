@@ -93,7 +93,6 @@ export const Panel: FC = () => {
         if (user && !isAdmin) {
             // history.push('/') // CHANGE ON PROD
             setIsIntruder(true)
-            console.log(user, isAdmin)
         }
     }, [isAdmin])
 

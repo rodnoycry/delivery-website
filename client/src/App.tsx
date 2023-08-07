@@ -15,7 +15,13 @@ import { domain } from './services/apiService/config'
 import { getItems } from './services/apiService'
 import { getUserDataFromServerCSI } from './services/crossStoragesIntegration'
 
-import { isProd, topItemsAppearancePaths, categoriesPaths } from './config'
+import {
+    isProd,
+    topItemsAppearancePaths,
+    categoriesPaths,
+    categoriesNames,
+    prodDomain,
+} from './config'
 
 import './reset.module.css'
 import {
@@ -55,6 +61,7 @@ import { DataPolicy } from './screens/legal/DataPolicy'
 
 // Windows
 import { AuthWindow } from './components/_windows/AuthWindow'
+import 'react-perfect-scrollbar/dist/css/styles.css'
 
 export const UserContext = createContext<User | null>(null)
 
@@ -111,9 +118,7 @@ export const App: FC = () => {
                 const inputStates = localStorageStore.order
                 const cart = localStorageStore.cart
                 const socket = io(
-                    isProd
-                        ? 'http://your_domain.com'
-                        : 'http://localhost:3000',
+                    isProd ? prodDomain : 'http://localhost:3000',
                     {
                         withCredentials: true,
                     }
@@ -245,7 +250,10 @@ export const App: FC = () => {
                                 search={search.trim()}
                             />
                             {search.trim() ? (
-                                <UserItemsList search={search} />
+                                <UserItemsList
+                                    search={search}
+                                    category="searchResults"
+                                />
                             ) : null}
                         </Route>
 
@@ -261,10 +269,21 @@ export const App: FC = () => {
                         </Route>
 
                         {/* Categories of items */}
-                        {categoriesPaths.map((path) => {
+                        {categoriesNames.map((categoryName) => {
                             return (
-                                <Route exact path={`${path}`} key={path}>
-                                    <UserItemsList search={search} />
+                                <Route
+                                    exact
+                                    path={`/${categoryName}`}
+                                    key={categoryName}
+                                >
+                                    <UserItemsList
+                                        search={search}
+                                        category={
+                                            !search
+                                                ? categoryName
+                                                : 'searchResults'
+                                        }
+                                    />
                                 </Route>
                             )
                         })}
@@ -303,15 +322,17 @@ export const App: FC = () => {
                             </Suspense>
                         </Route>
 
-                        {categoriesPaths.map((path) => {
+                        {categoriesNames.map((categoryName) => {
                             return (
                                 <Route
                                     exact
-                                    path={`/admin/editing${path}`}
-                                    key={path}
+                                    path={`/admin/editing/${categoryName}`}
+                                    key={categoryName}
                                 >
                                     <Suspense>
-                                        <AdminItemsList />
+                                        <AdminItemsList
+                                            category={categoryName}
+                                        />
                                     </Suspense>
                                 </Route>
                             )

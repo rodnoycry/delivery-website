@@ -10,8 +10,8 @@ div.header {
 }
 
 img.header {
-    width: 260px;
-    height: 43px;
+    width: 230px;
+    height: auto;
 }
 
 button.header {
@@ -48,6 +48,7 @@ div.notifications {
     font-size: 16px;
     padding: 5px 7px;
     border-radius: 10px;
+    padding-left: 40px;
 
     cursor: pointer;
 }

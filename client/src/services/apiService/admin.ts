@@ -26,7 +26,6 @@ export const getIsAdmin = async (
         .then(async (token) => await getIsAdminFromServer({ idToken: token }))
         .then((isAdmin) => {
             setIsAdmin(isAdmin)
-            console.log(`isAdmin = `, isAdmin)
             return isAdmin
         })
         .catch((error) => {

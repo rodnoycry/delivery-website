@@ -15,5 +15,5 @@ export const categoriesData = [
     { name: 'WOK и лапша', image: WOKImage, to: '/wok' },
     { name: 'Горячее', image: MealsImage, to: '/meals' },
     { name: 'Бургеры', image: BurgersImage, to: '/burgers' },
-    { name: 'Напитки/дополнительно', image: ExtraImage, to: '/extra' },
+    { name: 'Напитки, прочее', image: ExtraImage, to: '/extra' },
 ]

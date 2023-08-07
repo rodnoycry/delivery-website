@@ -3,3 +3,9 @@ main.itemsList {
     max-width: 1200px;
     min-height: 60vh;
 }
+
+/* Failed search */
+h1.failedSearch {
+    margin-top: 10px;
+    font-family: 'Montserrat', open-sans;
+}

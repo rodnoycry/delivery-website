@@ -4,7 +4,7 @@ import axios from 'axios'
 import { domain } from '@/services/apiService/config'
 import { onAuthStateChanged, User } from 'firebase/auth'
 import { auth } from '@/firebase'
-import { ItemData, ServerItemData } from '@/interfaces'
+import { CategoryName, ItemData, ServerItemData } from '@/interfaces'
 import { categoryNamesDecode, selectorsData } from '@/config'
 import styles from './UpdateItemWindow.module.css'
 import LoadImg from '@images/Load.png'
@@ -85,7 +85,7 @@ export const UpdateItemWindow: FC<Props> = ({
         const serverItemData: ServerItemData = {
             ...itemData,
             isNew,
-            type,
+            type: type as CategoryName,
             isActive: true,
         }
         if (!hasDescription) {

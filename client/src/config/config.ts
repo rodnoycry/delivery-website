@@ -1,18 +1,24 @@
-export const topItemsAppearancePaths = [
-    '/promo',
-    '/sets',
-    '/pizza',
-    '/cold-rolls',
-    '/hot-rolls',
-    '/wok',
-    '/meals',
-    '/burgers',
-    '/extra',
+import { CategoryName } from '@/interfaces'
+
+export const categoriesNames: CategoryName[] = [
+    'promo',
+    'sets',
+    'pizza',
+    'cold-rolls',
+    'hot-rolls',
+    'wok',
+    'meals',
+    'burgers',
+    'extra',
 ]
+
+export const topItemsAppearancePaths = categoriesNames.map(
+    (categoryName) => `/${categoryName as string}`
+)
 
 export const categoriesPaths = [...topItemsAppearancePaths]
 
-export const categoryNamesDecode = {
+export const categoryNamesDecode: Record<CategoryName, string> = {
     promo: 'Акции',
     sets: 'Сеты',
     pizza: 'Пицца',

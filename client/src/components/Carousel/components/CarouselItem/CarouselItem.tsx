@@ -29,7 +29,6 @@ export const CarouselItem: FC<Props> = ({
     useEffect(() => {
         setCarouselData(parentCarouselData)
     }, [parentCarouselData])
-    console.log(index)
     return (
         <div className="each-slide-effect" key={index} id={`slide-${index}`}>
             <div className={styles.item}>

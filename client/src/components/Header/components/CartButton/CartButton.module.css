@@ -20,6 +20,12 @@ button.cart:disabled {
     opacity: 0.3;
 }
 
+@media screen and (max-width: 550px) {
+    button.cart {
+        margin-top: 0px;
+    }
+}
+
 /* Cart button */
 img.cart {
     display: inline-block;
@@ -45,7 +51,6 @@ p.cart {
 
 /* Cart counter */
 div.cartCounter {
-    margin-right: 17px;
     position: relative;
 }
 

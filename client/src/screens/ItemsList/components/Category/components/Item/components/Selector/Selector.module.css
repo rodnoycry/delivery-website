@@ -1,7 +1,8 @@
 ul.selector {
     color: black;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 5px;
 }
 
 li.selector {
@@ -10,7 +11,7 @@ li.selector {
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
     box-shadow: none;
-    width: 75px;
+    width: 100%;
     height: 23px;
     border-radius: 12px;
 }
@@ -27,4 +28,14 @@ span.selector {
     color: black;
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
+}
+
+@media screen and (max-width: 600px) {
+    li.selector {
+        height: 20px;
+    }
+
+    span.selector {
+        font-size: 12px;
+    }
 }
