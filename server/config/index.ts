@@ -2,7 +2,7 @@ export { zoneDeliveryInfo } from '@/config'
 
 export const adminEmails = ['vkhk99@gmail.com', 'kubmad.kg@gmail.com']
 
-export const prodDomain = 'https://your_domain'
+export const prodDomain = 'https://your_domain.com'
 
 type DbSelect = 'main' | 'reserve'
 
