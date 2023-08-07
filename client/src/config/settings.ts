@@ -1,6 +1,6 @@
 type DbSelect = 'main' | 'reserve'
 
-export const isProd = false // Change if production mode
+export const isProd = false // Change if production mode //
 
 export const prodDomain = 'https://your_domain.com'
 

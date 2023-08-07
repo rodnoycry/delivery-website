@@ -13,7 +13,7 @@ interface ServerConfig {
     allowDevClient: boolean
 }
 
-// MAIN CONFIG
+// MAIN CONFIG //
 export const config: ServerConfig = {
     isProduction: false,
     db: 'reserve', // DB SELECTION
