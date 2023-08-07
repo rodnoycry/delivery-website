@@ -6,38 +6,44 @@ h1.category {
 }
 
 ul.category {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns for desktop */
+    row-gap: 50px;
+    column-gap: 20px;
 
-    row-gap: 20px;
     padding-top: 20px;
 }
 
 
-@media screen and (max-width: 664px) {
-    h1.category {
-        margin-top: 20px;
-    }
-
-    ul.category {
-        justify-content: center;
-    }
+/* Tablet version */
+@media screen and (max-width: 1200px) {
+  ul.category {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for tablet */
+  }
 }
 
-@media screen and (max-width: 550px) {
-    ul.category {
-        row-gap: 0;
-    }
+/* Mobile version */
+@media screen and (max-width: 950px) {
+  ul.category {
+    grid-template-columns: repeat(2, 1fr); /* 2 column for mobile */
+  }
 }
 
+/* Mobile version */
+@media screen and (max-width: 600px) {
+  ul.category {
+    grid-template-columns: repeat(1, 1fr); /* 1 column for mobile */
+    row-gap: 20px;
+  }
+}
 /* "Add item" component for admins */
 
 li.addItem {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 12.5px;
+    border-radius: 28px;
+    min-height: 200px;
 
     background-color: #353535;
     transition: background-color 0.2s ease-in-out;
@@ -57,10 +63,4 @@ img.addItem {
 
 img.addItem:hover {
     opacity: 0.8;
-}
-
-/* Failed search */
-h1.failedSearch {
-    margin-top: 10px;
-    font-family: 'Montserrat', open-sans;
 }

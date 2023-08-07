@@ -54,10 +54,8 @@ export const getUserDataFromServerCSI = async (
                 dispatch(updateInputStates(fetchedUserData.inputStates))
             }
         }
-        console.log(cart)
         if (!cart || cart === '[]') {
             const cart = await getUserCart(token)
-            console.log(cart)
             dispatch(setReduxCart(cart))
         }
 

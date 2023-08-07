@@ -5,7 +5,7 @@ import { Test } from './Test'
 
 Enzyme.configure({ adapter: new Adapter() })
 
-it('App shows "Hello Alex!"', () => {
-    const app = shallow(<Test name="Alex" />)
-    expect(app.text()).toBe('Hello Alex!')
+it('App shows "Hello World!"', () => {
+    const app = shallow(<Test name="World" />)
+    expect(app.text()).toBe('Hello World!')
 })

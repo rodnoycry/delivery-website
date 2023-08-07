@@ -33,3 +33,15 @@ img.counter {
     width: 15px;
     height: auto;
 }
+
+@media screen and (max-width: 600px) {
+    div.counter {
+        font-size: 14px;
+        width: 90px;
+    }
+
+    img.counter {
+        width: 13px;
+        height: auto;
+    }
+}

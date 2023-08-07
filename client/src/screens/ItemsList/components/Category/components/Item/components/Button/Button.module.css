@@ -7,6 +7,7 @@ button.button {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 5px;
 }
 
 button.button:hover {
@@ -28,4 +29,21 @@ span.button {
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     font-weight: normal;
+}
+
+@media screen and (max-width: 600px) {
+    button.button {
+        width: auto;
+        height: auto;
+        border-radius: 8px;
+        padding: 5px 8px;
+    }
+
+    span.button {
+        font-size: 13px;
+    }
+
+    img.button {
+        width: 15px;
+    }
 }

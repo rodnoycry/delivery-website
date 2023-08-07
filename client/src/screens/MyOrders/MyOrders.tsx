@@ -29,7 +29,6 @@ export const MyOrders: FC<Props> = ({ style }) => {
     }, [])
 
     useEffect(() => {
-        console.log(localOrders)
         if (localOrders) {
             setOrders(JSON.parse(JSON.stringify(localOrders)).reverse())
         }

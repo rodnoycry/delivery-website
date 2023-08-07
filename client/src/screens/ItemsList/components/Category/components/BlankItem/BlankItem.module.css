@@ -1,5 +1,6 @@
 div.blankItem {
     background-color: black;
     opacity: 0.01;
-    margin: 0 12.5px;
+    min-height: 200px;
+    border-radius: 28px;
 }

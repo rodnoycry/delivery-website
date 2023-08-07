@@ -41,13 +41,17 @@ export const CartButton: FC = () => {
                     updateSumAndQty()
                 }}
             >
-                <div className={styles.cartCounter}>
+                <div
+                    className={styles.cartCounter}
+                    style={{ marginRight: itemsQty !== 0 ? '17px' : '10px' }}
+                >
                     <img className={styles.cart} src={CartImg} />
-                    <span className={styles.cartCounter}>{itemsQty}</span>
+                    {itemsQty !== 0 && (
+                        <span className={styles.cartCounter}>{itemsQty}</span>
+                    )}
                 </div>
                 <p className={styles.cart}>
-                    <span>{sum}</span>
-                    {` руб.`}
+                    <span>{itemsQty !== 0 ? `${sum} руб.` : `Корзина`}</span>
                 </p>
             </button>
         </Link>

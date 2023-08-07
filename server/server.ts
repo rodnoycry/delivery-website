@@ -4,7 +4,7 @@ import { Server } from 'socket.io'
 import cors from 'cors'
 import path from 'path'
 import cookieParser from 'cookie-parser'
-import { config } from './config'
+import { config, prodDomain } from './config'
 import {
     handleGetPromos,
     handleAddPromo,
@@ -60,7 +60,7 @@ const server = http.createServer(app)
 const port = 3000
 export const io = new Server(server, {
     cors: {
-        origin: config.isProduction ? `http://your_domain` : 'http://localhost:8080',
+        origin: config.isProduction ? prodDomain : 'http://localhost:8080',
         methods: ['GET', 'POST'],
         credentials: true,
     },
@@ -84,7 +84,7 @@ app.use(express.json())
 if (config.allowDevClient) {
     app.use(
         cors({
-            origin: config.isProduction ? `http://your_domain` : 'http://localhost:8080',
+            origin: config.isProduction ? prodDomain : 'http://localhost:8080',
             credentials: true,
         })
     )

@@ -93,7 +93,7 @@ img.logoMini {
     }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 550px) {
     .logo {
         width: 43px;
     }
@@ -103,7 +103,7 @@ img.logoMini {
     }
 
     img.logoMini {
-        margin-top: 5px;
+        margin-top: 0px;
         transform: scale(0.8);
         display: block;
     }

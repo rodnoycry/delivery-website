@@ -7,5 +7,5 @@ export const linksObject = {
     '/wok': `ЛАПША И WOK`,
     '/meals': `ГОРЯЧЕЕ`,
     '/burgers': `БУРГЕРЫ`,
-    '/extra': `НАПИТКИ/ПРОЧЕЕ`,
+    '/extra': `НАПИТКИ, ПРОЧЕЕ`,
 }

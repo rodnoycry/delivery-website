@@ -9,11 +9,18 @@ button.profile {
     background: linear-gradient(99.03deg, #323232 19.8%, rgba(15, 15, 15, 0) 100%);
     opacity: 1;
     border-radius: 6px;
+    margin-right: 5px;
     transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 button.profile:hover {
     background-color: #323232;
+}
+
+@media screen and (max-width: 550px) {
+    button.profile {
+        margin-top: 0px;
+    }
 }
 
 /* profile button */

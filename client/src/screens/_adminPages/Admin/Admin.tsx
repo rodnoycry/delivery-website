@@ -38,7 +38,6 @@ export const Admin: FC = () => {
         })
         if (isIntruder) {
             // history.push('/') // UNCOMMENT ON PROD
-            console.log()
         }
     }, [])
 
@@ -77,7 +76,6 @@ export const Admin: FC = () => {
             )
             .then((isAdmin) => {
                 setIsAdmin(isAdmin)
-                console.log(`isAdmin = `, isAdmin)
                 return isAdmin
             })
             .catch((error) => {

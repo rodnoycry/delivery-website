@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext, CSSProperties } from 'react'
+import React, {
+    useState,
+    useEffect,
+    useContext,
+    CSSProperties,
+    useRef,
+} from 'react'
 import type { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ReduxStore, addCartItem, removeCartItem } from '@/redux/store'
@@ -14,6 +20,9 @@ import EditImage from './images/Edit.png'
 import { domain } from '@/services/apiService/config'
 
 interface Props extends CartItemData {
+    itemContainerRef: React.RefObject<HTMLLIElement>
+    infoContainerRef: React.RefObject<HTMLDivElement>
+    infoContainerMaxHeight: number | undefined
     setIsEditingItem?: (isEditingItem: boolean) => void
     setCurrentItemData?: (itemData: ItemData) => void
     style?: CSSProperties
@@ -32,6 +41,9 @@ export const Item: FC<Props> = ({
     selected: selected_,
     setIsEditingItem,
     setCurrentItemData,
+    itemContainerRef,
+    infoContainerRef,
+    infoContainerMaxHeight,
     style,
 }) => {
     selected_ = selected_ !== false && selected_ !== undefined ? selected_ : 1
@@ -45,6 +57,8 @@ export const Item: FC<Props> = ({
     useEffect(() => {
         setQty(getQty(cart, id, selected as number))
     }, [selected, cart])
+
+    const imageContainerRef = useRef<HTMLDivElement | null>(null)
 
     // Authentification related
     const user = useContext(UserContext)
@@ -115,44 +129,60 @@ export const Item: FC<Props> = ({
             })
         }
     }
+
     return (
-        <li className={styles.item} style={style} key={id}>
+        <li
+            className={styles.item}
+            style={{ ...style }}
+            key={id}
+            ref={itemContainerRef}
+        >
             {isNew ? <div className={styles.newLabel}>New</div> : null}
             {isAdmin ? (
                 <button className={styles.adminEdit} onClick={handleEditItem}>
                     <img className={styles.adminEdit} src={EditImage} />
                 </button>
             ) : null}
-            <div className={styles.imgContainer}>
-                <img className={styles.item} src={`${domain}${image}`} />
-            </div>
             <div
-                className={styles.labelAndDescription}
-                style={{
-                    height:
-                        type === 'pizza' || type === 'wok' ? '110px' : '140px',
-                }}
-            >
-                <h1 className={styles.item}>{name}</h1>
-                <p className={styles.item}>{description}</p>
-            </div>
-            {type !== 'wok' || name.includes('WOK') ? (
-                <Selector
-                    type={type}
-                    selected={selected as number}
-                    itemId={id}
-                    setItemSelected={setSelected}
-                    style={{ marginTop: '7px' }}
-                />
-            ) : null}
-            <span className={styles.itemQty}>
-                {innerQty ? `${innerQty} шт.` : `\u00a0`}
-            </span>
-            <div className={styles.item}>
-                <span className={styles.item}>
-                    {getPrice(type, price, selected as number)}₽
-                </span>
-                {getButton(qty)}
+                className={styles.imgContainer}
+                style={{ backgroundImage: `url(${domain}${image})` }}
+                ref={imageContainerRef}
+            />
+            <div className={styles.infoContainer}>
+                <div
+                    className={styles.infoSemiContainer}
+                    ref={infoContainerRef}
+                    style={
+                        {
+                            // height: infoContainerHeight,
+                        }
+                    }
+                >
+                    <div className={styles.labelAndDescription}>
+                        <h1 className={styles.item}>{name}</h1>
+                        <p className={styles.item}>{description}</p>
+                    </div>
+                    <div className={styles.actionButtons}>
+                        {type !== 'wok' || name.includes('WOK') ? (
+                            <Selector
+                                type={type}
+                                selected={selected as number}
+                                itemId={id}
+                                setItemSelected={setSelected}
+                                style={{ marginTop: '7px' }}
+                            />
+                        ) : null}
+                        <span className={styles.itemQty}>
+                            {innerQty ? `${innerQty} шт.` : `\u00a0`}
+                        </span>
+                        <div className={styles.item}>
+                            <span className={styles.item}>
+                                {getPrice(type, price, selected as number)}₽
+                            </span>
+                            {getButton(qty)}
+                        </div>
+                    </div>
+                </div>
             </div>
         </li>
     )

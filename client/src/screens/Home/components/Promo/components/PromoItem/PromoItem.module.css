@@ -46,11 +46,9 @@ img.promo {
     overflow: hidden;
 }
 
-.descriptionContainer {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 5px;
-    padding: 0px 5px 5px;
+div.descriptionContainer {
+    height: 100%;
+    padding: 10px 15px;
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -98,4 +96,12 @@ button.adminEdit:hover {
 img.adminEdit {
     width: 37px;
     height: auto;
+}
+
+.scrollBar {
+    background: none !important
+}
+
+:global .ps__rail-y {
+    background: none !important;
 }

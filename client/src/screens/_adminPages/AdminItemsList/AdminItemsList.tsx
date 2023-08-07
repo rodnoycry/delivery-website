@@ -1,7 +1,12 @@
 import React from 'react'
 import type { FC } from 'react'
 import { ItemsList } from '@/screens/ItemsList'
+import { CategoryName } from '@/interfaces'
 
-export const AdminItemsList: FC = () => {
-    return <ItemsList isAdmin={true} search={''} />
+interface Props {
+    category: CategoryName
+}
+
+export const AdminItemsList: FC<Props> = ({ category }) => {
+    return <ItemsList isAdmin={true} category={category} search={''} />
 }

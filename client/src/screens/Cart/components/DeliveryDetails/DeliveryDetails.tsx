@@ -33,7 +33,8 @@ export const DeliveryDetails: FC<Props> = ({
                     <div
                         className={styles.zoneInfo}
                         style={{
-                            border: isError ? '2px solid #ff000a' : '0px',
+                            border: isError ? '2px solid #ff000a' : undefined,
+                            padding: '15px',
                         }}
                     >
                         <h2 className={styles.zoneInfo}>
